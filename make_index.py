@@ -28,4 +28,4 @@ for fname in l_md:
 for d in sorted(l_metadata, key=lambda d: d["date_post"], reverse=True):
     header += f"* {d['date_post']} [{d['title']}]({d['fname']})\n"
 
-print(header)
+open("index.md", "w").write(header)

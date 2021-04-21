@@ -16,6 +16,17 @@ jobs:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
 
+    # Install Python
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    # Install the python packages (from requirements.txt)
+    - name: Install python packages
+      run: |
+        python -m pip install -r requirements.txt
+
     # Setup pandoc
     - uses: r-lib/actions/setup-pandoc@v1
       with:
