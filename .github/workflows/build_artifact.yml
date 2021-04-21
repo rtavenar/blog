@@ -24,6 +24,7 @@ jobs:
     # Build the html version of the book
     - name: Build the html-book
       run: |
+        mkdir html/
         make
 
     # Push the blog's HTML to github-pages
