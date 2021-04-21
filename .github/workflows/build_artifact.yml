@@ -1,0 +1,35 @@
+name: build-n-push
+
+# Only run this when the master branch changes
+on:
+  push:
+    branches:
+      - main
+
+# This job installs dependencies, build the book, and pushes it to `gh-pages`
+jobs:
+  build-artifact:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+        fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+
+    # Setup pandoc
+    - uses: r-lib/actions/setup-pandoc@v1
+      with:
+        pandoc-version: '2.13' # The pandoc version to download (if necessary) and use.
+
+    # Build the html version of the book
+    - name: Build the html-book
+      run: |
+        make
+
+    # Push the blog's HTML to github-pages
+    - name: Push to gh_pages
+      if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+      uses: peaceiris/actions-gh-pages@v3.6.1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./html
