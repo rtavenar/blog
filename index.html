@@ -5,10 +5,23 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <title>Blog</title>
-  <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="https://latex.now.sh/style.css">
   <link rel="stylesheet" href="https://latex.now.sh/prism/prism.css">
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <style type="text/css">
+    body {
+      counter-reset: fignumber;
+    }
+    h1#toctitle {text-align: left;}
+    #TOC ul {list-style-type: none;}
+    img {display: inline;}
+    figure {text-align: center;}
+    figcaption::before {
+      counter-increment: fignumber;
+      content: 'Figure ' counter(fignumber) '. ';
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 <div id="header">

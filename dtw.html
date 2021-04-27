@@ -6,18 +6,45 @@
   <meta name="generator" content="pandoc" />
   <meta name="author" content="Romain Tavenard" />
   <title>An introduction to Dynamic Time Warping</title>
-  <style type="text/css">code{white-space: pre;}</style>
   <link rel="stylesheet" href="https://latex.now.sh/style.css">
   <link rel="stylesheet" href="https://latex.now.sh/prism/prism.css">
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
+  <style type="text/css">
+    body {
+      counter-reset: fignumber;
+    }
+    h1#toctitle {text-align: left;}
+    #TOC ul {list-style-type: none;}
+    img {display: inline;}
+    figure {text-align: center;}
+    figcaption::before {
+      counter-increment: fignumber;
+      content: 'Figure ' counter(fignumber) '. ';
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
 <div id="header">
 <h1 class="title">An introduction to Dynamic Time Warping</h1>
 <h2 class="author">Romain Tavenard</h2>
-<h3 class="date">2021/04/21</h3>
+<!-- <h3 class="date">2021/04/21</h3> -->
 </div>
-<h1 data-number="1" id="alignment-based-metrics"><span class="header-section-number">1</span> Alignment-based metrics</h1>
+<div id="TOC">
+  <h1 id="toctitle">Contents</h1>
+  <ul>
+  <li><a href="#alignment-based-metrics">Alignment-based metrics</a></li>
+  <li><a href="#dynamic-time-warping">Dynamic Time Warping</a>
+  <ul>
+  <li><a href="#optimization-problem">Optimization Problem</a></li>
+  <li><a href="#algorithmic-solution">Algorithmic Solution</a></li>
+  <li><a href="#properties">Properties</a></li>
+  <li><a href="#setting-additional-constraints">Setting Additional Constraints</a></li>
+  </ul></li>
+  <li><a href="#bibliography">References</a></li>
+  </ul>
+</div>
+<h1 id="alignment-based-metrics">Alignment-based metrics</h1>
 <p>The definition of adequate metrics between objects to be compared is at the core of many machine learning methods (<em>e.g.</em>, nearest neighbors, kernel machines, <em>etc.</em>). When complex objects (such as time series) are involved, such metrics have to be carefully designed in order to leverage on desired notions of similarity.</p>
 <p>Let us illustrate our point with an example.</p>
 <figure>
@@ -35,10 +62,10 @@
 </figcaption>
 </figure>
 <p>This part of the course tackles the definition of adequate similarity measures for time series and their use at the core of machine learning methods.</p>
-<h1 data-number="2" id="dynamic-time-warping"><span class="header-section-number">2</span> Dynamic Time Warping</h1>
+<h1 id="dynamic-time-warping">Dynamic Time Warping</h1>
 <p>This section covers works related to Dynamic Time Warping for time series.</p>
 <p>Dynamic Time Warping (DTW) <span class="citation" data-cites="sakoe1978dynamic">(<a href="#ref-sakoe1978dynamic" role="doc-biblioref">Sakoe and Chiba 1978</a>)</span> is a similarity measure between time series. Consider two time series <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><annotation encoding="application/x-tex">\mathbf{x}^\prime</annotation></semantics></math> of respective lengths <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>. Here, all elements <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>x</mi><mi>j</mi><mi>&#x2032;</mi></msubsup><annotation encoding="application/x-tex">x^\prime_j</annotation></semantics></math> are assumed to lie in the same <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-dimensional space and the exact timestamps at which observations occur are disregarded: only their ordering matters.</p>
-<h2 data-number="2.1" id="optimization-problem"><span class="header-section-number">2.1</span> Optimization Problem</h2>
+<h2 id="optimization-problem">Optimization Problem</h2>
 <p>In the following, a path <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>&#x3C0;</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math> of length <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> is a sequence of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> index pairs <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>i</mi><mn>0</mn></msub><mo>,</mo><msub><mi>j</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mi>&#x2026;</mi><mo>,</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>i</mi><mrow><mi>K</mi><mo>&#x2212;</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>j</mi><mrow><mi>K</mi><mo>&#x2212;</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)</annotation></semantics></math>.</p>
 <p>DTW between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><annotation encoding="application/x-tex">\mathbf{x}^\prime</annotation></semantics></math> is formulated as the following optimization problem:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>T</mi><msub><mi>W</mi><mi>q</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><munder><mo>min</mo><mrow><mi>&#x3C0;</mi><mo>&#x2208;</mo><mstyle mathvariant="script"><mi>&#x1D49C;</mi></mstyle><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow></munder><msup><mrow><mo stretchy="true" form="prefix">(</mo><munder><mo>&#x2211;</mo><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mo>,</mo><mi>j</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>&#x2208;</mo><mi>&#x3C0;</mi></mrow></munder><mi>d</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msubsup><mi>x</mi><mi>j</mi><mi>&#x2032;</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mi>q</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mn>1</mn><mi>q</mi></mfrac></msup></mrow><annotation encoding="application/x-tex">\begin{equation}
@@ -59,7 +86,7 @@ DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
 </ul>
 <p>In what follows, we will denote <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>T</mi><msub><mi>W</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">DTW_2</annotation></semantics></math> as DTW. In this context, a path can be seen as a temporal alignment of time series and the optimal path is such that Euclidean distance between aligned (<em>ie.</em> resampled) time series is minimal.</p>
 <p>The following image exhibits the DTW path (in white) for a given pair of time series, on top of the cross-similarity matrix that stores <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>i</mi></msub><mo>,</mo><msubsup><mi>x</mi><mi>j</mi><mi>&#x2032;</mi></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">d(x_i, {x}^\prime_j)</annotation></semantics></math> values:</p>
-<h2 data-number="2.2" id="algorithmic-solution"><span class="header-section-number">2.2</span> Algorithmic Solution</h2>
+<h2 id="algorithmic-solution">Algorithmic Solution</h2>
 <p>There exists an <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>m</mi><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(mn)</annotation></semantics></math> algorithm to compute the exact optimum for this problem (assuming computation of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mrow><mo stretchy="true" form="prefix">(</mo><mo>&#x22C5;</mo><mo>,</mo><mo>&#x22C5;</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">d(\cdot,\cdot)</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">O(1)</annotation></semantics></math>):</p>
 <pre>
   <code class="language-python">
@@ -113,15 +140,21 @@ DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
                                       0 &amp; \text{ otherwise}
                         \end{array} \right. .
 \end{equation}</annotation></semantics></math> </span></p>
-<h2 data-number="2.3" id="properties"><span class="header-section-number">2.3</span> Properties</h2>
+<h2 id="properties">Properties</h2>
 <p>Dynamic Time Warping holds the following properties:</p>
 <ul>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2200;</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><mo>,</mo><mi>D</mi><mi>T</mi><msub><mi>W</mi><mi>q</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><msup><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mi>&#x2032;</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>&#x2265;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\forall \mathbf{x}, \mathbf{x}^\prime, DTW_q(\mathbf{x}, \mathbf{x}^\prime) \geq 0</annotation></semantics></math></li>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&#x2200;</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><mi>D</mi><mi>T</mi><msub><mi>W</mi><mi>q</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\forall \mathbf{x}, DTW_q(\mathbf{x}, \mathbf{x}) = 0</annotation></semantics></math></li>
 <li>Suppose <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math> is a time series that is constant except for a motif that occurs at some point in the series, and let us denote by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mrow><mo>+</mo><mi>k</mi></mrow></msub><annotation encoding="application/x-tex">\mathbf{x}_{+k}</annotation></semantics></math> a copy of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><annotation encoding="application/x-tex">\mathbf{x}</annotation></semantics></math> in which the motif is temporally shifted by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> timestamps, then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>T</mi><msub><mi>W</mi><mi>q</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mo>,</mo><msub><mstyle mathvariant="bold"><mi>&#x1D431;</mi></mstyle><mrow><mo>+</mo><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">DTW_q(\mathbf{x}, \mathbf{x}_{+k}) = 0</annotation></semantics></math>.</li>
 </ul>
+<figure>
+<img src="../fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
+<figcaption>
+Contrary to Euclidean distance, DTW is invariant to time shifts between series.
+</figcaption>
+</figure>
 <p>However, mathematically speaking, DTW is not a valid metric since it satisfies neither the triangular inequality nor the identity of indiscernibles.</p>
-<h2 data-number="2.4" id="setting-additional-constraints"><span class="header-section-number">2.4</span> Setting Additional Constraints</h2>
+<h2 id="setting-additional-constraints">Setting Additional Constraints</h2>
 <p>The set of temporal deformations to which DTW is invariant can be reduced by imposing additional constraints on the set of acceptable paths. Such constraints typically consist in forcing paths to stay close to the diagonal.</p>
 <p>The Sakoe-Chiba band is parametrized by a radius <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> (number of off-diagonal elements to consider, also called warping window size sometimes), as illustrated below:</p>
 <p>The Itakura parallelogram sets a maximum slope <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>s</mi><annotation encoding="application/x-tex">s</annotation></semantics></math> for alignment paths, which leads to a parallelogram-shaped constraint:</p>
