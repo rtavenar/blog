@@ -21,6 +21,7 @@ $endif$
     body {
       counter-reset: fignumber;
     }
+    div#back2index {text-align: right;}
     h1#toctitle {text-align: left;}
     #TOC ul {list-style-type: none;}
     img {display: inline;}
@@ -51,6 +52,9 @@ $endfor$
 $if(date)$
 <!-- <h3 class="date">$date$</h3> -->
 $endif$
+<div id="back2index">
+  [<a href="index.html">Other blog posts</a>]
+</div>
 </div>
 $endif$
 $if(toc)$
