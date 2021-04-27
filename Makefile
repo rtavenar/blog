@@ -1,4 +1,6 @@
 TARGETS=dtw
+.PHONY: all clean
+
 all: post-build
 
 post-build: $(TARGETS)
