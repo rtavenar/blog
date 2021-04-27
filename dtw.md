@@ -21,7 +21,7 @@ in order to leverage on desired notions of similarity.
 Let us illustrate our point with an example.
 
 <figure>
-    <img src="../fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
+    <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
     <figcaption>
         $k$-means clustering with Euclidean distance. 
         Each subfigure represents series from a given cluster and their centroid (in red).
@@ -37,7 +37,7 @@ When using a shift-invariant similarity measure (discussed in our
 {ref}`sec:dtw` section) at the core of $k$-means, one gets:
 
 <figure>
-    <img src="../fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
+    <img src="fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
     <figcaption>
         $k$-means clustering with Dynamic Time Warping. Each subfigure
         represents series from a given cluster and their centroid (in red).
@@ -182,8 +182,8 @@ copy of $\mathbf{x}$ in which the motif is temporally shifted by $k$ timestamps,
 then $DTW_q(\mathbf{x}, \mathbf{x}_{+k}) = 0$.
 
 <figure>
-    <img src="../fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
-    <figcaption>
+    <img src="fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
+    <figcaption> 
         Contrary to Euclidean distance, DTW is invariant to time shifts between series.
     </figcaption>
 </figure>
