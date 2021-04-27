@@ -8,7 +8,7 @@ post-build: $(TARGETS)
 $(TARGETS): %: html/%.html
 
 html/%.html: %.md
-	pandoc -s -o $@ -C --highlight-style pygments --data-dir . --columns 1000 --ascii --mathml --number-sections --template=templates/default.html $^
+	pandoc -s -o $@ -C --highlight-style pygments --data-dir . --columns 1000 --ascii --mathml --toc --template=templates/default.html $^
 
 clean:
 	rm -f html/*.html

@@ -181,6 +181,13 @@ occurs at some point in the series, and let us denote by $\mathbf{x}_{+k}$ a
 copy of $\mathbf{x}$ in which the motif is temporally shifted by $k$ timestamps,
 then $DTW_q(\mathbf{x}, \mathbf{x}_{+k}) = 0$.
 
+<figure>
+    <img src="../fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
+    <figcaption>
+        Contrary to Euclidean distance, DTW is invariant to time shifts between series.
+    </figcaption>
+</figure>
+
 However, mathematically speaking, DTW is not a valid metric since it
 satisfies neither the triangular inequality nor the identity of indiscernibles.
 
