@@ -105,20 +105,17 @@ problem (assuming computation of $d(\cdot,\cdot)$ is $O(1)$):
 <pre>
   <code class="language-python">
 def dtw(x, x_prime, q=2):
-  for i in 1..n:
-    for j in 1..m:
-      dist = d(x[i], x_prime[j]) ** q
-      if i == 1 and j == 1:
-        gamma[i, j] = dist
-      else:
-        gamma[i, j] = dist + min(gamma[i-1, j] if i > 1
-                                               else inf,
-                                 gamma[i, j-1] if j > 1
-                                               else inf,
-                                 gamma[i-1, j-1] if (i > 1 and j > 1)
-                                                 else inf)
+  for i in range(len(x)):
+    for j in range(len(x_prime)):
+      gamma[i, j] = d(x[i], x_prime[j]) ** q
+      if i > 0 or j > 0:
+        gamma[i, j] += min(
+          gamma[i-1, j  ] if i > 0             else inf,
+          gamma[i  , j-1] if j > 0             else inf,
+          gamma[i-1, j-1] if (i > 0 and j > 0) else inf
+        )
 
-  return (gamma[n, m]) ** (1. / q)
+  return (gamma[-1, -1]) ** (1. / q)
   </code>
 </pre>
 
@@ -147,13 +144,30 @@ In more details:
 
 The dynamic programming algorithm presented above relies on this recurrence formula and stores intermediate computations for efficiency.
 
-<label for="sn-anything" class="sidenote-toggle">⊕</label>
-<input type="checkbox" id="sn-anything" class="sidenote-toggle" />
-<span class="sidenote">
-    **Dot product notation**
+## Dot product notation
 
-    Dynamic Time Warping can also be formalized using the following
-notation:
+A Dynamic Time Warping path can either be represented as a list of index pairs (as suggested earlier)
+or as a binary matrix whose non-zero entries are those corresponding to a matching between time series
+elements:
+
+\begin{equation}
+(A_\pi)_{i,j} = \left\{ \begin{array}{rl} 1 & \text{ if } (i, j) \in \pi \\
+                                      0 & \text{ otherwise}
+                        \end{array} \right. .
+\end{equation}
+
+This is illustrated in the Figure below where the binary matrix is represented as a grid on which the
+DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-zero entry in $A_\pi$:
+
+<figure>
+    <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="60%" />
+    <figcaption> 
+        Dynamic Time Warping path represented as a binary matrix. 
+        Each dot on the path indicates the matching of an element in $x$ with an element in $x^\prime$.
+    </figcaption>
+</figure>
+
+Using matrix notation, Dynamic Time Warping writes:
 
 \begin{equation*}
 DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
@@ -162,13 +176,7 @@ DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
 \end{equation*}
 
 where $D_q(\mathbf{x}, \mathbf{x}^\prime)$ stores distances
-$d(x_i, x^\prime_j)$ at the power $q$ and
-\begin{equation}
-(A_\pi)_{i,j} = \left\{ \begin{array}{rl} 1 & \text{ if } (i, j) \in \pi \\
-                                      0 & \text{ otherwise}
-                        \end{array} \right. .
-\end{equation}
-</span>
+$d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Properties
 

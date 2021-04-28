@@ -5,7 +5,7 @@ all: post-build
 
 post-build: $(TARGETS)
 	python make_index.py
-	pandoc -s --self-contained -o html/index.html --highlight-style pygments --data-dir . --columns 1000 --ascii --template=templates/default.html index.md
+	pandoc -s --self-contained -o html/index.html --highlight-style pygments --data-dir . --columns 1000 --ascii --template=templates/default_index.html index.md
 
 $(TARGETS): %: html/%.html
 
