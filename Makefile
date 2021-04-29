@@ -1,4 +1,4 @@
-TARGETS=dtw
+TARGETS=dtw softdtw
 .PHONY: all clean
 
 all: post-build

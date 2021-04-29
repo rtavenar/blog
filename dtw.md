@@ -172,7 +172,7 @@ Using matrix notation, Dynamic Time Warping writes:
 \begin{equation*}
 DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
     \min_{\pi \in \mathcal{A}(\mathbf{x}, \mathbf{x}^\prime)}
-        \langle A_\pi,  D_q(\mathbf{x}, \mathbf{x}^\prime) \rangle^{\frac{1}{q}}
+        \left\langle A_\pi,  D_q(\mathbf{x}, \mathbf{x}^\prime) \right\rangle^{\frac{1}{q}}
 \end{equation*}
 
 where $D_q(\mathbf{x}, \mathbf{x}^\prime)$ stores distances

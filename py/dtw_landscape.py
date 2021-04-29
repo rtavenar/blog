@@ -53,13 +53,15 @@ for mid_val in list_values:
 
 dtw_dists = [dtw(x_ref, xi) for xi in list_x]
 
-ax.plot(x_ref, color=colors[7], linestyle='dotted')
-line_ts, = ax.plot(list_x[0], color=colors[7], linestyle='-')
+ax.plot(x_ref, color=colors[7], linestyle='dotted', label='$x_\\text{ref}$')
+line_ts, = ax.plot(list_x[0], color=colors[7], linestyle='-', label='$x$')
 ax.set_xticks([pos])
 ax.set_xticklabels(["$\\tau$"], fontsize=14)
 ax.set_title("Input time series")
 ax.set_ylim([-2, 1.5])
+ax.legend(loc='lower right')
 
+ax2.axvline(x=list_values[35], linestyle='dashed', color='k')
 ax2.plot(list_values, dtw_dists, color=colors[1], linestyle='-', label="DTW")
 scatter_dtw, = ax2.plot([list_values[0]], [dtw_dists[0]], color=colors[1], marker='o')
 ax2.set_xlabel("$x_{\\tau}$")
