@@ -43,28 +43,28 @@
 <div id="TOC">
   <h1 id="toctitle">Contents</h1>
   <ul>
-  <li><a href="#preamble-differentiability-of-dtw">Preamble: Differentiability of DTW</a></li>
+  <li><a href="#introduction">Introduction</a></li>
+  <li><a href="#differentiability-of-dtw">Differentiability of DTW</a></li>
   <li><a href="#softdtw-and-variants">softDTW and variants</a></li>
   <li><a href="#bibliography">References</a></li>
   </ul>
 </div>
-<h1 id="preamble-differentiability-of-dtw">Preamble: Differentiability of DTW</h1>
-<ul>
-<li>envelope theorem for semi-discrete problems</li>
-<li>visualization of a (1d?2d?) loss landscape [done]</li>
-</ul>
-<p>We have the following theorem from <span class="citation" data-cites="bonnans1998optimization">(<a href="#ref-bonnans1998optimization" role="doc-biblioref">Bonnans and Shapiro 1998</a>)</span>:</p>
+<h1 id="introduction">Introduction</h1>
+<p>We have seen in a <a href="dtw.html">previous blog post</a> how one can use Dynamic Time Warping (DTW) as a shift-invariant similarity measure between time series. In this new post, we will study some aspects related to the differentiability of DTW. The reason why we focus on differentiability is that this property is key in modern machine learning approaches.</p>
+<p><span class="citation" data-cites="cuturi2017soft">(<a href="#ref-cuturi2017soft" role="doc-biblioref">Cuturi and Blondel 2017</a>)</span> provide a nice example setting in which differentiability is desirable: Suppose we are given a forecasting task<label for="sn-1" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-1" class="sidenote-toggle"></input> <span class="sidenote">A forecasting task is a task in which we are given the beginning of a time series and the goal is to predict the future behavior of the series.</span>in which the exact temporal localization of the temporal motifs to be predicted are less important than their overall shapes. In such a setting, it would make sense to use a shift-invariant similarity measure in order to assess whether a prediction made by the model is close enough from the ground-truth. Hence, a rather reasonable approach could be to tune the parameters of a neural network in order to minimize such a loss. Since optimization for this family of models heavily relies on gradient descent, having access to a differentiable shift-invariant similarity measure between time series is a key ingredient of this approach.</p>
+<h1 id="differentiability-of-dtw">Differentiability of DTW</h1>
+<p>Let us start by having a look at the differentiability of Dynamic Time Warping. To do so, we will rely on the following theorem from <span class="citation" data-cites="bonnans1998optimization">(<a href="#ref-bonnans1998optimization" role="doc-biblioref">Bonnans and Shapiro 1998</a>)</span>:</p>
 <div class="theorem">
-<p>Let <span class="math inline">\(X\)</span> be a metric space, <span class="math inline">\(U\)</span> be a normed space, and <span class="math inline">\(\Pi\)</span> be a compact subset of <span class="math inline">\(X\)</span>. Let us define the optimal value function <span class="math inline">\(v\)</span> as:</p>
+<p>Let <span class="math inline">\(\Phi\)</span> be a metric space, <span class="math inline">\(X\)</span> be a normed space, and <span class="math inline">\(\Pi\)</span> be a compact subset of <span class="math inline">\(\Phi\)</span>. Let us define the optimal value function <span class="math inline">\(v\)</span> as:</p>
 <p><span class="math display">\[
-  v(u) = \inf_{\pi \in \Pi} f(\pi ; u) \, .
+  v(x) = \inf_{\pi \in \Pi} f(x ; \pi) \, .
 \]</span></p>
 <p>Suppose that:</p>
 <ol type="1">
-<li>for all <span class="math inline">\(\pi \in X\)</span>, the function <span class="math inline">\(f(\pi ;\cdot )\)</span> is differentiable;</li>
-<li><span class="math inline">\(f(\pi ; u)\)</span> and <span class="math inline">\(D_u f(\pi ; u)\)</span> the derivative of <span class="math inline">\(f(\pi ;\cdot)\)</span> are continuous on <span class="math inline">\(X \times U\)</span>.</li>
+<li>for all <span class="math inline">\(\pi \in \Phi\)</span>, the function <span class="math inline">\(x \mapsto f( x ; \pi )\)</span> is differentiable;</li>
+<li><span class="math inline">\(f(x ; \pi)\)</span> and <span class="math inline">\(D_x f(x ; \pi)\)</span> the derivative of <span class="math inline">\(x \mapsto f( x ; \pi )\)</span> are continuous on <span class="math inline">\(X \times \Phi\)</span>.</li>
 </ol>
-<p>Then if, for <span class="math inline">\(u^0 \in U\)</span>, <span class="math inline">\(f( \cdot; u^0)\)</span> has a unique minimizer <span class="math inline">\(\pi^0\)</span> over <span class="math inline">\(\Pi\)</span> then <span class="math inline">\(v(u)\)</span> is differentiable at <span class="math inline">\(u^0\)</span> and <span class="math inline">\(Dv(u^0) = D_u f(x^0 ; u^0)\)</span>.</p>
+<p>If, for <span class="math inline">\(x^0 \in X\)</span>, <span class="math inline">\(\pi \mapsto f(x^0 ; \pi )\)</span> has a unique minimizer <span class="math inline">\(\pi^0\)</span> over <span class="math inline">\(\Pi\)</span> then <span class="math inline">\(v\)</span> is differentiable at <span class="math inline">\(x^0\)</span> and <span class="math inline">\(Dv(x^0) = D_x f(x^0 ; \pi^0)\)</span>.</p>
 </div>
 <p>Let us come back to Dynamic Time Warping, and suppose we are given a reference time series <span class="math inline">\(x_\text{ref}\)</span>. We would like to study the differentiability of</p>
 <p><span class="math display">\[
@@ -85,7 +85,7 @@
 (Non-)differentiability of Dynamic Time Warping.
 </figcaption>
 </figure>
-<p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where two distinct optimal alignment paths coexist.</p>
+<p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.</p>
 <h1 id="softdtw-and-variants">softDTW and variants</h1>
 <ul>
 <li>soft alignment path</li>
@@ -102,6 +102,9 @@
 <div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
 <div id="ref-bonnans1998optimization" class="csl-entry" role="doc-biblioentry">
 Bonnans, J Frédéric, and Alexander Shapiro. 1998. <span>“Optimization Problems with Perturbations: A Guided Tour.”</span> <em>SIAM Review</em> 40 (2): 228–64.
+</div>
+<div id="ref-cuturi2017soft" class="csl-entry" role="doc-biblioentry">
+Cuturi, Marco, and Mathieu Blondel. 2017. <span>“Soft-DTW: A Differentiable Loss Function for Time-Series.”</span> In <em>Proceedings of the International Conference on Machine Learning</em>, 894–903.
 </div>
 </div>
 </body>
