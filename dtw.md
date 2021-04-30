@@ -82,14 +82,7 @@ in both cases for speech applications.<label for="sn-3" class="sidenote-toggle s
 
 Consider two time series $x$ and
 ${x}^\prime$ of respective lengths $n$ and
-$m$:
-
-$$
-\begin{aligned}
-  x &= \left(x_0, \dots, x_{n-1}\right) \\
-  x^\prime &= \left(x^\prime_0, \dots, x^\prime_{m-1}\right)
-\end{aligned}
-$$
+$m$.
 
 Here, all elements $x_i$ and $x^\prime_j$ are assumed to lie in the same
 $p$-dimensional space and the exact timestamps at which observations occur are
@@ -122,18 +115,15 @@ Here, an **alignment path** $\pi$ of length $K$ is a sequence of $K$ index pairs
 $\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)$ and $\mathcal{A}({x}, {x}^\prime)$ is the set of all admissible paths.
 In order to be considered admissible, a path should satisfy the following conditions:
 
-* $\pi$ is a sequence $(\pi_0, \dots , \pi_{K-1})$ of index pairs
-  $\pi_k = (i_k, j_k)$ with $0 \leq i_k < n$ and $0 \leq j_k < m$
-* $\pi_0 = (0, 0)$ and $\pi_{K-1} = (n - 1, m - 1)$
-* for all $k > 0$ , $\pi_k = (i_k, j_k)$ is related to
-  $\pi_{k-1} = (i_{k-1}, j_{k-1})$ as follows:
+* Beginning (resp. end) of time series are matched together: 
+
+  * $\pi_0 = (0, 0)$ 
+  * $\pi_{K-1} = (n - 1, m - 1)$
+
+* The sequence is monotonically increasing in both $i$ and $j$ and all time series indexes should appear at least once, which can be written:
 
   * $i_{k-1} \leq i_k \leq i_{k-1} + 1$
   * $j_{k-1} \leq j_k \leq j_{k-1} + 1$
-
-**TODO: get a glimpse on the conditions**
-
-<!-- In what follows, we will denote $DTW_2$ as DTW. -->
 
 **Dot product notation**
 
@@ -187,7 +177,7 @@ def dtw(x, x_prime, q=2):
           gamma[i-1, j-1] if (i > 0 and j > 0) else inf
         )
 
-  return (gamma[-1, -1]) ** (1. / q)
+  return gamma[-1, -1] ** (1. / q)
   </code>
 </pre>
 
