@@ -17,7 +17,6 @@ More specifically, we will be interested in _alignment-based metrics_,<label for
 <span class="sidenote">Here we use the term "metrics" in a pretty unformal manner, that is an equivalent of "similarity measure".</span> 
 that rely on a temporal alignment of the series in order to assess their similarity.
 
-
 Before entering into more details about these metrics, let us define our base objects: time series.
 In the following, a time series is a sequence of features: $x = \left(x_0, \dots, x_{n-1}\right)$.
 All features from a time series lie in the same space $\mathbb{R}^p$.
