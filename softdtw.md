@@ -61,7 +61,7 @@ then the previous Theorem tells us that $v$ is differentiable everywhere except 
 * $DTW(x, x_\text{ref}) = 0$ since, in this case, the non-differentiability of the square root function breaks condition 1. of the Theorem above;
 * there exist several optimal paths for the DTW problem.
 
-This second condition is illustrated in the Figure below in which we vary the value a single element in one of the time series (for visualization purposes)
+This second condition is illustrated in the Figure below in which we vary the value of a single element in one of the time series (for visualization purposes)
 and study the evolution of $DTW(x, x_\text{ref})$ as a function of this value:
 
 <figure>

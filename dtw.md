@@ -11,14 +11,40 @@ link-citations: true
 
 # Alignment-based metrics
 
-The definition of adequate metrics between objects to be compared is at the
-core of many machine learning methods (_e.g._, nearest neighbors, kernel
-machines, _etc._).
-When complex objects (such as time series) are involved, such metrics have to
-be carefully designed
-in order to leverage on desired notions of similarity.
+This post is the first in a series about assessing similarity between time series.
+More specifically, we will be interested in _alignment-based metrics_,<label for="sn-1" class="sidenote-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-1" class="sidenote-toggle" />
+<span class="sidenote">Here we use the term "metrics" in a pretty unformal manner, that is an equivalent of "similarity measure".</span> 
+that rely on a temporal alignment of the series in order to assess their similarity.
 
-Let us illustrate our point with an example.
+
+Before entering into more details about these metrics, let us define our base objects: time series.
+In the following, a time series is a sequence of features: $x = \left(x_0, \dots, x_{n-1}\right)$.
+All features from a time series lie in the same space $\mathbb{R}^p$.
+Below is an example univariate<label for="sn-2" class="sidenote-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-2" class="sidenote-toggle" />
+<span class="sidenote">A time series is said univariate if all its feature vectors are monodimensional ($p=1$).</span> time series:
+
+<figure>
+    <img src="fig/time_series.gif" alt="An example univariate time series" width="80%" />
+    <figcaption> 
+        Example univariate time series. 
+        The horizontal axis is the time axis and the vertical one is dedicated to (univariate) feature values.
+    </figcaption>
+</figure>
+
+Let us now illustrate the typical behavior of alignment-based metrics with an example.
+Suppose we are computing similarity between the two time series below:
+
+<figure>
+    <img src="fig/dtw_vs_euc.svg" alt="DTW vs Euclidean distance" width="100%" />
+    <figcaption> 
+        Comparison between DTW and Euclidean distance.
+    </figcaption>
+</figure>
+
+In both cases (Euclidean distance and DTW), the returned similarity is the sum of distances over all matches (represented by gray lines here).
+Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.
 
 <figure>
     <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
@@ -49,37 +75,55 @@ measures for time series and their use at the core of machine learning methods.
 
 # Dynamic Time Warping
 
-This section covers works related to Dynamic Time Warping for time series.
+Dynamic Time Warping (DTW) is a similarity measure between time series.
+It has been introduced independently in the literature by [@vintsyuk1968speech] and [@sakoe1978dynamic],
+in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-3" class="sidenote-toggle" />
+<span class="sidenote">Note that, in this series of posts, we will stick to the formalism from [@sakoe1978dynamic], which is more standard in the literature.</span>
 
-Dynamic Time Warping (DTW) [@sakoe1978dynamic] is a similarity measure
-between time series.
-Consider two time series $\mathbf{x}$ and
-$\mathbf{x}^\prime$ of respective lengths $n$ and
-$m$.
+Consider two time series $x$ and
+${x}^\prime$ of respective lengths $n$ and
+$m$:
+
+$$
+\begin{aligned}
+  x &= \left(x_0, \dots, x_{n-1}\right) \\
+  x^\prime &= \left(x^\prime_0, \dots, x^\prime_{m-1}\right)
+\end{aligned}
+$$
+
 Here, all elements $x_i$ and $x^\prime_j$ are assumed to lie in the same
 $p$-dimensional space and the exact timestamps at which observations occur are
 disregarded: only their ordering matters.
 
-## Optimization Problem
+Dynamic Time Warping, in this context, is equivalent to minimizing Euclidean distance between aligned time
+series under all admissible temporal alignments, as illustrated in the Figure below.
 
-In the following, a path $\pi$ of length $K$ is a
-sequence of $K$ index pairs
-$\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)$.
+<figure>
+    <img src="fig/dtw_path.gif" alt="DTW as minimum Euclidean distance up to a realignment" width="60%" />
+    <figcaption> 
+        Dynamic Time Warping seeks for the temporal alignment (gray lines) that minimizes Euclidean distance between
+        aligned series.
+        Red and blue dots correspond to repetitions of time series elements induced by the considered temporal alignment.
+    </figcaption>
+</figure>
 
-DTW between $\mathbf{x}$ and $\mathbf{x}^\prime$ is formulated as the following
-optimization problem:
+## Problem formulation
+
+More formally, the optimization problem writes:
 
 \begin{equation}
-DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
-    \min_{\pi \in \mathcal{A}(\mathbf{x}, \mathbf{x}^\prime)}
+DTW_q({x}, {x}^\prime) =
+    \min_{\pi \in \mathcal{A}({x}, {x}^\prime)}
         \left( \sum_{(i, j) \in \pi} d(x_i, x^\prime_j)^q \right)^{\frac{1}{q}}
 \label{eq:dtw}
 \end{equation}
 
-where $\mathcal{A}(\mathbf{x}, \mathbf{x}^\prime)$ is the set of all admissible
-paths, _i.e._ the set of paths $\pi$ such that:
+Here, an **alignment path** $\pi$ of length $K$ is a sequence of $K$ index pairs
+$\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)$ and $\mathcal{A}({x}, {x}^\prime)$ is the set of all admissible paths.
+In order to be considered admissible, a path should satisfy the following conditions:
 
-* $\pi$ is a sequence $[\pi_0, \dots , \pi_{K-1}]$ of index pairs
+* $\pi$ is a sequence $(\pi_0, \dots , \pi_{K-1})$ of index pairs
   $\pi_k = (i_k, j_k)$ with $0 \leq i_k < n$ and $0 \leq j_k < m$
 * $\pi_0 = (0, 0)$ and $\pi_{K-1} = (n - 1, m - 1)$
 * for all $k > 0$ , $\pi_k = (i_k, j_k)$ is related to
@@ -88,14 +132,43 @@ paths, _i.e._ the set of paths $\pi$ such that:
   * $i_{k-1} \leq i_k \leq i_{k-1} + 1$
   * $j_{k-1} \leq j_k \leq j_{k-1} + 1$
 
-In what follows, we will denote $DTW_2$ as DTW.
-In this context, a path can be seen as a temporal alignment of time series and the optimal
-path is such that
-Euclidean distance between aligned (_ie._ resampled) time series is minimal.
+**TODO: get a glimpse on the conditions**
 
-The following image exhibits the DTW path (in white) for a given pair of time
-series, on top of the cross-similarity matrix that stores $d(x_i, {x}^\prime_j)$
-values:
+<!-- In what follows, we will denote $DTW_2$ as DTW. -->
+
+**Dot product notation**
+
+Another way to represent a DTW path is to use a binary matrix whose non-zero entries are those corresponding to a 
+matching between time series elements.
+This representation is related to the index sequence representation used above through:
+
+\begin{equation}
+(A_\pi)_{i,j} = \left\{ \begin{array}{rl} 1 & \text{ if } (i, j) \in \pi \\
+                                      0 & \text{ otherwise}
+                        \end{array} \right. .
+\end{equation}
+
+This is illustrated in the Figure below where the binary matrix is represented as a grid on which the
+DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-zero entry in $A_\pi$:
+
+<figure>
+    <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="60%" />
+    <figcaption> 
+        Dynamic Time Warping path represented as a binary matrix. 
+        Each dot on the path indicates the matching of an element in $x$ with an element in $x^\prime$.
+    </figcaption>
+</figure>
+
+Using matrix notation, Dynamic Time Warping can be written as the minimization of a dot product between matrices:
+
+\begin{equation*}
+DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
+    \min_{\pi \in \mathcal{A}(\mathbf{x}, \mathbf{x}^\prime)}
+        \left\langle A_\pi,  D_q(\mathbf{x}, \mathbf{x}^\prime) \right\rangle^{\frac{1}{q}}
+\end{equation*}
+
+where $D_q(\mathbf{x}, \mathbf{x}^\prime)$ stores distances
+$d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Algorithmic Solution
 
@@ -143,40 +216,6 @@ In more details:
 * $(**)$ comes from the contiguity conditions on the admissible paths: all admissible paths that match $x_i$ with $x^\prime_j$ need to go through one of these 3 possible ancestors: $(i-1, j)$, $(i, j-1)$ or $(i-1, j-1)$.
 
 The dynamic programming algorithm presented above relies on this recurrence formula and stores intermediate computations for efficiency.
-
-## Dot product notation
-
-A Dynamic Time Warping path can either be represented as a list of index pairs (as suggested earlier)
-or as a binary matrix whose non-zero entries are those corresponding to a matching between time series
-elements:
-
-\begin{equation}
-(A_\pi)_{i,j} = \left\{ \begin{array}{rl} 1 & \text{ if } (i, j) \in \pi \\
-                                      0 & \text{ otherwise}
-                        \end{array} \right. .
-\end{equation}
-
-This is illustrated in the Figure below where the binary matrix is represented as a grid on which the
-DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-zero entry in $A_\pi$:
-
-<figure>
-    <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="60%" />
-    <figcaption> 
-        Dynamic Time Warping path represented as a binary matrix. 
-        Each dot on the path indicates the matching of an element in $x$ with an element in $x^\prime$.
-    </figcaption>
-</figure>
-
-Using matrix notation, Dynamic Time Warping writes:
-
-\begin{equation*}
-DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
-    \min_{\pi \in \mathcal{A}(\mathbf{x}, \mathbf{x}^\prime)}
-        \left\langle A_\pi,  D_q(\mathbf{x}, \mathbf{x}^\prime) \right\rangle^{\frac{1}{q}}
-\end{equation*}
-
-where $D_q(\mathbf{x}, \mathbf{x}^\prime)$ stores distances
-$d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Properties
 

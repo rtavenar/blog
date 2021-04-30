@@ -1,6 +1,3 @@
-from IPython.display import HTML
-from celluloid import Camera
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
