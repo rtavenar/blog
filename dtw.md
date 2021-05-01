@@ -33,7 +33,6 @@ Below is an example univariate<label for="sn-2" class="sidenote-toggle sidenote-
 </figure>
 
 Let us now illustrate the typical behavior of alignment-based metrics with an example.
-Suppose we are computing similarity between the two time series below:
 
 <figure>
     <img src="fig/dtw_vs_euc.svg" alt="DTW vs Euclidean distance" width="100%" />
@@ -42,7 +41,8 @@ Suppose we are computing similarity between the two time series below:
     </figcaption>
 </figure>
 
-In both cases (Euclidean distance and DTW), the returned similarity is the sum of distances over all matches (represented by gray lines here).
+Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric, that we will present in more details later in this post.
+In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here).
 Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.
 
 <figure>
@@ -125,7 +125,7 @@ In order to be considered admissible, a path should satisfy the following condit
   * $i_{k-1} \leq i_k \leq i_{k-1} + 1$
   * $j_{k-1} \leq j_k \leq j_{k-1} + 1$
 
-**Dot product notation**
+### Dot product notation
 
 Another way to represent a DTW path is to use a binary matrix whose non-zero entries are those corresponding to a 
 matching between time series elements.
@@ -229,14 +229,27 @@ satisfies neither the triangular inequality nor the identity of indiscernibles.
 
 ## Setting Additional Constraints
 
-The set of temporal deformations to which DTW is invariant can be reduced by
-imposing additional constraints on the set of acceptable paths.
-Such constraints typically consist in forcing paths to stay close to the
-diagonal.
+As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude.
+In order to allow invariances to local deformations only, one can impose additional constraints 
+on the set of acceptable paths.
+Such constraints typically translate into enforcing nonzero entries in admissible $A_\pi$ to stay 
+close to the diagonal.
 
-The Sakoe-Chiba band is parametrized by a radius $r$ (number of
-off-diagonal elements to consider, also called warping window size sometimes),
-as illustrated below:
+**TODO: visu path matrices**
 
-The Itakura parallelogram sets a maximum slope $s$ for alignment
-paths, which leads to a parallelogram-shaped constraint:
+The Sakoe-Chiba band is parametrized by a radius $r$ (also called warping window size sometimes), while
+the Itakura parallelogram sets a maximum slope $s$ for alignment
+paths, which leads to a parallelogram-shaped constraint.
+As shown in the Figure below, setting global constraints on admissible DTW paths is equivalent to 
+restricting the set of possible matches for each element in a time series.
+The number of possible matches for an element is always $2r+1$ for Sakoe-Chiba constraints (except for border elements), 
+while it varies depending on the time index for Itakura parallelograms.
+
+<figure>
+    <img src="fig/dtw_global_constraints.gif" alt="DTW Global constraints" width="80%" />
+    <figcaption>
+        Allowed matches for several global constraint schemes.
+    </figcaption>
+</figure>
+
+**TODO visu end of shift invariance when shifts are larger than Sakoe-Chiba band**
