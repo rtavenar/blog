@@ -252,4 +252,12 @@ while it varies depending on the time index for Itakura parallelograms.
     </figcaption>
 </figure>
 
-**TODO visu end of shift invariance when shifts are larger than Sakoe-Chiba band**
+As seen in the Figure below, DTW with a Sakoe-Chiba band constraint of radius $r$ is invariant to time shifts of magnitude up to $r$,
+but is no longer invariant to longer time shifts.
+
+<figure>
+    <img src="fig/sakoe_shift.gif" alt="Invariance to time shifts using Sakoe-Chiba band" width="80%" />
+    <figcaption>
+        Impact of time shifts on a DTW constrained with a Sakoe-Chiba band of radius $r$.
+    </figcaption>
+</figure>

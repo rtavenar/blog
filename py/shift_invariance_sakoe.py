@@ -10,10 +10,10 @@ def animate(i):
     line_ts.set_ydata(list_x[i])
     scatter_dtw.set_xdata([list_shifts[i]])
     scatter_dtw.set_ydata([dtw_dists[i]])
-    scatter_sakoe.set_xdata([list_shifts[i]])
-    scatter_sakoe.set_ydata([sakoe_dists[i]])
+    scatter_euc.set_xdata([list_shifts[i]])
+    scatter_euc.set_ydata([euc_dists[i]])
 
-    return line_ts, scatter_dtw, scatter_sakoe
+    return line_ts, scatter_dtw, scatter_euc
 
 f = np.zeros((12, ))
 f[:4] = -1.
@@ -21,7 +21,6 @@ f[4:8] = 1.
 f[8:] = -1.
 
 length = 60
-r = 17
 
 fig = plt.figure()
 set_fig_style(fig, font_size=14)
@@ -42,19 +41,17 @@ for shift in list_shifts:
     list_x.append(x)
 
 dtw_dists = [dtw(x_ref, x) for x in list_x]
-sakoe_dists = [dtw(x_ref, x, sakoe_chiba_radius=r) for x in list_x]
+euc_dists = [np.linalg.norm(x_ref - x) for x in list_x]
+
 
 ax.plot(x_ref, color=colors[7], linestyle='-')
 line_ts, = ax.plot(list_x[0], color=colors[7], linestyle='dotted')
 ax.set_title("Input time series")
 
-ax2.plot(list_shifts, sakoe_dists, color=colors[1], linestyle='-', label="DTW with Sakoe-Chiba band")
-scatter_sakoe, = ax2.plot([list_shifts[0]], [sakoe_dists[0]], color=colors[1], marker='o')
-ax2.plot(list_shifts, dtw_dists, color=colors[0], linestyle='-', label="DTW")
-scatter_dtw, = ax2.plot([list_shifts[0]], [dtw_dists[0]], color=colors[0], marker='o')
-ax2.axvline(x=r, linestyle='dashed', color='k')
-ax2.set_xticks([r])
-ax2.set_xticklabels(['$r$'])
+ax2.plot(list_shifts, euc_dists, color=colors[0], linestyle='-', label="Euclidean dist.")
+scatter_euc, = ax2.plot([list_shifts[0]], [euc_dists[0]], color=colors[0], marker='o')
+ax2.plot(list_shifts, dtw_dists, color=colors[1], linestyle='-', label="DTW")
+scatter_dtw, = ax2.plot([list_shifts[0]], [dtw_dists[0]], color=colors[1], marker='o')
 ax2.set_xlabel("Temporal shift")
 ax2.set_ylabel("Distance")
 ax2.legend(loc="upper left", fontsize=12)
@@ -63,6 +60,6 @@ plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, interval=50, blit=True, save_count=len(list_shifts))
 ani.save(
-    'fig/sakoe_shift.gif',
+    'fig/dtw_shift.gif',
     dpi=100, savefig_kwargs={'pad_inches': 'tight'}
 )
