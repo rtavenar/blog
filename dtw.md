@@ -141,7 +141,7 @@ This is illustrated in the Figure below where the binary matrix is represented a
 DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-zero entry in $A_\pi$:
 
 <figure>
-    <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="60%" />
+    <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="100%" />
     <figcaption> 
         Dynamic Time Warping path represented as a binary matrix. 
         Each dot on the path indicates the matching of an element in $x$ with an element in $x^\prime$.
