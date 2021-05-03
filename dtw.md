@@ -151,13 +151,12 @@ DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-ze
 Using matrix notation, Dynamic Time Warping can be written as the minimization of a dot product between matrices:
 
 \begin{equation*}
-DTW_q(\mathbf{x}, \mathbf{x}^\prime) =
+DTW_q({x}, {x}^\prime) =
     \min_{\pi \in \mathcal{A}({x}, {x}^\prime)}
         \left\langle A_\pi,  D_q({x}, {x}^\prime) \right\rangle^{\frac{1}{q}}
 \end{equation*}
 
-where $D_q(\mathbf{x}, \mathbf{x}^\prime)$ stores distances
-$d(x_i, x^\prime_j)$ at the power $q$.
+where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Algorithmic Solution
 
