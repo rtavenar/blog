@@ -156,6 +156,7 @@ DTW_q({x}, {x}^\prime) =
         \left\langle A_\pi,  D_q({x}, {x}^\prime) \right\rangle^{\frac{1}{q}}
 \end{equation*}
 
+
 where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Algorithmic Solution
