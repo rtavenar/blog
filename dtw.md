@@ -161,8 +161,59 @@ $d(x_i, x^\prime_j)$ at the power $q$.
 
 ## Algorithmic Solution
 
-There exists an $O(mn)$ algorithm to compute the exact optimum for this
-problem (assuming computation of $d(\cdot,\cdot)$ is $O(1)$):
+An exact solution to this optimization problem can be found using Dynamic Programming.
+The essence of dynamic programming is to link the solution of a given problem to solutions of (easier) sub-problems.
+Once this link is known, one can solve the original problem by recursively solving required sub-problems and storing their solutions.
+
+In the case of DTW, we need to rely on the following quantity:
+
+$$
+    \gamma_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
+$$
+
+where the notation ${x}_{\rightarrow i}$ denotes time series ${x}$ observed up to timestamp $i$ (included).
+Then, we can observe that:
+
+$$
+\begin{aligned}
+\gamma_{i,j} 
+    &= \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
+        \sum_{(k, l) \in \pi} d(x_k, x^\prime_l)^q \\
+    &\stackrel{*}{=} d(x_i, x^\prime_j)^q +
+        \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
+            \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
+    &\stackrel{**}{=} d(x_i, x^\prime_j)^q +
+        \min (\gamma_{i-1, j}, \gamma_{i, j-1}, \gamma_{i-1, j-1})
+\end{aligned}
+$$
+
+Note that $(*)$ comes from the constraints on admissible paths $\pi$: the last element on an admissible path needs to match the last elements of the series;
+Note also that $(**)$ comes from the contiguity conditions on the admissible paths.
+Indeed, a path that would align time series ${x}_{\rightarrow i}$ and ${x}^\prime_{\rightarrow j}$ necessarily encapsulates either:
+
+* a path that would align time series ${x}_{\rightarrow i - 1}$ and ${x}^\prime_{\rightarrow j}$, or
+* a path that would align time series ${x}_{\rightarrow i}$ and ${x}^\prime_{\rightarrow j - 1}$, or
+* a path that would align time series ${x}_{\rightarrow i - 1}$ and ${x}^\prime_{\rightarrow j - 1}$,
+
+as illustrated in the Figure below:
+
+<figure>
+    <img src="fig/dtw_transitions.png" alt="DTW transitions" width="60%" />
+    <figcaption> 
+        Permitted DTW transitions.
+    </figcaption>
+</figure>
+
+**TODO: fig DTW transitions**
+
+This implies that filling a matrix that would store $\gamma_{i,j}$ terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-row-wise" class="sidenote-toggle" />
+<span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms `gamma[i-1, j]`, `gamma[i, j-1]` and `gamma[i-1, j-1]` are accessible when computing `gamma[i, j]`. When vectorizing code is of importance, an even better strategy is to compute the `gamma` terms one anti-diagonal at a time [@tralie2020exact].</span>
+ is sufficient to retrieve 
+$DTW_q({x}, {x}^\prime)$ as ${\gamma_{n-1, m-1}}^{\frac{1}{q}}$.
+
+These observations result in the following $O(mn)$ algorithm to compute the exact optimum for DTW 
+(assuming computation of $d(\cdot,\cdot)$ is $O(1)$):
 
 <pre>
   <code class="language-python">
@@ -180,31 +231,6 @@ def dtw(x, x_prime, q=2):
   return gamma[-1, -1] ** (1. / q)
   </code>
 </pre>
-
-The basic idea behind this algorithm is that there exists a recurrence relationship between partial DTW computations.
-More precisely, if we denote by $\gamma_{i,j}$ the $DTW_q$ (at power $q$) similarity between sequences $\mathbf{x}_{\rightarrow i}$ and $\mathbf{x}^\prime_{\rightarrow j}$ (where the notation $\mathbf{x}_{\rightarrow i}$ denotes sequence $\mathbf{x}$ observed up to time $i$), then we have:
-
-$$
-\begin{aligned}
-\gamma_{i,j} &=& DTW_q(\mathbf{x}_{\rightarrow i}, \mathbf{x}^\prime_{\rightarrow j})^q \\
-&=&
-    \min_{\pi \in \mathcal{A}(\mathbf{x}_{\rightarrow i}, \mathbf{x}^\prime_{\rightarrow j})}
-        \sum_{(k, l) \in \pi} d(x_k, x^\prime_l)^q \\
-&\stackrel{*}{=}& d(x_i, x^\prime_j)^q +
-    \min_{\pi \in \mathcal{A}(\mathbf{x}_{\rightarrow i}, \mathbf{x}^\prime_{\rightarrow j})}
-        \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
-&\stackrel{**}{=}& d(x_i, x^\prime_j)^q +
-    \min (\gamma_{i-1, j}, \gamma_{i, j-1}, \gamma_{i-1, j-1})
-\end{aligned}
-$$
-
-and $DTW_q(\mathbf{x}, \mathbf{x}^\prime)$ is then $(\gamma_{n, m})^{\frac{1}{q}}$.
-In more details:
-
-* $(*)$ comes from the constraints on admissible paths $\pi$: the last element on an admissible path needs to match the last elements of the series;
-* $(**)$ comes from the contiguity conditions on the admissible paths: all admissible paths that match $x_i$ with $x^\prime_j$ need to go through one of these 3 possible ancestors: $(i-1, j)$, $(i, j-1)$ or $(i-1, j-1)$.
-
-The dynamic programming algorithm presented above relies on this recurrence formula and stores intermediate computations for efficiency.
 
 ## Properties
 
@@ -237,8 +263,8 @@ close to the diagonal.
 
 **TODO: visu path matrices**
 
-The Sakoe-Chiba band is parametrized by a radius $r$ (also called warping window size sometimes), while
-the Itakura parallelogram sets a maximum slope $s$ for alignment
+The Sakoe-Chiba band [@sakoe1978dynamic] is parametrized by a radius $r$ (also called warping window size sometimes), while
+the Itakura parallelogram [@itakura1975minimum] sets a maximum slope $s$ for alignment
 paths, which leads to a parallelogram-shaped constraint.
 As shown in the Figure below, setting global constraints on admissible DTW paths is equivalent to 
 restricting the set of possible matches for each element in a time series.
@@ -261,3 +287,9 @@ but is no longer invariant to longer time shifts.
         Impact of time shifts on a DTW constrained with a Sakoe-Chiba band of radius $r$.
     </figcaption>
 </figure>
+
+# Conclusion
+
+We have seen in this post how alignment-based metrics can prove useful when dealing with temporally shifted time series.
+We have presented in more details the most common of these metrics, which is Dynamic Time Warping (DTW).
+If you enjoyed this post, stay tuned, a new one should be published soon on the specific topic of the differentiability of DTW.
