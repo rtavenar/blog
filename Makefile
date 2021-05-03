@@ -10,7 +10,7 @@ post-build: $(TARGETS)
 $(TARGETS): %: html/%.html
 
 html/%.html: %.md
-	pandoc -s --self-contained -o $@ -C --highlight-style pygments --data-dir . --columns 1000 --ascii --mathjax --toc --csl="templates/din-1505-2-alphanumeric.csl.xml" --template=templates/default.html $^
+	pandoc -s --self-contained -o $@ -C --highlight-style pygments --data-dir . --columns 1000 --ascii --mathjax --toc --toc-depth=2 --csl="templates/din-1505-2-alphanumeric.csl.xml" --template=templates/default.html $^
 
 clean:
 	rm -f html/*.html

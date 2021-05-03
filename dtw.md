@@ -183,7 +183,7 @@ $$
         \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
             \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
     &\stackrel{**}{=} d(x_i, x^\prime_j)^q +
-        \min (\gamma_{i-1, j}, \gamma_{i, j-1}, \gamma_{i-1, j-1})
+        \min (\color{MidnightBlue}{\gamma_{i-1, j}}, \color{Red}{\gamma_{i, j-1}}, \color{ForestGreen}{\gamma_{i-1, j-1}})
 \end{aligned}
 $$
 
@@ -198,13 +198,11 @@ Indeed, a path that would align time series ${x}_{\rightarrow i}$ and ${x}^\prim
 as illustrated in the Figure below:
 
 <figure>
-    <img src="fig/dtw_transitions.png" alt="DTW transitions" width="60%" />
+    <img src="fig/dtw_transitions.svg" alt="DTW transitions" width="60%" />
     <figcaption> 
-        Permitted DTW transitions.
+        Authorized DTW transitions.
     </figcaption>
 </figure>
-
-**TODO: fig DTW transitions**
 
 This implies that filling a matrix that would store $\gamma_{i,j}$ terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" />
