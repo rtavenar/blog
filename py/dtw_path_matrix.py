@@ -6,11 +6,6 @@ import seaborn as sns
 from tslearn.metrics import dtw_path
 from utils import set_fig_style
 
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
-
 
 fig = plt.figure(figsize=(8, 4))
 set_fig_style(fig, font_size=14)
@@ -43,15 +38,15 @@ for cur_ax in fig.axes:
 colors = sns.color_palette("Paired")
 colors_grey = sns.color_palette("Greys")
 
-sz = 30
-length = 20
+sz = 20
+length = 15
 
 x_ref = np.zeros((sz, ))
-x_ref[5:5+length] = np.sin(np.linspace(0, 2 * np.pi, num=length))
+x_ref[2:2+length] = np.sin(np.linspace(0, 2 * np.pi, num=length))
 
 shift = 3
 x = np.zeros((sz, ))
-x[5+shift:5+shift+length] = np.sin(np.linspace(0, 2 * np.pi, num=length))
+x[2+shift:2+shift+length] = np.sin(np.linspace(0, 2 * np.pi, num=length))
 
 path, _ = dtw_path(x_ref, x)
 
@@ -64,7 +59,7 @@ ax_gram.hlines(y=np.arange(sz) - .5, xmin=-.5, xmax=sz - .5, color='k', linewidt
 ax_gram.plot([i for (i, j) in path], [sz - j - 1 for (i, j) in path], 
              color=colors_grey[2], marker='o', linestyle='-', markersize=3)
 
-idx_in_path = 13
+idx_in_path = 9
 subpath = path[idx_in_path:idx_in_path + 1]
 ax_gram.plot([i for (i, j) in subpath], [sz - j - 1 for (i, j) in subpath], 
              color="k", marker='o', linestyle='-', markersize=3)
