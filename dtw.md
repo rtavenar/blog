@@ -45,39 +45,51 @@ Here, we are computing similarity between two time series using either Euclidean
 In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here).
 Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.
 
-**TODO: illustrate with the Trace clustering example**
-
-<!-- <figure>
-    <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
-    <figcaption>
-        $k$-means clustering with Euclidean distance. 
-        Each subfigure represents series from a given cluster and their centroid (in red).
-    </figcaption>
-</figure>
-
-The figure above is the result of a $k$-means clustering that uses Euclidean
-distance as a base metric.
-One issue with this metric is that it is not invariant to time shifts, while
-the dataset at stake clearly holds such invariants.
-
-When using a shift-invariant similarity measure (discussed in our
-{ref}`sec:dtw` section) at the core of $k$-means, one gets:
+Now let us see how this property translates in a machine learning setting.
+Suppose we are given the following unlabelled time series dataset:
 
 <figure>
-    <img src="fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
-    <figcaption>
-        $k$-means clustering with Dynamic Time Warping. Each subfigure
-        represents series from a given cluster and their centroid (in red).
+    <img src="fig/dataset_viz.gif" alt="A time series dataset" width="80%" />
+    <figcaption> 
+        A time series dataset.
     </figcaption>
 </figure>
 
-This part of the course tackles the definition of adequate similarity
-measures for time series and their use at the core of machine learning methods. -->
+If you look carefully at this dataset, you might notice that there are three big families of series in it.
+Let us see if a classical clustering algorithm can detect these three typical shapes.
+To do so, we will use the $k$-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric.
+By default the metric used is Euclidean distance, which gives, in our example:
+
+<figure>
+    <img src="fig/kmeans_euc.svg" alt="$k$-means clustering with Euclidean distance" width="100%" />
+    <figcaption> 
+        Euclidean $k$-means clustering of the dataset presented in Figure 3. 
+        Each subfigure represents series from a given cluster and their centroid (in orange).
+    </figcaption>
+</figure>
+
+As one can see, this is not fully satisfactory.
+First, cluster 2 mixes two distinct time series shapes.
+Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters.
+Even cluster 1, which seems to be the purest one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.
+
+Let us now swicth to Dynamic Time Warping as the core distance for our $k$-means algorithm.
+The resulting clusters are this time closer to what one could have expected:
+
+<figure>
+    <img src="fig/kmeans_dtw.svg" alt="$k$-means clustering with DTW" width="100%" />
+    <figcaption> 
+        DTW $k$-means clustering of the dataset presented in Figure 3. 
+        Each subfigure represents series from a given cluster and their centroid (in orange).
+    </figcaption>
+</figure>
+
+This is because time series in each group are very similar **up to a time shift**, which is a known invariant of Dynamic Time Warping, as we will see.
 
 # Dynamic Time Warping
 
-Dynamic Time Warping (DTW) is a similarity measure between time series.
-It has been introduced independently in the literature by [@vintsyuk1968speech] and [@sakoe1978dynamic],
+Let us now review Dynamic Time Warping (DTW) in more details.
+DTW is a similarity measure between time series which has been introduced independently in the literature by [@vintsyuk1968speech] and [@sakoe1978dynamic],
 in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-3" class="sidenote-toggle" />
 <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from [@sakoe1978dynamic], which is more standard in the literature.</span>
@@ -190,8 +202,8 @@ $$
 \end{aligned}
 $$
 
-Note that $(*)$ comes from the constraints on admissible paths $\pi$: the last element on an admissible path needs to match the last elements of the series;
-Note also that $(**)$ comes from the contiguity conditions on the admissible paths.
+$(*)$ comes from the constraints on admissible paths $\pi$: the last element on an admissible path needs to match the last elements of the series.
+Also, $(**)$ results from the contiguity conditions on the admissible paths.
 Indeed, a path that would align time series ${x}_{\rightarrow i}$ and ${x}^\prime_{\rightarrow j}$ necessarily encapsulates either:
 
 * a path that would align time series ${x}_{\rightarrow i - 1}$ and ${x}^\prime_{\rightarrow j}$, or
