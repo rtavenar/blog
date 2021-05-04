@@ -3,6 +3,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="generator" content="pandoc" />
 $for(author-meta)$
   <meta name="author" content="$author-meta$" />
@@ -19,7 +20,7 @@ $endif$
   <script src="prism/prism.js"></script>
   <style type="text/css">
     body {
-      counter-reset: fignumber sidenote-counter;
+      counter-reset: fignumber sidenote-counter theorem definition;
     }
     div#back2index {text-align: right;}
     h1#toctitle {text-align: left;}
@@ -49,9 +50,6 @@ $endif$
         background-color: #eee;
         border-radius: .5em;
         padding: .2em 1em;
-    }
-    @media (max-width: 500px) {
-      body { width: 100%; }
     }
   </style>
   <script type="text/javascript">
