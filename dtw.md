@@ -18,7 +18,7 @@ More specifically, we will be interested in _alignment-based metrics_,<label for
 that rely on a temporal alignment of the series in order to assess their similarity.
 
 Before entering into more details about these metrics, let us define our base objects: time series.
-In the following, a time series is a sequence of features: $x = \left(x_0, \dots, x_{n-1}\right)$.
+In the following, a time series is a sequence of features: $x = (x_0, \dots, x_{n-1})$.
 All features from a time series lie in the same space $\mathbb{R}^p$.
 Below is an example univariate<label for="sn-2" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-2" class="sidenote-toggle" />
