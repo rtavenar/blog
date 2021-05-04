@@ -83,10 +83,10 @@ Example univariate time series. The horizontal axis is the time axis and the ver
 <figure>
 <img src="fig/dtw_vs_euc.svg" alt="DTW vs Euclidean distance" width="100%" />
 <figcaption>
-Comparison between DTW and Euclidean distance.
+Comparison between DTW and Euclidean distance. Note that, for the sake of visualization, time series are shifted vertically, but one should imagine that feature value ranges (y-axis values) match.
 </figcaption>
 </figure>
-<p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here). Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment than when using Euclidean distance that matches timestamps regardless of the feature values.</p>
+<p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances between matched features.<label for="sn-match" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-match" class="sidenote-toggle" /> <span class="sidenote">Here, matches are represented by gray lines and the distance associated to a match between <span class="math inline">\(i\)</span>-th and <span class="math inline">\(j\)</span>-th features of the time series is <span class="math inline">\(d(x_i, x^\prime_j)\)</span>.</span> Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment than when using Euclidean distance that matches timestamps regardless of the feature values.</p>
 <p>Now let us see how this property translates in a machine learning setting. Suppose we are given the following unlabelled time series dataset:</p>
 <figure>
 <img src="fig/dataset_viz.gif" alt="A time series dataset" width="80%" />
@@ -94,15 +94,15 @@ Comparison between DTW and Euclidean distance.
 A time series dataset.
 </figcaption>
 </figure>
-<p>If you look carefully at this dataset, you might notice that there are three big families of series in it. Let us see if a classical clustering algorithm can detect these three typical shapes. To do so, we will use the <span class="math inline">\(k\)</span>-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric. By default the metric is Euclidean distance, which gives, in our example:</p>
+<p>If you look carefully at this dataset, you might notice that there are three families of series in it. Let us see if a classical clustering algorithm can detect these three typical shapes. To do so, we will use the <span class="math inline">\(k\)</span>-means algorithm, which aims at forming clusters as compact as possible with respect to a given similarity metric. By default the metric is Euclidean distance, which gives, in our example:</p>
 <figure>
 <img src="fig/kmeans_euc.svg" alt="$k$-means clustering with Euclidean distance" width="100%" />
 <figcaption>
 Euclidean <span class="math inline">\(k\)</span>-means clustering of the dataset presented in Figure 3. Each subfigure represents series from a given cluster and their centroid (in orange).
 </figcaption>
 </figure>
-<p>As one can see, this is not fully satisfactory. First, cluster 2 mixes two distinct time series shapes. Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters. Even cluster 1, which seems to be the purest one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.</p>
-<p>Let us now swicth to Dynamic Time Warping as the core distance for our <span class="math inline">\(k\)</span>-means algorithm. The resulting clusters are this time closer to what one could expect:</p>
+<p>As one can see, this is not fully satisfactory. First, Cluster 2 mixes two distinct time series shapes. Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters. Even Cluster 1, which seems to be the &#x201C;purest&#x201D; one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.</p>
+<p>Let us now switch to Dynamic Time Warping as the core metric for our <span class="math inline">\(k\)</span>-means algorithm. The resulting clusters are this time closer to what one could expect:</p>
 <figure>
 <img src="fig/kmeans_dtw.svg" alt="$k$-means clustering with DTW" width="100%" />
 <figcaption>
@@ -163,7 +163,7 @@ DTW_q({x}, {x}^\prime) =
 \end{equation*}\]</span></p>
 <p>where <span class="math inline">\(D_q({x}, {x}^\prime)\)</span> stores distances <span class="math inline">\(d(x_i, x^\prime_j)\)</span> at the power <span class="math inline">\(q\)</span>.</p>
 <h2 id="algorithmic-solution">Algorithmic Solution</h2>
-<p>An exact solution to this optimization problem can be found using dynamic programming. The essence of dynamic programming is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, one can solve the original problem by recursively solving required sub-problems and storing their solutions for later use.</p>
+<p>An exact solution to this optimization problem can be found using dynamic programming. Dynamic programming relies on recurrence. The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).</p>
 <p>In the case of DTW, we need to rely on the following quantity:</p>
 <p><span class="math display">\[
     \gamma_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
@@ -207,6 +207,8 @@ def dtw(x, x_prime, q=2):
           gamma[i-1, j  ] if i > 0             else inf,
           gamma[i  , j-1] if j > 0             else inf,
           gamma[i-1, j-1] if (i > 0 and j > 0) else inf
+          # Note that these 3 terms cannot all be inf 
+          # if we have (i > 0 or j > 0)
         )
 
   return gamma[-1, -1] ** (1. / q)
