@@ -86,7 +86,7 @@ Example univariate time series. The horizontal axis is the time axis and the ver
 Comparison between DTW and Euclidean distance.
 </figcaption>
 </figure>
-<p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric, that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here). Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.</p>
+<p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here). Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment than when using Euclidean distance that matches timestamps regardless of the feature values.</p>
 <p>Now let us see how this property translates in a machine learning setting. Suppose we are given the following unlabelled time series dataset:</p>
 <figure>
 <img src="fig/dataset_viz.gif" alt="A time series dataset" width="80%" />
@@ -94,7 +94,7 @@ Comparison between DTW and Euclidean distance.
 A time series dataset.
 </figcaption>
 </figure>
-<p>If you look carefully at this dataset, you might notice that there are three big families of series in it. Let us see if a classical clustering algorithm can detect these three typical shapes. To do so, we will use the <span class="math inline">\(k\)</span>-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric. By default the metric used is Euclidean distance, which gives, in our example:</p>
+<p>If you look carefully at this dataset, you might notice that there are three big families of series in it. Let us see if a classical clustering algorithm can detect these three typical shapes. To do so, we will use the <span class="math inline">\(k\)</span>-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric. By default the metric is Euclidean distance, which gives, in our example:</p>
 <figure>
 <img src="fig/kmeans_euc.svg" alt="$k$-means clustering with Euclidean distance" width="100%" />
 <figcaption>
@@ -102,7 +102,7 @@ Euclidean <span class="math inline">\(k\)</span>-means clustering of the dataset
 </figcaption>
 </figure>
 <p>As one can see, this is not fully satisfactory. First, cluster 2 mixes two distinct time series shapes. Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters. Even cluster 1, which seems to be the purest one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.</p>
-<p>Let us now swicth to Dynamic Time Warping as the core distance for our <span class="math inline">\(k\)</span>-means algorithm. The resulting clusters are this time closer to what one could have expected:</p>
+<p>Let us now swicth to Dynamic Time Warping as the core distance for our <span class="math inline">\(k\)</span>-means algorithm. The resulting clusters are this time closer to what one could expect:</p>
 <figure>
 <img src="fig/kmeans_dtw.svg" alt="$k$-means clustering with DTW" width="100%" />
 <figcaption>
@@ -111,14 +111,13 @@ DTW <span class="math inline">\(k\)</span>-means clustering of the dataset prese
 </figure>
 <p>This is because time series in each group are very similar <strong>up to a time shift</strong>, which is a known invariant of Dynamic Time Warping, as we will see.</p>
 <h1 id="dynamic-time-warping">Dynamic Time Warping</h1>
-<p>Let us now review Dynamic Time Warping (DTW) in more details. DTW is a similarity measure between time series which has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
-<p>Consider two time series <span class="math inline">\(x\)</span> and <span class="math inline">\({x}^\prime\)</span> of respective lengths <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
-<p>Here, all elements <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x^\prime_j\)</span> are assumed to lie in the same <span class="math inline">\(p\)</span>-dimensional space and the exact timestamps at which observations occur are disregarded: only their ordering matters.</p>
-<p>Dynamic Time Warping, in this context, is equivalent to minimizing Euclidean distance between aligned time series under all admissible temporal alignments, as illustrated in the Figure below.</p>
+<p>We will now review Dynamic Time Warping (DTW) in more details. DTW is a similarity measure between time series which has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
+<p>Let us consider two time series <span class="math inline">\(x\)</span> and <span class="math inline">\({x}^\prime\)</span> of respective lengths <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>. Here, all elements <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x^\prime_j\)</span> are assumed to lie in the same <span class="math inline">\(p\)</span>-dimensional space and the exact timestamps at which observations occur are disregarded: only their ordering matters.</p>
+<p>Dynamic Time Warping seeks for the temporal alignment<label for="sn-temp-align" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-temp-align" class="sidenote-toggle" /> <span class="sidenote">A temporal alignment is a matching between time indexes of the two time series.</span> that minimizes Euclidean distance between aligned series, as illustrated in the Figure below:</p>
 <figure>
 <img src="fig/dtw_path.gif" alt="DTW as minimum Euclidean distance up to a realignment" width="60%" />
 <figcaption>
-Dynamic Time Warping seeks for the temporal alignment (gray lines) that minimizes Euclidean distance between aligned series. Cyan dots correspond to repetitions of time series elements induced by the considered temporal alignment.
+Dynamic Time Warping is equivalent to minimizing Euclidean distance between aligned time series under all admissible temporal alignments. Cyan dots correspond to repetitions of time series elements induced by the optimal temporal alignment retrieved by DTW. Note how, once inserted these repeated elements, all matching become vertical, which is the typical behavior of Euclidean distance, as shown in Figure 2.
 </figcaption>
 </figure>
 <h2 id="problem-formulation">Problem formulation</h2>
@@ -149,7 +148,7 @@ DTW_q({x}, {x}^\prime) =
                                       0 &amp; \text{ otherwise}
                         \end{array} \right. .
 \end{equation}\]</span></p>
-<p>This is illustrated in the Figure below where the binary matrix is represented as a grid on which the DTW path <span class="math inline">\(\pi\)</span> is superimposed:</p>
+<p>This is illustrated in the Figure below where nonzero entries in the binary matrix are represented as dots and the equivalent sequence of matchings is produced on the right:</p>
 <figure>
 <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="100%" />
 <figcaption>
@@ -164,7 +163,7 @@ DTW_q({x}, {x}^\prime) =
 \end{equation*}\]</span></p>
 <p>where <span class="math inline">\(D_q({x}, {x}^\prime)\)</span> stores distances <span class="math inline">\(d(x_i, x^\prime_j)\)</span> at the power <span class="math inline">\(q\)</span>.</p>
 <h2 id="algorithmic-solution">Algorithmic Solution</h2>
-<p>An exact solution to this optimization problem can be found using Dynamic Programming. The essence of dynamic programming is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, one can solve the original problem by recursively solving required sub-problems and storing their solutions.</p>
+<p>An exact solution to this optimization problem can be found using dynamic programming. The essence of dynamic programming is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, one can solve the original problem by recursively solving required sub-problems and storing their solutions for later use.</p>
 <p>In the case of DTW, we need to rely on the following quantity:</p>
 <p><span class="math display">\[
     \gamma_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
@@ -219,7 +218,7 @@ def dtw(x, x_prime, q=2):
 <li><span class="math inline">\(DTW_q({x}, {x}^\prime) \geq 0\)</span> for any time series <span class="math inline">\({x}\)</span> and <span class="math inline">\({x}^\prime\)</span>;</li>
 <li><span class="math inline">\(DTW_q({x}, {x}) = 0\)</span> for any time series <span class="math inline">\({x}\)</span>.</li>
 </ul>
-<p>However, mathematically speaking, DTW is not a valid metric since it satisfies neither the triangular inequality nor the identity of indiscernibles. This is because DTW is invariant to time shifts. In other words, if <span class="math inline">\({x}\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and if <span class="math inline">\({x}_{+k}\)</span> is a copy of <span class="math inline">\({x}\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps, then <span class="math inline">\(DTW_q({x}, {x}_{+k}) = 0\)</span>, as illustrated below:</p>
+<p>However, mathematically speaking, DTW is not a valid metric since it satisfies neither the triangular inequality nor the identity of indiscernibles. More specifically, DTW is invariant to time shifts. In other words, if <span class="math inline">\({x}\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and if <span class="math inline">\({x}_{+k}\)</span> is a copy of <span class="math inline">\({x}\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps, then <span class="math inline">\(DTW_q({x}, {x}_{+k}) = 0\)</span>, as illustrated below:</p>
 <figure>
 <img src="fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
 <figcaption>
@@ -227,8 +226,8 @@ Contrary to Euclidean distance, DTW is invariant to time shifts between series.
 </figcaption>
 </figure>
 <h2 id="setting-additional-constraints">Setting Additional Constraints</h2>
-<p>As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude. In order to allow invariances to local deformations only, one can impose additional constraints on the set of acceptable paths. Such constraints typically translate into enforcing nonzero entries in admissible <span class="math inline">\(A_\pi\)</span> to stay close to the diagonal.</p>
-<p>The Sakoe-Chiba band <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span> is parametrized by a radius <span class="math inline">\(r\)</span> (also called warping window size sometimes), while the Itakura parallelogram <span class="citation" data-cites="itakura1975minimum">[<a href="#ref-itakura1975minimum" role="doc-biblioref">Itak75</a>]</span> sets a maximum slope <span class="math inline">\(s\)</span> for alignment paths, which leads to a parallelogram-shaped constraint. The impact of these parameters can be seen in the Figure below:</p>
+<p>As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude. In order to allow invariances to local deformations only, one can impose additional constraints on the set of admissible paths.</p>
+<p>Such constraints typically translate into enforcing nonzero entries in <span class="math inline">\(A_\pi\)</span> to stay close to the diagonal. The Sakoe-Chiba band <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span> is a constant-width band parametrized by a radius <span class="math inline">\(r\)</span> (also called warping window size sometimes) Another standard global constraint is the Itakura parallelogram <span class="citation" data-cites="itakura1975minimum">[<a href="#ref-itakura1975minimum" role="doc-biblioref">Itak75</a>]</span> sets a maximum slope <span class="math inline">\(s\)</span> for alignment paths, which leads to a parallelogram-shaped constraint. The impact of these parameters is illustrated in the Figure below:</p>
 <figure>
 <img src="fig/sakoechiba_matrices.gif" alt="Sakoe-Chiba matrices" width="45%" /> <img src="fig/itakura_matrices.gif" alt="Itakura matrices" width="45%" />
 <figcaption>
@@ -242,7 +241,7 @@ Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura par
 Allowed matches for several global constraint schemes.
 </figcaption>
 </figure>
-<p>As seen in the Figure below, DTW with a Sakoe-Chiba band constraint of radius <span class="math inline">\(r\)</span> is invariant to time shifts of magnitude up to <span class="math inline">\(r\)</span>, but is no longer invariant to longer time shifts.</p>
+<p>As stated above, setting such constraints leads to restricting the shift invariance to local shifts only. Typically, DTW with a Sakoe-Chiba band constraint of radius <span class="math inline">\(r\)</span> is invariant to time shifts of magnitude up to <span class="math inline">\(r\)</span>, but is no longer invariant to longer time shifts:</p>
 <figure>
 <img src="fig/sakoe_shift.gif" alt="Invariance to time shifts using Sakoe-Chiba band" width="80%" />
 <figcaption>
