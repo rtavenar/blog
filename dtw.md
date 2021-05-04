@@ -198,7 +198,7 @@ Indeed, a path that would align time series ${x}_{\rightarrow i}$ and ${x}^\prim
 as illustrated in the Figure below:
 
 <figure>
-    <img src="fig/dtw_transitions.svg" alt="DTW transitions" width="60%" />
+    <img src="fig/dtw_transitions.svg" alt="DTW transitions" width="50%" />
     <figcaption> 
         Authorized DTW transitions.
     </figcaption>
@@ -232,14 +232,18 @@ def dtw(x, x_prime, q=2):
 
 ## Properties
 
-Dynamic Time Warping holds the following properties:
+Dynamic Time Warping holds a few of the basic metric properties, such as:
 
-* $\forall \mathbf{x}, \mathbf{x}^\prime, DTW_q(\mathbf{x}, \mathbf{x}^\prime) \geq 0$
-* $\forall \mathbf{x}, DTW_q(\mathbf{x}, \mathbf{x}) = 0$
-* Suppose $\mathbf{x}$ is a time series that is constant except for a motif that
-occurs at some point in the series, and let us denote by $\mathbf{x}_{+k}$ a
-copy of $\mathbf{x}$ in which the motif is temporally shifted by $k$ timestamps,
-then $DTW_q(\mathbf{x}, \mathbf{x}_{+k}) = 0$.
+* $DTW_q({x}, {x}^\prime) \geq 0$ for any time series ${x}$ and ${x}^\prime$;
+* $DTW_q({x}, {x}) = 0$ for any time series ${x}$.
+
+However, mathematically speaking, DTW is not a valid metric since it
+satisfies neither the triangular inequality nor the identity of indiscernibles.
+This is because DTW is invariant to time shifts.
+In other words, if ${x}$ is a time series that is constant except for a motif that
+occurs at some point in the series, and if ${x}_{+k}$ is a
+copy of ${x}$ in which the motif is temporally shifted by $k$ timestamps,
+then $DTW_q({x}, {x}_{+k}) = 0$, as illustrated below:
 
 <figure>
     <img src="fig/dtw_shift.gif" alt="Invariance to time shifts" width="80%" />
@@ -247,9 +251,6 @@ then $DTW_q(\mathbf{x}, \mathbf{x}_{+k}) = 0$.
         Contrary to Euclidean distance, DTW is invariant to time shifts between series.
     </figcaption>
 </figure>
-
-However, mathematically speaking, DTW is not a valid metric since it
-satisfies neither the triangular inequality nor the identity of indiscernibles.
 
 ## Setting Additional Constraints
 
