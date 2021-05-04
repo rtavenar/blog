@@ -141,11 +141,11 @@ DTW_q({x}, {x}^\prime) =
                                       0 &amp; \text{ otherwise}
                         \end{array} \right. .
 \end{equation}\]</span></p>
-<p>This is illustrated in the Figure below where the binary matrix is represented as a grid on which the DTW path <span class="math inline">\(\pi\)</span> is superimposed, and each dot on the grid corresponds to a non-zero entry in <span class="math inline">\(A_\pi\)</span>:</p>
+<p>This is illustrated in the Figure below where the binary matrix is represented as a grid on which the DTW path <span class="math inline">\(\pi\)</span> is superimposed:</p>
 <figure>
 <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="100%" />
 <figcaption>
-Dynamic Time Warping path represented as a binary matrix. Each dot on the path indicates the matching of an element in <span class="math inline">\(x\)</span> with an element in <span class="math inline">\(x^\prime\)</span>.
+Dynamic Time Warping path represented as a binary matrix. (Left) Each dot on the path indicates a nonzero entry in <span class="math inline">\(A_\pi\)</span>, hence the matching of an element in <span class="math inline">\(x\)</span> with an element in <span class="math inline">\(x^\prime\)</span>. Note the correspondence between this representation and the one on the right.
 </figcaption>
 </figure>
 <p>Using matrix notation, Dynamic Time Warping can be written as the minimization of a dot product between matrices:</p>
@@ -220,8 +220,14 @@ Contrary to Euclidean distance, DTW is invariant to time shifts between series.
 </figure>
 <h2 id="setting-additional-constraints">Setting Additional Constraints</h2>
 <p>As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude. In order to allow invariances to local deformations only, one can impose additional constraints on the set of acceptable paths. Such constraints typically translate into enforcing nonzero entries in admissible <span class="math inline">\(A_\pi\)</span> to stay close to the diagonal.</p>
-<p><strong>TODO: visu path matrices</strong></p>
-<p>The Sakoe-Chiba band <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span> is parametrized by a radius <span class="math inline">\(r\)</span> (also called warping window size sometimes), while the Itakura parallelogram <span class="citation" data-cites="itakura1975minimum">[<a href="#ref-itakura1975minimum" role="doc-biblioref">Itak75</a>]</span> sets a maximum slope <span class="math inline">\(s\)</span> for alignment paths, which leads to a parallelogram-shaped constraint. As shown in the Figure below, setting global constraints on admissible DTW paths is equivalent to restricting the set of possible matches for each element in a time series. The number of possible matches for an element is always <span class="math inline">\(2r+1\)</span> for Sakoe-Chiba constraints (except for border elements), while it varies depending on the time index for Itakura parallelograms.</p>
+<p>The Sakoe-Chiba band <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span> is parametrized by a radius <span class="math inline">\(r\)</span> (also called warping window size sometimes), while the Itakura parallelogram <span class="citation" data-cites="itakura1975minimum">[<a href="#ref-itakura1975minimum" role="doc-biblioref">Itak75</a>]</span> sets a maximum slope <span class="math inline">\(s\)</span> for alignment paths, which leads to a parallelogram-shaped constraint. The impact of these parameters can be seen in the Figure below:</p>
+<figure>
+<img src="fig/sakoechiba_matrices.gif" alt="Sakoe-Chiba matrices" width="45%" /> <img src="fig/itakura_matrices.gif" alt="Itakura matrices" width="45%" />
+<figcaption>
+Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right). Here, each colored cell correspond to an index pair <span class="math inline">\((i, j)\)</span> that is valid under the considered constraint.
+</figcaption>
+</figure>
+<p>Setting global constraints on admissible DTW paths is equivalent to restricting the set of possible matches for each element in a time series. The number of possible matches for an element is always <span class="math inline">\(2r+1\)</span> for Sakoe-Chiba constraints (except for border elements), while it varies depending on the time index for Itakura parallelograms:</p>
 <figure>
 <img src="fig/dtw_global_constraints.gif" alt="DTW Global constraints" width="80%" />
 <figcaption>
