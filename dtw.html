@@ -87,35 +87,31 @@ Comparison between DTW and Euclidean distance.
 </figcaption>
 </figure>
 <p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric, that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here). Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.</p>
-<p><strong>TODO: illustrate with the Trace clustering example</strong></p>
-<!-- <figure>
-    <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
-    <figcaption>
-        $k$-means clustering with Euclidean distance. 
-        Each subfigure represents series from a given cluster and their centroid (in red).
-    </figcaption>
-</figure>
-
-The figure above is the result of a $k$-means clustering that uses Euclidean
-distance as a base metric.
-One issue with this metric is that it is not invariant to time shifts, while
-the dataset at stake clearly holds such invariants.
-
-When using a shift-invariant similarity measure (discussed in our
-{ref}`sec:dtw` section) at the core of $k$-means, one gets:
-
+<p>Now let us see how this property translates in a machine learning setting. Suppose we are given the following unlabelled time series dataset:</p>
 <figure>
-    <img src="fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
-    <figcaption>
-        $k$-means clustering with Dynamic Time Warping. Each subfigure
-        represents series from a given cluster and their centroid (in red).
-    </figcaption>
+<img src="fig/dataset_viz.gif" alt="A time series dataset" width="80%" />
+<figcaption>
+A time series dataset.
+</figcaption>
 </figure>
-
-This part of the course tackles the definition of adequate similarity
-measures for time series and their use at the core of machine learning methods. -->
+<p>If you look carefully at this dataset, you might notice that there are three big families of series in it. Let us see if a classical clustering algorithm can detect these three typical shapes. To do so, we will use the <span class="math inline">\(k\)</span>-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric. By default the metric used is Euclidean distance, which gives, in our example:</p>
+<figure>
+<img src="fig/kmeans_euc.svg" alt="$k$-means clustering with Euclidean distance" width="100%" />
+<figcaption>
+Euclidean <span class="math inline">\(k\)</span>-means clustering of the dataset presented in Figure 3. Each subfigure represents series from a given cluster and their centroid (in orange).
+</figcaption>
+</figure>
+<p>As one can see, this is not fully satisfactory. First, cluster 2 mixes two distinct time series shapes. Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters. Even cluster 1, which seems to be the purest one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.</p>
+<p>Let us now swicth to Dynamic Time Warping as the core distance for our <span class="math inline">\(k\)</span>-means algorithm. The resulting clusters are this time closer to what one could have expected:</p>
+<figure>
+<img src="fig/kmeans_dtw.svg" alt="$k$-means clustering with DTW" width="100%" />
+<figcaption>
+DTW <span class="math inline">\(k\)</span>-means clustering of the dataset presented in Figure 3. Each subfigure represents series from a given cluster and their centroid (in orange).
+</figcaption>
+</figure>
+<p>This is because time series in each group are very similar <strong>up to a time shift</strong>, which is a known invariant of Dynamic Time Warping, as we will see.</p>
 <h1 id="dynamic-time-warping">Dynamic Time Warping</h1>
-<p>Dynamic Time Warping (DTW) is a similarity measure between time series. It has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
+<p>Let us now review Dynamic Time Warping (DTW) in more details. DTW is a similarity measure between time series which has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
 <p>Consider two time series <span class="math inline">\(x\)</span> and <span class="math inline">\({x}^\prime\)</span> of respective lengths <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
 <p>Here, all elements <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x^\prime_j\)</span> are assumed to lie in the same <span class="math inline">\(p\)</span>-dimensional space and the exact timestamps at which observations occur are disregarded: only their ordering matters.</p>
 <p>Dynamic Time Warping, in this context, is equivalent to minimizing Euclidean distance between aligned time series under all admissible temporal alignments, as illustrated in the Figure below.</p>
@@ -186,7 +182,7 @@ DTW_q({x}, {x}^\prime) =
         \min ({\color{MidnightBlue}\gamma_{i-1, j}}, {\color{Red}\gamma_{i, j-1}}, {\color{ForestGreen}\gamma_{i-1, j-1}})
 \end{aligned}
 \]</span></p>
-<p>Note that <span class="math inline">\((*)\)</span> comes from the constraints on admissible paths <span class="math inline">\(\pi\)</span>: the last element on an admissible path needs to match the last elements of the series; Note also that <span class="math inline">\((**)\)</span> comes from the contiguity conditions on the admissible paths. Indeed, a path that would align time series <span class="math inline">\({x}_{\rightarrow i}\)</span> and <span class="math inline">\({x}^\prime_{\rightarrow j}\)</span> necessarily encapsulates either:</p>
+<p><span class="math inline">\((*)\)</span> comes from the constraints on admissible paths <span class="math inline">\(\pi\)</span>: the last element on an admissible path needs to match the last elements of the series. Also, <span class="math inline">\((**)\)</span> results from the contiguity conditions on the admissible paths. Indeed, a path that would align time series <span class="math inline">\({x}_{\rightarrow i}\)</span> and <span class="math inline">\({x}^\prime_{\rightarrow j}\)</span> necessarily encapsulates either:</p>
 <ul>
 <li>a path that would align time series <span class="math inline">\({x}_{\rightarrow i - 1}\)</span> and <span class="math inline">\({x}^\prime_{\rightarrow j}\)</span>, or</li>
 <li>a path that would align time series <span class="math inline">\({x}_{\rightarrow i}\)</span> and <span class="math inline">\({x}^\prime_{\rightarrow j - 1}\)</span>, or</li>
