@@ -87,21 +87,33 @@ Comparison between DTW and Euclidean distance.
 </figcaption>
 </figure>
 <p>Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric, that we will present in more details later in this post. In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here). Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.</p>
-<figure>
-<img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
-<figcaption>
-<span class="math inline">\(k\)</span>-means clustering with Euclidean distance. Each subfigure represents series from a given cluster and their centroid (in red).
-</figcaption>
+<p><strong>TODO: illustrate with the Trace clustering example</strong></p>
+<!-- <figure>
+    <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
+    <figcaption>
+        $k$-means clustering with Euclidean distance. 
+        Each subfigure represents series from a given cluster and their centroid (in red).
+    </figcaption>
 </figure>
-<p>The figure above is the result of a <span class="math inline">\(k\)</span>-means clustering that uses Euclidean distance as a base metric. One issue with this metric is that it is not invariant to time shifts, while the dataset at stake clearly holds such invariants.</p>
-<p>When using a shift-invariant similarity measure (discussed in our {ref}<code>sec:dtw</code> section) at the core of <span class="math inline">\(k\)</span>-means, one gets:</p>
+
+The figure above is the result of a $k$-means clustering that uses Euclidean
+distance as a base metric.
+One issue with this metric is that it is not invariant to time shifts, while
+the dataset at stake clearly holds such invariants.
+
+When using a shift-invariant similarity measure (discussed in our
+{ref}`sec:dtw` section) at the core of $k$-means, one gets:
+
 <figure>
-<img src="fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
-<figcaption>
-<span class="math inline">\(k\)</span>-means clustering with Dynamic Time Warping. Each subfigure represents series from a given cluster and their centroid (in red).
-</figcaption>
+    <img src="fig/kmeans_dtw.svg" alt="Euclidean k-means" width="100%" />
+    <figcaption>
+        $k$-means clustering with Dynamic Time Warping. Each subfigure
+        represents series from a given cluster and their centroid (in red).
+    </figcaption>
 </figure>
-<p>This part of the course tackles the definition of adequate similarity measures for time series and their use at the core of machine learning methods.</p>
+
+This part of the course tackles the definition of adequate similarity
+measures for time series and their use at the core of machine learning methods. -->
 <h1 id="dynamic-time-warping">Dynamic Time Warping</h1>
 <p>Dynamic Time Warping (DTW) is a similarity measure between time series. It has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
 <p>Consider two time series <span class="math inline">\(x\)</span> and <span class="math inline">\({x}^\prime\)</span> of respective lengths <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>.</p>
