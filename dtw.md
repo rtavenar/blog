@@ -98,7 +98,7 @@ series under all admissible temporal alignments, as illustrated in the Figure be
     <figcaption> 
         Dynamic Time Warping seeks for the temporal alignment (gray lines) that minimizes Euclidean distance between
         aligned series.
-        Red and blue dots correspond to repetitions of time series elements induced by the considered temporal alignment.
+        Cyan dots correspond to repetitions of time series elements induced by the considered temporal alignment.
     </figcaption>
 </figure>
 

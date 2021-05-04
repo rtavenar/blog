@@ -98,7 +98,7 @@ for d in info:
 
 plt.tight_layout()
 
-ani = animation.FuncAnimation(fig, animate, interval=90, blit=True, save_count=len(x_ref))
+ani = animation.FuncAnimation(fig, animate, interval=150, blit=True, save_count=len(x_ref))
 ani.save(
     'fig/dtw_global_constraints.gif',
     dpi=100, savefig_kwargs={'pad_inches': 'tight'}

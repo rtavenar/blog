@@ -21,6 +21,8 @@ def animate(i):
     ]
     line_x_ref.set_xdata([pos for idx, pos in enumerate(pos_x_ref) if not(x_ref_repeated[idx])])
     line_x.set_xdata([pos for idx, pos in enumerate(pos_x) if not(x_repeated[idx])])
+    line_x_ref_markers.set_xdata([pos for idx, pos in enumerate(pos_x_ref) if not(x_ref_repeated[idx])])
+    line_x_markers.set_xdata([pos for idx, pos in enumerate(pos_x) if not(x_repeated[idx])])
     
     line_x_ref_dummy.set_xdata([pos for idx, pos in enumerate(pos_x_ref) if x_ref_repeated[idx]])
     line_x_dummy.set_xdata([pos for idx, pos in enumerate(pos_x) if x_repeated[idx]])
@@ -42,6 +44,7 @@ set_fig_style(fig, font_size=14)
 for cur_ax in fig.axes:
     cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("Paired")
+colors_new_points = sns.color_palette("husl", 8)
 
 x_ref = np.zeros((40, ))
 x_ref[5:5+length] = np.sin(np.linspace(0, 2 * np.pi, num=length))
@@ -58,15 +61,17 @@ x_resampled = [x[j] for i, j in path]
 x_ref_repeated = [idx > 0 and path[idx][0] == path[idx - 1][0] for idx in range(len(path))]
 x_repeated = [idx > 0 and path[idx][1] == path[idx - 1][1] for idx in range(len(path))]
 
-line_x_ref, = ax.plot(x_ref, color=colors[7], linestyle='-', marker='o', zorder=1)
-line_x, = ax.plot(x, color=colors[7], linestyle='-', marker='o', zorder=1)
+line_x_ref, = ax.plot(x_ref, color=colors[7], linestyle='-', zorder=0.25)
+line_x, = ax.plot(x, color=colors[7], linestyle='-', zorder=0.25)
+line_x_ref_markers, = ax.plot(x_ref, color=colors[7], linestyle='', marker='o', zorder=1)
+line_x_markers, = ax.plot(x, color=colors[7], linestyle='', marker='o', zorder=1)
 
 line_x_ref_dummy, = ax.plot([i for idx, (i, j) in enumerate(path) if x_ref_repeated[idx]], 
                             [x_ref[i] for idx, (i, j) in enumerate(path) if x_ref_repeated[idx]], 
-                            color=colors[1], linestyle='', marker='o', zorder=.5)
+                            color=colors_new_points[4], linestyle='', marker='o', zorder=.5)
 line_x_dummy, = ax.plot([j for idx, (i, j) in enumerate(path) if x_repeated[idx]], 
                         [x[j] for idx, (i, j) in enumerate(path) if x_repeated[idx]],
-                        color=colors[5], linestyle='', marker='o', zorder=.5)
+                        color=colors_new_points[4], linestyle='', marker='o', zorder=.5)
 
 
 ax.set_xticks([])

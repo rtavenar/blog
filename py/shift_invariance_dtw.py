@@ -58,7 +58,7 @@ ax2.legend(loc="upper left", fontsize=12)
 
 plt.tight_layout()
 
-ani = animation.FuncAnimation(fig, animate, interval=50, blit=True, save_count=len(list_shifts))
+ani = animation.FuncAnimation(fig, animate, interval=100, blit=True, save_count=len(list_shifts))
 ani.save(
     'fig/dtw_shift.gif',
     dpi=100, savefig_kwargs={'pad_inches': 'tight'}
