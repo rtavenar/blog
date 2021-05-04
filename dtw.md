@@ -45,7 +45,9 @@ Here, we are computing similarity between two time series using either Euclidean
 In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here).
 Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment.
 
-<figure>
+**TODO: illustrate with the Trace clustering example**
+
+<!-- <figure>
     <img src="fig/kmeans.svg" alt="Euclidean k-means" width="100%" />
     <figcaption>
         $k$-means clustering with Euclidean distance. 
@@ -70,7 +72,7 @@ When using a shift-invariant similarity measure (discussed in our
 </figure>
 
 This part of the course tackles the definition of adequate similarity
-measures for time series and their use at the core of machine learning methods.
+measures for time series and their use at the core of machine learning methods. -->
 
 # Dynamic Time Warping
 
