@@ -8,7 +8,7 @@ from utils import set_fig_style
 
 
 fig = plt.figure(figsize=(8, 4))
-set_fig_style(fig, font_size=14)
+set_fig_style(fig, font_size=26)
 matplotlib.rcParams['lines.markersize'] = 4
 
 # definitions for the axes
@@ -54,15 +54,16 @@ ax_gram.set_xlim([-.5, sz - .5])
 ax_gram.set_ylim([-.5, sz - .5])
 ax_gram.set_xticks([])
 ax_gram.set_yticks([])
-ax_gram.vlines(x=np.arange(sz) - .5, ymin=-.5, ymax=sz - .5, color='k', linewidth=.5)
-ax_gram.hlines(y=np.arange(sz) - .5, xmin=-.5, xmax=sz - .5, color='k', linewidth=.5)
+# ax_gram.vlines(x=np.arange(sz) - .5, ymin=-.5, ymax=sz - .5, color='k', linewidth=.5)
+# ax_gram.hlines(y=np.arange(sz) - .5, xmin=-.5, xmax=sz - .5, color='k', linewidth=.5)
 ax_gram.plot([i for (i, j) in path], [sz - j - 1 for (i, j) in path], 
-             color=colors_grey[2], marker='o', linestyle='-', markersize=3)
+             color=colors_grey[2], marker='o', linestyle='-', markersize=5)
+ax_gram.text(s="$A_\pi$", x=.75 * sz, y=.75 * sz)
 
 idx_in_path = 9
 subpath = path[idx_in_path:idx_in_path + 1]
 ax_gram.plot([i for (i, j) in subpath], [sz - j - 1 for (i, j) in subpath], 
-             color="k", marker='o', linestyle='-', markersize=3)
+             color="k", marker='o', linestyle='-', markersize=5)
 i, j = path[idx_in_path]
 con = ConnectionPatch(xyA=[-x[j], np.arange(sz)[::-1][j]], 
                       xyB=[i, sz - j - 1], 

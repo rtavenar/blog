@@ -138,13 +138,14 @@ This representation is related to the index sequence representation used above t
 \end{equation}
 
 This is illustrated in the Figure below where the binary matrix is represented as a grid on which the
-DTW path $\pi$ is superimposed, and each dot on the grid corresponds to a non-zero entry in $A_\pi$:
+DTW path $\pi$ is superimposed:
 
 <figure>
     <img src="fig/dtw_path_matrix.svg" alt="DTW path as a matrix" width="100%" />
     <figcaption> 
         Dynamic Time Warping path represented as a binary matrix. 
-        Each dot on the path indicates the matching of an element in $x$ with an element in $x^\prime$.
+        (Left) Each dot on the path indicates a nonzero entry in $A_\pi$, hence the matching of an element in $x$ with an element in $x^\prime$.
+        Note the correspondence between this representation and the one on the right.
     </figcaption>
 </figure>
 
@@ -260,15 +261,24 @@ on the set of acceptable paths.
 Such constraints typically translate into enforcing nonzero entries in admissible $A_\pi$ to stay 
 close to the diagonal.
 
-**TODO: visu path matrices**
-
 The Sakoe-Chiba band [@sakoe1978dynamic] is parametrized by a radius $r$ (also called warping window size sometimes), while
 the Itakura parallelogram [@itakura1975minimum] sets a maximum slope $s$ for alignment
 paths, which leads to a parallelogram-shaped constraint.
-As shown in the Figure below, setting global constraints on admissible DTW paths is equivalent to 
+The impact of these parameters can be seen in the Figure below:
+
+<figure>
+    <img src="fig/sakoechiba_matrices.gif" alt="Sakoe-Chiba matrices" width="45%" />
+    <img src="fig/itakura_matrices.gif" alt="Itakura matrices" width="45%" />
+    <figcaption>
+        Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right).
+        Here, each colored cell correspond to an index pair $(i, j)$ that is valid under the considered constraint.
+    </figcaption>
+</figure>
+
+Setting global constraints on admissible DTW paths is equivalent to 
 restricting the set of possible matches for each element in a time series.
 The number of possible matches for an element is always $2r+1$ for Sakoe-Chiba constraints (except for border elements), 
-while it varies depending on the time index for Itakura parallelograms.
+while it varies depending on the time index for Itakura parallelograms:
 
 <figure>
     <img src="fig/dtw_global_constraints.gif" alt="DTW Global constraints" width="80%" />
