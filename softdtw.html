@@ -12,7 +12,6 @@
   <style type="text/css">
     body {
       counter-reset: fignumber sidenote-counter;
-      max-width: 120ex;
     }
     div#back2index {text-align: right;}
     h1#toctitle {text-align: left;}
@@ -43,7 +42,9 @@
         border-radius: .5em;
         padding: .2em 1em;
     }
-
+    @media (max-width: 400px) {
+      body { max-width: 95%; }
+    }
   </style>
   <script type="text/javascript">
     var fileref=document.createElement('script')
