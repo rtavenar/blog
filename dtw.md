@@ -38,11 +38,14 @@ Let us now illustrate the typical behavior of alignment-based metrics with an ex
     <img src="fig/dtw_vs_euc.svg" alt="DTW vs Euclidean distance" width="100%" />
     <figcaption> 
         Comparison between DTW and Euclidean distance.
+        Note that, for the sake of visualization, time series are shifted vertically, but one should imagine that feature value ranges (y-axis values) match.
     </figcaption>
 </figure>
 
 Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric that we will present in more details later in this post.
-In both cases, the returned similarity is the sum of distances over all matches (represented by gray lines here).
+In both cases, the returned similarity is the sum of distances between matched features.<label for="sn-match" class="sidenote-toggle sidenote-number"></label>
+<input type="checkbox" id="sn-match" class="sidenote-toggle" />
+<span class="sidenote">Here, matches are represented by gray lines and the distance associated to a match between $i$-th and $j$-th features of the time series is $d(x_i, x^\prime_j)$.</span> 
 Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment than when using Euclidean distance that matches timestamps regardless of the feature values.
 
 Now let us see how this property translates in a machine learning setting.
@@ -55,9 +58,9 @@ Suppose we are given the following unlabelled time series dataset:
     </figcaption>
 </figure>
 
-If you look carefully at this dataset, you might notice that there are three big families of series in it.
+If you look carefully at this dataset, you might notice that there are three families of series in it.
 Let us see if a classical clustering algorithm can detect these three typical shapes.
-To do so, we will use the $k$-means algorithm, which aims at forming clusters as compact as possible with respect to a given metric.
+To do so, we will use the $k$-means algorithm, which aims at forming clusters as compact as possible with respect to a given similarity metric.
 By default the metric is Euclidean distance, which gives, in our example:
 
 <figure>
@@ -69,11 +72,11 @@ By default the metric is Euclidean distance, which gives, in our example:
 </figure>
 
 As one can see, this is not fully satisfactory.
-First, cluster 2 mixes two distinct time series shapes.
+First, Cluster 2 mixes two distinct time series shapes.
 Second, the barycenters for each cluster are not especially representative of the time series gathered in the clusters.
-Even cluster 1, which seems to be the purest one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.
+Even Cluster 1, which seems to be the "purest" one, suffers from this last pitfall, since the local oscillations that are observed towards the end of the series have a lower magnitude in the reconstructed barycenter than in the series themselves.
 
-Let us now swicth to Dynamic Time Warping as the core distance for our $k$-means algorithm.
+Let us now switch to Dynamic Time Warping as the core metric for our $k$-means algorithm.
 The resulting clusters are this time closer to what one could expect:
 
 <figure>
@@ -177,8 +180,9 @@ where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power 
 ## Algorithmic Solution
 
 An exact solution to this optimization problem can be found using dynamic programming.
-The essence of dynamic programming is to link the solution of a given problem to solutions of (easier) sub-problems.
-Once this link is known, one can solve the original problem by recursively solving required sub-problems and storing their solutions for later use.
+Dynamic programming relies on recurrence.
+The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems.
+Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).
 
 In the case of DTW, we need to rely on the following quantity:
 
@@ -239,6 +243,8 @@ def dtw(x, x_prime, q=2):
           gamma[i-1, j  ] if i > 0             else inf,
           gamma[i  , j-1] if j > 0             else inf,
           gamma[i-1, j-1] if (i > 0 and j > 0) else inf
+          # Note that these 3 terms cannot all be inf 
+          # if we have (i > 0 or j > 0)
         )
 
   return gamma[-1, -1] ** (1. / q)
