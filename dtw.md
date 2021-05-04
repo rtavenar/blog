@@ -183,7 +183,7 @@ $$
         \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
             \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
     &\stackrel{**}{=} d(x_i, x^\prime_j)^q +
-        \min (\color{MidnightBlue}{\gamma_{i-1, j}}, \color{Red}{\gamma_{i, j-1}}, \color{ForestGreen}{\gamma_{i-1, j-1}})
+        \min ({\color{MidnightBlue}\gamma_{i-1, j}}, {\color{Red}\gamma_{i, j-1}}, {\color{ForestGreen}\gamma_{i-1, j-1}})
 \end{aligned}
 $$
 
