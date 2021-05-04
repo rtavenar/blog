@@ -36,7 +36,7 @@ jobs:
     - name: Build the html-book
       run: |
         mkdir html/
-        cd html && cp ../fig . && cp ../prism . && cd -
+        cd html && cp -r ../fig . && cp -r ../prism . && cd -
         make
 
     # Push the blog's HTML to github-pages
