@@ -18,6 +18,7 @@ $endif$
   <link rel="stylesheet" href="https://latex.now.sh/style.css">
   <link rel="stylesheet" href="prism/prism.css">
   <script src="prism/prism.js"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style type="text/css">
     body {
       counter-reset: fignumber sidenote-counter theorem definition;
@@ -52,12 +53,6 @@ $endif$
         padding: .2em 1em;
     }
   </style>
-  <script type="text/javascript">
-    var fileref=document.createElement('script')
-    fileref.setAttribute("type","text/javascript")
-    fileref.setAttribute("src", "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js")
-    document.getElementsByTagName("head")[0].appendChild(fileref)
-  </script>
 $for(header-includes)$
   $header-includes$
 $endfor$
