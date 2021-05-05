@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.metrics import dtw_path
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def animate(i):
@@ -88,7 +88,4 @@ len_anim = 40
 len_pause = 5
 
 ani = animation.FuncAnimation(fig, animate, interval=100, blit=True, save_count=len_anim + 2 * len_pause)
-ani.save(
-    'fig/dtw_path.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/dtw_path')

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.datasets import CachedDatasets
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def animate(i):
@@ -12,6 +12,8 @@ def animate(i):
             lines[j].set_alpha(lines[j].get_alpha() * .7)
         elif i == j:
             lines[j].set_alpha(1.)
+        else:
+            lines[j].set_alpha(0.)
 
     return lines
 
@@ -45,7 +47,4 @@ ax.set_ylim([-2.5, 4])
 plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, interval=200, blit=True, save_count=len(X_train))
-ani.save(
-    'fig/dataset_viz.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/dataset_viz')

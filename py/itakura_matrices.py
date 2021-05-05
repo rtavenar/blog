@@ -3,7 +3,7 @@ import matplotlib.animation as animation
 import seaborn as sns
 import numpy as np
 from tslearn.metrics import itakura_mask
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def get_color_matrix(m, fig):
@@ -52,7 +52,4 @@ ax_text = ax.text(s="$s=2.$", x=.7 * sz, y=.9 * sz)
 clean_plot(ax, sz)
 
 ani = animation.FuncAnimation(fig, animate, interval=1000, blit=True, save_count=3)
-ani.save(
-    'fig/itakura_matrices.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/itakura_matrices', fps=1)

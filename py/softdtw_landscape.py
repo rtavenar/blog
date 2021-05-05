@@ -1,13 +1,10 @@
-from IPython.display import HTML
-from celluloid import Camera
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.metrics import dtw, soft_dtw
 from tslearn.datasets import CachedDatasets
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def soft_dtw_div(x, y, gamma):
@@ -22,10 +19,6 @@ def animate(i):
         scatter_softdtw.set_ydata([softdtw_dists[gamma_idx][i]])
 
     return [line_ts] + list_scatter_softdtw
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
 
 shift = 15
 length = 60
@@ -84,7 +77,4 @@ for cur_ax in list_axes:
 plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, interval=50, blit=True, save_count=len(list_values))
-ani.save(
-    'fig/softdtw_landscape.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/softdtw_landscape')

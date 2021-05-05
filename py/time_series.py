@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import ConnectionPatch
 import matplotlib.animation as animation
 import seaborn as sns
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def animate(i):
@@ -14,11 +14,6 @@ def animate(i):
     text.set_text("$x_{%d}$" % i)
 
     return [marker, text]
-
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
 
 fig, ax = plt.subplots(figsize=(8, 4))
 set_fig_style(fig, font_size=14)
@@ -51,7 +46,4 @@ plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, blit=True, 
                               interval=250, save_count=len(x_ref))
-ani.save(
-    'fig/time_series.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/time_series')

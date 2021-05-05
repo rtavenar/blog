@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.metrics import soft_dtw
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def soft_dtw_div(x, y, gamma):
@@ -23,11 +23,6 @@ def animate(i):
     # scatter_euc.set_ydata([euc_dists[i]])
 
     return [line_ts, ] + list_scatter_softdtw
-
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
 
 length = 60
 
@@ -78,7 +73,4 @@ ax2.legend(loc="upper left", fontsize=12)
 plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, interval=100, blit=True, save_count=len(list_shifts))
-ani.save(
-    'fig/softdtw_shift.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/softdtw_shift')

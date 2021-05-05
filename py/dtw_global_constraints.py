@@ -4,7 +4,7 @@ import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.metrics import dtw, sakoe_chiba_mask, itakura_mask
 from tslearn.datasets import CachedDatasets
-from utils import set_fig_style
+from utils import set_fig_style, export_animation
 
 
 def mask2index_lists(mask):
@@ -99,7 +99,4 @@ for d in info:
 plt.tight_layout()
 
 ani = animation.FuncAnimation(fig, animate, interval=150, blit=True, save_count=len(x_ref))
-ani.save(
-    'fig/dtw_global_constraints.gif',
-    dpi=100, savefig_kwargs={'pad_inches': 'tight'}
-)
+export_animation(ani, 'fig/dtw_global_constraints')
