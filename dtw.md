@@ -45,7 +45,7 @@ Let us now illustrate the typical behavior of alignment-based metrics with an ex
 Here, we are computing similarity between two time series using either Euclidean distance (left) or Dynamic Time Warping (DTW, right), which is an instance of alignment-based metric that we will present in more details later in this post.
 In both cases, the returned similarity is the sum of distances between matched features.<label for="sn-match" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-match" class="sidenote-toggle" />
-<span class="sidenote">Here, matches are represented by gray lines and the distance associated to a match between $i$-th and $j$-th features of the time series is $d(x_i, x^\prime_j)$.</span> 
+<span class="sidenote">Here, matches are represented by gray lines and the distance associated to a match between $i$-th feature in time series $x$ and $j$-th feature in time series $x^\prime$ is $d(x_i, x^\prime_j)$.</span> 
 Note how DTW matches distinctive patterns of the time series, which is likely to result in a more sound similarity assessment than when using Euclidean distance that matches timestamps regardless of the feature values.
 
 Now let us see how this property translates in a machine learning setting.
