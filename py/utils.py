@@ -22,12 +22,13 @@ def export_animation(anim, fname, ext=None, fps=5):
     if ext == "gif":
         anim.save(fname_with_ext, dpi=100, savefig_kwargs={'pad_inches': 'tight'})
     elif ext == "html":
-        html_widget = anim.to_jshtml()
-        open(fname_with_ext, "w").write(html_widget)
+        rcParams["animation.frame_format"] = "svg"
+        html_widget = anim.to_jshtml(default_mode="loop")
+        open(fname_with_ext, "w").write(html_widget)  # Generated files are huge...
     elif ext in ["mp4", "webm"]:
         Writer = animation.writers['ffmpeg']
         if ext == "mp4":
-            writer = Writer(fps=fps)
+            writer = Writer(fps=fps, codec="libx265")
         else:
             writer = Writer(fps=fps, codec='libvpx-vp9')
         anim.save(fname_with_ext, writer=writer)
