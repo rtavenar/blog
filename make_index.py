@@ -25,7 +25,7 @@ l_metadata = []
 
 for fname in l_md:
     post = frontmatter.load(fname)
-    if "title" in post.keys():
+    if "title" in post.keys() and not post.get("draft", False):
         title = post["title"]
         date_post = post.get("date", "")
         l_metadata.append({"fname": fname, "title": title, "date_post": date_post})
