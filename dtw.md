@@ -25,7 +25,7 @@ Below is an example univariate<label for="sn-2" class="sidenote-toggle sidenote-
 <span class="sidenote">A time series is said univariate if all its feature vectors are monodimensional ($p=1$).</span> time series:
 
 <figure>
-    <video muted autoplay controls loop width="80%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/time_series.webm" type="video/webm" />
         <source src="fig/time_series.mp4" type="video/mp4" />
         <img src="fig/time_series.gif" alt="An example univariate time series" />
@@ -56,7 +56,7 @@ Now let us see how this property translates in a machine learning setting.
 Suppose we are given the following unlabelled time series dataset:
 
 <figure>
-    <video muted autoplay controls loop width="80%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/dataset_viz.webm" type="video/webm" />
         <source src="fig/dataset_viz.mp4" type="video/mp4" />
         <img src="fig/dataset_viz.gif" alt="A time series dataset" />
@@ -118,7 +118,7 @@ Dynamic Time Warping seeks for the temporal alignment<label for="sn-temp-align" 
 aligned series, as illustrated in the Figure below:
 
 <figure>
-    <video muted autoplay controls loop width="60%">
+    <video playsinline muted autoplay controls loop width="60%">
         <source src="fig/dtw_path.webm" type="video/webm" />
         <source src="fig/dtw_path.mp4" type="video/mp4" />
         <img src="fig/dtw_path.gif" alt="DTW as minimum Euclidean distance up to a realignment" />
@@ -279,7 +279,7 @@ copy of ${x}$ in which the motif is temporally shifted by $k$ timestamps,
 then $DTW_q({x}, {x}_{+k}) = 0$, as illustrated below:
 
 <figure>
-    <video muted autoplay controls loop width="80%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/dtw_shift.webm" type="video/webm" />
         <source src="fig/dtw_shift.mp4" type="video/mp4" />
         <img src="fig/dtw_shift.gif" alt="Invariance to time shifts" />
@@ -303,12 +303,12 @@ paths, which leads to a parallelogram-shaped constraint.
 The impact of these parameters is illustrated in the Figure below:
 
 <figure>
-    <video muted autoplay controls loop width="45%">
+    <video playsinline muted autoplay controls loop width="45%">
         <source src="fig/sakoechiba_matrices.webm" type="video/webm" />
         <source src="fig/sakoechiba_matrices.mp4" type="video/mp4" />
         <img src="fig/sakoechiba_matrices.gif" alt="Sakoe-Chiba matrices" />
     </video>
-    <video muted autoplay controls loop width="45%">
+    <video playsinline muted autoplay controls loop width="45%">
         <source src="fig/itakura_matrices.webm" type="video/webm" />
         <source src="fig/itakura_matrices.mp4" type="video/mp4" />
         <img src="fig/itakura_matrices.gif" alt="Itakura matrices" />
@@ -325,7 +325,7 @@ The number of possible matches for an element is always $2r+1$ for Sakoe-Chiba c
 while it varies depending on the time index for Itakura parallelograms:
 
 <figure>
-    <video muted autoplay controls loop width="80%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/dtw_global_constraints.webm" type="video/webm" />
         <source src="fig/dtw_global_constraints.mp4" type="video/mp4" />
         <img src="fig/dtw_global_constraints.gif" alt="DTW Global constraints" />
@@ -340,7 +340,7 @@ Typically, DTW with a Sakoe-Chiba band constraint of radius $r$ is invariant to 
 but is no longer invariant to longer time shifts:
 
 <figure>
-    <video muted autoplay controls loop width="80%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/sakoe_shift.webm" type="video/webm" />
         <source src="fig/sakoe_shift.mp4" type="video/mp4" />
         <img src="fig/sakoe_shift.gif" alt="Invariance to time shifts using Sakoe-Chiba band" />

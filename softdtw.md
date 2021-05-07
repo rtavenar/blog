@@ -51,21 +51,25 @@ We would like to study the differentiability of
 
 $$
 \begin{aligned}
-  v(x) &= DTW(x, x_\text{ref}) \\
+  v(x) &= DTW_2(x, x_\text{ref}) \\
        &= \min_{\pi \in \mathcal{A}(x, x_\text{ref})} \left\langle A_\pi , D_2(x, x_\text{ref}) \right\rangle^{\frac{1}{2}}
 \end{aligned}
 $$
 
 then the previous Theorem tells us that $v$ is differentiable everywhere except when:
 
-* $DTW(x, x_\text{ref}) = 0$ since, in this case, the non-differentiability of the square root function breaks condition 1. of the Theorem above;
+* $DTW_2(x, x_\text{ref}) = 0$ since, in this case, the non-differentiability of the square root function breaks condition 1 of the Theorem above;
 * there exist several optimal paths for the DTW problem.
 
 This second condition is illustrated in the Figure below in which we vary the value of a single element in one of the time series (for visualization purposes)
-and study the evolution of $DTW(x, x_\text{ref})$ as a function of this value:
+and study the evolution of $DTW_2(x, x_\text{ref})$ as a function of this value:
 
 <figure>
-    <img src="fig/dtw_landscape.gif" alt="DTW landscape" width="80%" />
+    <video playsinline muted autoplay controls loop width="80%">
+        <source src="fig/dtw_landscape.webm" type="video/webm" />
+        <source src="fig/dtw_landscape.mp4" type="video/mp4" />
+        <img src="fig/dtw_landscape.gif" alt="DTW landscape" />
+    </video>
     <figcaption> 
         (Non-)differentiability of Dynamic Time Warping.
     </figcaption>
@@ -74,10 +78,37 @@ and study the evolution of $DTW(x, x_\text{ref})$ as a function of this value:
 Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.
 
 # softDTW and variants
+
+* A discussion about soft-min
+* softDTW definition
 * soft alignment path
+    * interpretation as the expectation across all alignments
 * properties 
     * $\gamma t^2$ impact of a $t$-offset (visu) [done]
-    * interpretation as the expectation across all alignments
-* denoising effect
+    * denoising effect
 * Visualization of a loss landscape for softDTW as a function of $\gamma$ [done]
 * sharp softDTW, divergences...
+
+
+
+<figure>
+    <video playsinline muted autoplay controls loop width="80%">
+        <source src="fig/softdtw_shift.webm" type="video/webm" />
+        <source src="fig/softdtw_shift.mp4" type="video/mp4" />
+        <img src="fig/softdtw_shift.gif" alt="Impact of time shifts on softDTW" />
+    </video>
+    <figcaption> 
+        Impact of time shifts on softDTW.
+    </figcaption>
+</figure>
+
+<figure>
+    <video playsinline muted autoplay controls loop width="80%">
+        <source src="fig/softdtw_landscape.webm" type="video/webm" />
+        <source src="fig/softdtw_landscape.mp4" type="video/mp4" />
+        <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" />
+    </video>
+    <figcaption> 
+        Differentiability of softDTW.
+    </figcaption>
+</figure>

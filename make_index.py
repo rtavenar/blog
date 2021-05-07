@@ -1,5 +1,10 @@
 import os
 import frontmatter
+import datetime as dt
+
+def cast_date(s_date):
+    date = dt.datetime.strptime(s_date, "%Y/%m/%d")
+    return date.strftime("%b. %d, %Y")
 
 l_md = [
     fname for fname in os.listdir(".") 
@@ -26,6 +31,6 @@ for fname in l_md:
         l_metadata.append({"fname": fname, "title": title, "date_post": date_post})
 
 for d in sorted(l_metadata, key=lambda d: d["date_post"], reverse=True):
-    header += f"* [{d['title']}]({d['fname'].replace('.md', '.html')}), _posted on {d['date_post']}_.\n"
+    header += f"* [{d['title']}]({d['fname'].replace('.md', '.html')}), _posted on {cast_date(d['date_post'])}_.\n"
 
 open("index.md", "w").write(header)
