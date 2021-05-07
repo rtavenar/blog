@@ -84,18 +84,21 @@
 <p>Let us come back to Dynamic Time Warping, and suppose we are given a reference time series <span class="math inline">\(x_\text{ref}\)</span>. We would like to study the differentiability of</p>
 <p><span class="math display">\[
 \begin{aligned}
-  v(x) &amp;= DTW(x, x_\text{ref}) \\
+  v(x) &amp;= DTW_2(x, x_\text{ref}) \\
        &amp;= \min_{\pi \in \mathcal{A}(x, x_\text{ref})} \left\langle A_\pi , D_2(x, x_\text{ref}) \right\rangle^{\frac{1}{2}}
 \end{aligned}
 \]</span></p>
 <p>then the previous Theorem tells us that <span class="math inline">\(v\)</span> is differentiable everywhere except when:</p>
 <ul>
-<li><span class="math inline">\(DTW(x, x_\text{ref}) = 0\)</span> since, in this case, the non-differentiability of the square root function breaks condition 1. of the Theorem above;</li>
+<li><span class="math inline">\(DTW_2(x, x_\text{ref}) = 0\)</span> since, in this case, the non-differentiability of the square root function breaks condition 1 of the Theorem above;</li>
 <li>there exist several optimal paths for the DTW problem.</li>
 </ul>
-<p>This second condition is illustrated in the Figure below in which we vary the value of a single element in one of the time series (for visualization purposes) and study the evolution of <span class="math inline">\(DTW(x, x_\text{ref})\)</span> as a function of this value:</p>
+<p>This second condition is illustrated in the Figure below in which we vary the value of a single element in one of the time series (for visualization purposes) and study the evolution of <span class="math inline">\(DTW_2(x, x_\text{ref})\)</span> as a function of this value:</p>
 <figure>
-<img src="fig/dtw_landscape.gif" alt="DTW landscape" width="80%" />
+<video playsinline muted autoplay controls loop width="80%">
+<source src="fig/dtw_landscape.webm" type="video/webm" />
+<source src="fig/dtw_landscape.mp4" type="video/mp4" />
+<img src="fig/dtw_landscape.gif" alt="DTW landscape" /> </video>
 <figcaption>
 (Non-)differentiability of Dynamic Time Warping.
 </figcaption>
@@ -103,16 +106,38 @@
 <p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.</p>
 <h1 id="softdtw-and-variants">softDTW and variants</h1>
 <ul>
-<li>soft alignment path</li>
+<li>A discussion about soft-min</li>
+<li>softDTW definition</li>
+<li>soft alignment path
+<ul>
+<li>interpretation as the expectation across all alignments</li>
+</ul></li>
 <li>properties
 <ul>
 <li><span class="math inline">\(\gamma t^2\)</span> impact of a <span class="math inline">\(t\)</span>-offset (visu) [done]</li>
-<li>interpretation as the expectation across all alignments</li>
-</ul></li>
 <li>denoising effect</li>
+</ul></li>
 <li>Visualization of a loss landscape for softDTW as a function of <span class="math inline">\(\gamma\)</span> [done]</li>
 <li>sharp softDTW, divergences&#x2026;</li>
 </ul>
+<figure>
+<video playsinline muted autoplay controls loop width="80%">
+<source src="fig/softdtw_shift.webm" type="video/webm" />
+<source src="fig/softdtw_shift.mp4" type="video/mp4" />
+<img src="fig/softdtw_shift.gif" alt="Impact of time shifts on softDTW" /> </video>
+<figcaption>
+Impact of time shifts on softDTW.
+</figcaption>
+</figure>
+<figure>
+<video playsinline muted autoplay controls loop width="80%">
+<source src="fig/softdtw_landscape.webm" type="video/webm" />
+<source src="fig/softdtw_landscape.mp4" type="video/mp4" />
+<img src="fig/softdtw_landscape.gif" alt="softDTW landscape" /> </video>
+<figcaption>
+Differentiability of softDTW.
+</figcaption>
+</figure>
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
 <div id="ref-bonnans1998optimization" class="csl-entry" role="doc-biblioentry">
