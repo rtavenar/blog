@@ -80,17 +80,96 @@ Note the sudden change in slope at the position marked by a vertical dashed line
 
 # softDTW and variants
 
-* A discussion about soft-min
-* softDTW definition
-* soft alignment path
-    * interpretation as the expectation across all alignments
-* properties 
-    * $\gamma t^2$ impact of a $t$-offset (visu) [done]
-    * denoising effect
-* Visualization of a loss landscape for softDTW as a function of $\gamma$ [done]
-* sharp softDTW, divergences...
+Soft-DTW [@cuturi2017soft] has been introduced as a way to mitigate this
+limitation.
 
+## Definition
 
+The formal definition for soft-DTW is the following:
+
+\begin{equation}
+\text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \min_{\pi \in \mathcal{A}(x, x^\prime)}{}^\gamma
+        \sum_{(i, j) \in \pi} d(x_i, x^\prime_j)^2
+\label{eq:softdtw}
+\end{equation}
+
+where $\min{}^\gamma$ is the soft-min operator parametrized by a smoothing
+factor $\gamma$.
+
+### A note on soft-min
+
+The soft-min operator $\min{}^\gamma$ is defined as:
+
+\begin{equation}
+    \min{}^\gamma(a_1, \dots, a_n) = - \gamma \log \sum_i e^{-a_i / \gamma}
+\end{equation}
+
+Note that when gamma tends to $0^+$, the term corresponding to the lower $a_i$
+value will dominate other terms in the sum, and the soft-min then tends to the
+hard minimum.
+
+**TODO: fig softmin**
+
+Typically, we have:
+
+\begin{equation}
+    \text{soft-}DTW^{\gamma}(x, x^\prime)
+    \xrightarrow{\gamma \to 0^+} DTW(x, x^\prime)^2 \, .
+\end{equation}
+
+However, contrary to DTW, soft-DTW is differentiable everywhere for strictly positive $\gamma$ even if, for small $\gamma$ values, sudden changes can still occur in the loss landscape, as seen in the Figure below:
+
+<figure>
+    <video playsinline muted autoplay controls loop width="80%">
+        <source src="fig/softdtw_landscape.webm" type="video/webm" />
+        <source src="fig/softdtw_landscape.mp4" type="video/mp4" />
+        <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" />
+    </video>
+    <figcaption> 
+        Differentiability of softDTW.
+    </figcaption>
+</figure>
+
+## Soft-Alignment Path
+
+**TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mencsh**
+
+Let us denote by $A_\gamma$ the "soft path" matrix that informs, for each pair
+$(i, j)$, how much it will be taken into account in the matching.
+$A_\gamma$ can be interpreted as a weighted average of paths in
+$\mathcal{A}(x, x^\prime)$:
+
+\begin{eqnarray}
+A_\gamma =& \, \mathbb{E}_{\gamma}[A] \\
+=& \, \sum_{\pi \in \mathcal{A}(x, x^\prime)} \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)} A_\pi \, ,
+\end{eqnarray}
+
+where $k_{\mathrm{GA}}^{\gamma}(x, x^\prime)$ is the Global Alignment kernel [@cuturi2007kernel] 
+that acts as a normalization factor here.
+
+$A_\gamma$ can be computed with complexity $O(mn)$ and there is a link between
+this matrix and the gradients of the soft-DTW similarity measure:
+
+\begin{equation}
+\nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma
+\end{equation}
+
+## Properties
+
+As discussed in [@janati2020spatio], soft-DTW is not invariant to time
+shifts, as is DTW.
+Suppose $x$ is a time series that is constant except for a motif that
+occurs at some point in the series, and let us denote by $x_{+k}$ a
+copy of $x$ in which the motif is temporally shifted by $k$ timestamps.
+Then the quantity
+
+\begin{equation*}
+\left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
+\end{equation*}
+
+grows linearly with $\gamma k^2$:
 
 <figure>
     <video playsinline muted autoplay controls loop width="80%">
@@ -103,13 +182,68 @@ Note the sudden change in slope at the position marked by a vertical dashed line
     </figcaption>
 </figure>
 
+The reason behind this sensibility to time shifts is that soft-DTW provides a
+weighted average similarity score across all alignment paths (where stronger
+weights are assigned to better paths), instead of focusing on the single best
+alignment as done in DTW.
+
+Another important property of soft-DTW is that is has a "denoising effect", in
+the sense that, for a given time series $x_\text{ref}$, the minimizer of
+$\text{soft-}DTW^{\gamma}(x, x_\text{ref})$ is not $x_\text{ref}$
+itself but rather a smoothed version:
+
+**TODO: figure denoising softDTW**
+
+## Related Similarity Measures
+
+In [@blondelmensch2020], new similarity measures are defined, that rely on
+soft-DTW.
+
+First, **soft-DTW divergence** is defined as:
+
+\begin{equation}
+    D^\gamma (x, x^\prime) =
+        \text{soft-}DTW^{\gamma}(x, x^\prime)
+        - \frac{1}{2} \left(
+                \text{soft-}DTW^{\gamma}(x, x) +
+                \text{soft-}DTW^{\gamma}(x^\prime, x^\prime)
+            \right)
+\end{equation}
+
+and this divergence has the advantage of being minimized for
+$x = x^\prime$ (and being exactly 0 in that case).
+
+Second, another interesting similarity measure introduced in the same paper is
+the **sharp soft-DTW** which is:
+
+\begin{equation}
+    \text{sharp-soft-}DTW^{\gamma} (x, x^\prime) =
+        \langle A_\gamma,  D_2(x, x^\prime) \rangle
+\end{equation}
+
+Note that a **sharp soft-DTW divergence** can be derived from this
+(with a similar approach as for $D^\gamma$), which has the extra benefit
+(over the sharp soft-DTW) of
+being minimized at $x = x^\prime$.
+
+Further note that, by pushing $\gamma$ to the $+\infty$ limit in this formula,
+one gets:
+
+\begin{equation}
+\text{sharp-soft-}DTW^{\gamma}(x, x^\prime)
+    \xrightarrow{\gamma \to +\infty}
+    \left\langle A_\infty, D_2(x, x^\prime) \right\rangle \, ,
+\end{equation}
+
+where $A_\infty$ tends to favor diagonal matches:
+
 <figure>
-    <video playsinline muted autoplay controls loop width="80%">
-        <source src="fig/softdtw_landscape.webm" type="video/webm" />
-        <source src="fig/softdtw_landscape.mp4" type="video/mp4" />
-        <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" />
-    </video>
+    <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
     <figcaption> 
-        Differentiability of softDTW.
+        $A_\infty$ matrix for time series of length 30.
     </figcaption>
 </figure>
+
+# Conclusion
+
+**TODO**
