@@ -127,7 +127,7 @@ aligned series, as illustrated in the Figure below:
     <figcaption> 
         Dynamic Time Warping is equivalent to minimizing Euclidean distance between aligned time series under all admissible temporal alignments.
         Cyan dots correspond to repetitions of time series elements induced by the optimal temporal alignment retrieved by DTW.
-        Note how, once inserted these repeated elements, all matching become vertical, which is the typical behavior of Euclidean distance, as shown in Figure 2.
+        Note how, once inserted these repeated elements, all matchings become vertical, which is the typical behavior of Euclidean distance, as shown in Figure 2.
     </figcaption>
 </figure>
 
