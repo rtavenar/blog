@@ -155,11 +155,6 @@ In order to be considered admissible, a path should satisfy the following condit
   * $i_{k-1} \leq i_k \leq i_{k-1} + 1$
   * $j_{k-1} \leq j_k \leq j_{k-1} + 1$
 
-Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths
-becomes very large even for moderate time series lengths.
-The number of elements in $\mathcal{A}(x, x^\prime)$ is called [Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)
-and, assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially to compute the min.
-
 ### Dot product notation
 
 Another way to represent a DTW path is to use a binary matrix whose non-zero entries are those corresponding to a 
@@ -196,7 +191,12 @@ where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power 
 
 ## Algorithmic Solution
 
-An exact solution to this optimization problem can be found using dynamic programming.
+Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths
+becomes very large even for moderate time series lengths.
+The number of elements in $\mathcal{A}(x, x^\prime)$ is called [Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)
+and, assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially to compute the min.
+
+Fortunately, an exact solution to this optimization problem can be found using dynamic programming.
 Dynamic programming relies on recurrence.
 The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems.
 Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).
