@@ -60,7 +60,14 @@
   <ul>
   <li><a href="#introduction">Introduction</a></li>
   <li><a href="#differentiability-of-dtw">Differentiability of DTW</a></li>
-  <li><a href="#softdtw-and-variants">softDTW and variants</a></li>
+  <li><a href="#softdtw-and-variants">softDTW and variants</a>
+  <ul>
+  <li><a href="#definition">Definition</a></li>
+  <li><a href="#soft-alignment-path">Soft-Alignment Path</a></li>
+  <li><a href="#properties">Properties</a></li>
+  <li><a href="#related-similarity-measures">Related Similarity Measures</a></li>
+  </ul></li>
+  <li><a href="#conclusion">Conclusion</a></li>
   <li><a href="#bibliography">References</a></li>
   </ul>
 </div>
@@ -105,30 +112,29 @@
 </figure>
 <p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.</p>
 <h1 id="softdtw-and-variants">softDTW and variants</h1>
-<ul>
-<li>A discussion about soft-min</li>
-<li>softDTW definition</li>
-<li>soft alignment path
-<ul>
-<li>interpretation as the expectation across all alignments</li>
-</ul></li>
-<li>properties
-<ul>
-<li><span class="math inline">\(\gamma t^2\)</span> impact of a <span class="math inline">\(t\)</span>-offset (visu) [done]</li>
-<li>denoising effect</li>
-</ul></li>
-<li>Visualization of a loss landscape for softDTW as a function of <span class="math inline">\(\gamma\)</span> [done]</li>
-<li>sharp softDTW, divergences&#x2026;</li>
-</ul>
-<figure>
-<video playsinline muted autoplay controls loop width="80%">
-<source src="fig/softdtw_shift.webm" type="video/webm" />
-<source src="fig/softdtw_shift.mp4" type="video/mp4" />
-<img src="fig/softdtw_shift.gif" alt="Impact of time shifts on softDTW" /> </video>
-<figcaption>
-Impact of time shifts on softDTW.
-</figcaption>
-</figure>
+<p>Soft-DTW <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span> has been introduced as a way to mitigate this limitation.</p>
+<h2 id="definition">Definition</h2>
+<p>The formal definition for soft-DTW is the following:</p>
+<p><span class="math display">\[\begin{equation}
+\text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \min_{\pi \in \mathcal{A}(x, x^\prime)}{}^\gamma
+        \sum_{(i, j) \in \pi} d(x_i, x^\prime_j)^2
+\label{eq:softdtw}
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\min{}^\gamma\)</span> is the soft-min operator parametrized by a smoothing factor <span class="math inline">\(\gamma\)</span>.</p>
+<h3 id="a-note-on-soft-min">A note on soft-min</h3>
+<p>The soft-min operator <span class="math inline">\(\min{}^\gamma\)</span> is defined as:</p>
+<p><span class="math display">\[\begin{equation}
+    \min{}^\gamma(a_1, \dots, a_n) = - \gamma \log \sum_i e^{-a_i / \gamma}
+\end{equation}\]</span></p>
+<p>Note that when gamma tends to <span class="math inline">\(0^+\)</span>, the term corresponding to the lower <span class="math inline">\(a_i\)</span> value will dominate other terms in the sum, and the soft-min then tends to the hard minimum.</p>
+<p><strong>TODO: fig softmin</strong></p>
+<p>Typically, we have:</p>
+<p><span class="math display">\[\begin{equation}
+    \text{soft-}DTW^{\gamma}(x, x^\prime)
+    \xrightarrow{\gamma \to 0^+} DTW(x, x^\prime)^2 \, .
+\end{equation}\]</span></p>
+<p>However, contrary to DTW, soft-DTW is differentiable everywhere for strictly positive <span class="math inline">\(\gamma\)</span> even if, for small <span class="math inline">\(\gamma\)</span> values, sudden changes can still occur in the loss landscape, as seen in the Figure below:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="80%">
 <source src="fig/softdtw_landscape.webm" type="video/webm" />
@@ -138,13 +144,86 @@ Impact of time shifts on softDTW.
 Differentiability of softDTW.
 </figcaption>
 </figure>
+<h2 id="soft-alignment-path">Soft-Alignment Path</h2>
+<p><strong>TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mencsh</strong></p>
+<p>Let us denote by <span class="math inline">\(A_\gamma\)</span> the &#x201C;soft path&#x201D; matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching. <span class="math inline">\(A_\gamma\)</span> can be interpreted as a weighted average of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>:</p>
+<p><span class="math display">\[\begin{eqnarray}
+A_\gamma =&amp; \, \mathbb{E}_{\gamma}[A] \\
+=&amp; \, \sum_{\pi \in \mathcal{A}(x, x^\prime)} \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)} A_\pi \, ,
+\end{eqnarray}\]</span></p>
+<p>where <span class="math inline">\(k_{\mathrm{GA}}^{\gamma}(x, x^\prime)\)</span> is the Global Alignment kernel <span class="citation" data-cites="cuturi2007kernel">[<a href="#ref-cuturi2007kernel" role="doc-biblioref">CVBM07</a>]</span> that acts as a normalization factor here.</p>
+<p><span class="math inline">\(A_\gamma\)</span> can be computed with complexity <span class="math inline">\(O(mn)\)</span> and there is a link between this matrix and the gradients of the soft-DTW similarity measure:</p>
+<p><span class="math display">\[\begin{equation}
+\nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma
+\end{equation}\]</span></p>
+<h2 id="properties">Properties</h2>
+<p>As discussed in <span class="citation" data-cites="janati2020spatio">[<a href="#ref-janati2020spatio" role="doc-biblioref">JaCuGr20</a>]</span>, soft-DTW is not invariant to time shifts, as is DTW. Suppose <span class="math inline">\(x\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and let us denote by <span class="math inline">\(x_{+k}\)</span> a copy of <span class="math inline">\(x\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps. Then the quantity</p>
+<p><span class="math display">\[\begin{equation*}
+\left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
+\end{equation*}\]</span></p>
+<p>grows linearly with <span class="math inline">\(\gamma k^2\)</span>:</p>
+<figure>
+<video playsinline muted autoplay controls loop width="80%">
+<source src="fig/softdtw_shift.webm" type="video/webm" />
+<source src="fig/softdtw_shift.mp4" type="video/mp4" />
+<img src="fig/softdtw_shift.gif" alt="Impact of time shifts on softDTW" /> </video>
+<figcaption>
+Impact of time shifts on softDTW.
+</figcaption>
+</figure>
+<p>The reason behind this sensibility to time shifts is that soft-DTW provides a weighted average similarity score across all alignment paths (where stronger weights are assigned to better paths), instead of focusing on the single best alignment as done in DTW.</p>
+<p>Another important property of soft-DTW is that is has a &#x201C;denoising effect&#x201D;, in the sense that, for a given time series <span class="math inline">\(x_\text{ref}\)</span>, the minimizer of <span class="math inline">\(\text{soft-}DTW^{\gamma}(x, x_\text{ref})\)</span> is not <span class="math inline">\(x_\text{ref}\)</span> itself but rather a smoothed version:</p>
+<p><strong>TODO: figure denoising softDTW</strong></p>
+<h2 id="related-similarity-measures">Related Similarity Measures</h2>
+<p>In <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe20</a>]</span>, new similarity measures are defined, that rely on soft-DTW.</p>
+<p>First, <strong>soft-DTW divergence</strong> is defined as:</p>
+<p><span class="math display">\[\begin{equation}
+    D^\gamma (x, x^\prime) =
+        \text{soft-}DTW^{\gamma}(x, x^\prime)
+        - \frac{1}{2} \left(
+                \text{soft-}DTW^{\gamma}(x, x) +
+                \text{soft-}DTW^{\gamma}(x^\prime, x^\prime)
+            \right)
+\end{equation}\]</span></p>
+<p>and this divergence has the advantage of being minimized for <span class="math inline">\(x = x^\prime\)</span> (and being exactly 0 in that case).</p>
+<p>Second, another interesting similarity measure introduced in the same paper is the <strong>sharp soft-DTW</strong> which is:</p>
+<p><span class="math display">\[\begin{equation}
+    \text{sharp-soft-}DTW^{\gamma} (x, x^\prime) =
+        \langle A_\gamma,  D_2(x, x^\prime) \rangle
+\end{equation}\]</span></p>
+<p>Note that a <strong>sharp soft-DTW divergence</strong> can be derived from this (with a similar approach as for <span class="math inline">\(D^\gamma\)</span>), which has the extra benefit (over the sharp soft-DTW) of being minimized at <span class="math inline">\(x = x^\prime\)</span>.</p>
+<p>Further note that, by pushing <span class="math inline">\(\gamma\)</span> to the <span class="math inline">\(+\infty\)</span> limit in this formula, one gets:</p>
+<p><span class="math display">\[\begin{equation}
+\text{sharp-soft-}DTW^{\gamma}(x, x^\prime)
+    \xrightarrow{\gamma \to +\infty}
+    \left\langle A_\infty, D_2(x, x^\prime) \right\rangle \, ,
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(A_\infty\)</span> tends to favor diagonal matches:</p>
+<figure>
+<img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
+<figcaption>
+<span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
+</figcaption>
+</figure>
+<h1 id="conclusion">Conclusion</h1>
+<p><strong>TODO</strong></p>
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
+<div id="ref-blondelmensch2020" class="csl-entry" role="doc-biblioentry">
+<div class="csl-left-margin">[BlMeVe20] </div><div class="csl-right-inline"><span class="smallcaps">Blondel, Mathieu</span> ; <span class="smallcaps">Mensch, Arthur</span> ; <span class="smallcaps">Vert, Jean-Philippe</span>: Differentiable Divergences Between Time Series.</div>
+</div>
 <div id="ref-bonnans1998optimization" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">[BoSh98] </div><div class="csl-right-inline"><span class="smallcaps">Bonnans, J Fr&#xE9;d&#xE9;ric</span> ; <span class="smallcaps">Shapiro, Alexander</span>: Optimization problems with perturbations: A guided tour. In: <em>SIAM review</em> Bd. 40, SIAM (1998), Nr.&#xA0;2, S.&#xA0;228&#x2013;264</div>
 </div>
 <div id="ref-cuturi2017soft" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">[CuBl17] </div><div class="csl-right-inline"><span class="smallcaps">Cuturi, Marco</span> ; <span class="smallcaps">Blondel, Mathieu</span>: Soft-DTW: a differentiable loss function for time-series. In: <em>Proceedings of the International Conference on Machine Learning</em>, 2017, S.&#xA0;894&#x2013;903</div>
+</div>
+<div id="ref-cuturi2007kernel" class="csl-entry" role="doc-biblioentry">
+<div class="csl-left-margin">[CVBM07] </div><div class="csl-right-inline"><span class="smallcaps">Cuturi, Marco</span> ; <span class="smallcaps">Vert, Jean-Philippe</span> ; <span class="smallcaps">Birkenes, Oystein</span> ; <span class="smallcaps">Matsui, Tomoko</span>: A kernel for time series based on global alignments. In: <em>Proceedings of the IEEE International Conference on Acoustics, Speech, and Signal Processing</em>. Bd. 2&#xA0;: IEEE, 2007, S.&#xA0;II&#x2013;413</div>
+</div>
+<div id="ref-janati2020spatio" class="csl-entry" role="doc-biblioentry">
+<div class="csl-left-margin">[JaCuGr20] </div><div class="csl-right-inline"><span class="smallcaps">Janati, Hicham</span> ; <span class="smallcaps">Cuturi, Marco</span> ; <span class="smallcaps">Gramfort, Alexandre</span>: Spatio-Temporal Alignments: Optimal transport through space and time. In: <em>Proceedings of the International Conference on Artificial Intelligence and Statistics</em>&#xA0;: PMLR, 2020, S.&#xA0;1695&#x2013;1704</div>
 </div>
 </div>
 </body>
