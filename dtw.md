@@ -191,10 +191,10 @@ where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power 
 
 ## Algorithmic Solution
 
-Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths
-becomes very large even for moderate time series lengths.
-The number of elements in $\mathcal{A}(x, x^\prime)$ is called [Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)
-and, assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially to compute the min.
+Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths (coined 
+[Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)) becomes very large even for moderate time series lengths.
+Assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in 
+$\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially to compute the minimum.
 
 Fortunately, an exact solution to this optimization problem can be found using dynamic programming.
 Dynamic programming relies on recurrence.
