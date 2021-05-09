@@ -45,6 +45,13 @@
         padding: .2em 1em;
     }
   </style>
+  
+  <!-- pandoc-eqnos: equation style -->
+  <style>
+    .eqnos { display: inline-block; position: relative; width: 100%; }
+    .eqnos br { display: none; }
+    .eqnos-number { position: absolute; right: 0em; top: 50%; line-height: 0; }
+  </style>
 </head>
 <body>
 <div id="header">
@@ -131,12 +138,10 @@ Dynamic Time Warping is equivalent to minimizing Euclidean distance between alig
 </figure>
 <h2 id="problem-formulation">Problem formulation</h2>
 <p>More formally, the optimization problem writes:</p>
-<p><span class="math display">\[\begin{equation}
-DTW_q({x}, {x}^\prime) =
+<p><span id="eq:dtw" class="eqnos"><span class="math display">\[DTW_q({x}, {x}^\prime) =
     \min_{\pi \in \mathcal{A}({x}, {x}^\prime)}
         \left( \sum_{(i, j) \in \pi} d(x_i, x^\prime_j)^q \right)^{\frac{1}{q}}
-\label{eq:dtw}
-\end{equation}\]</span></p>
+\]</span><span class="eqnos-number">(1)</span></span> </p>
 <p>Here, an <strong>alignment path</strong> <span class="math inline">\(\pi\)</span> of length <span class="math inline">\(K\)</span> is a sequence of <span class="math inline">\(K\)</span> index pairs <span class="math inline">\(\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)\)</span> and <span class="math inline">\(\mathcal{A}({x}, {x}^\prime)\)</span> is the set of all admissible paths. In order to be considered admissible, a path should satisfy the following conditions:</p>
 <ul>
 <li><p>Beginning (resp. end) of time series are matched together:</p>
@@ -150,6 +155,7 @@ DTW_q({x}, {x}^\prime) =
 <li><span class="math inline">\(j_{k-1} \leq j_k \leq j_{k-1} + 1\)</span></li>
 </ul></li>
 </ul>
+<p>Though the optimization problem in Equation [<a href="#eq:dtw">1</a>] is minimization over a finite set, the number of admissible paths becomes very large even for moderate time series lengths. The number of elements in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span> is called <a href="https://en.wikipedia.org/wiki/Delannoy_number">Delannoy number</a> and, assuming <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are the same order, there exists <span class="math inline">\(O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)\)</span> different paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>, which makes it intractable to actually list all paths sequentially to compute the min.</p>
 <h3 id="dot-product-notation">Dot product notation</h3>
 <p>Another way to represent a DTW path is to use a binary matrix whose non-zero entries are those corresponding to a matching between time series elements. This representation is related to the index sequence representation used above through:</p>
 <p><span class="math display">\[\begin{equation}
