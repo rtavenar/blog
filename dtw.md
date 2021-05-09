@@ -135,12 +135,11 @@ aligned series, as illustrated in the Figure below:
 
 More formally, the optimization problem writes:
 
-\begin{equation}
-DTW_q({x}, {x}^\prime) =
+$$DTW_q({x}, {x}^\prime) =
     \min_{\pi \in \mathcal{A}({x}, {x}^\prime)}
         \left( \sum_{(i, j) \in \pi} d(x_i, x^\prime_j)^q \right)^{\frac{1}{q}}
-\label{eq:dtw}
-\end{equation}
+$$ {#eq:dtw}
+
 
 Here, an **alignment path** $\pi$ of length $K$ is a sequence of $K$ index pairs
 $\left((i_0, j_0), \dots , (i_{K-1}, j_{K-1})\right)$ and $\mathcal{A}({x}, {x}^\prime)$ is the set of all admissible paths.
@@ -155,6 +154,11 @@ In order to be considered admissible, a path should satisfy the following condit
 
   * $i_{k-1} \leq i_k \leq i_{k-1} + 1$
   * $j_{k-1} \leq j_k \leq j_{k-1} + 1$
+
+Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths
+becomes very large even for moderate time series lengths.
+The number of elements in $\mathcal{A}(x, x^\prime)$ is called [Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)
+and, assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially to compute the min.
 
 ### Dot product notation
 
