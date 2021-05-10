@@ -6,8 +6,6 @@ date: 2021/04/21
 draft: false
 rights: Creative Commons CC BY-NC-SA
 bibliography: dtw.bib
-reference-section-title: References
-link-citations: true
 ---
 
 # Alignment-based metrics
@@ -191,7 +189,7 @@ where $D_q({x}, {x}^\prime)$ stores distances $d(x_i, x^\prime_j)$ at the power 
 
 ## Algorithmic Solution
 
-Though the optimization problem in Equation [@eq:dtw] is minimization over a finite set, the number of admissible paths (coined 
+Though the optimization problem in {@eq:dtw} is minimization over a finite set, the number of admissible paths (coined 
 [Delannoy number](https://en.wikipedia.org/wiki/Delannoy_number)) becomes very large even for moderate time series lengths.
 Assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)$ different paths in 
 $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially in order to compute the minimum.
