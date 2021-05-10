@@ -172,14 +172,14 @@ Impact of time shifts on soft-DTW.
 </figcaption>
 </figure>
 <p>The reason behind this sensibility to time shifts is that soft-DTW provides a weighted average similarity score across all alignment paths (where stronger weights are assigned to better paths), instead of focusing on the single best alignment as done in DTW.</p>
-<p>Another important property of soft-DTW is that is has a &#x201C;denoising effect&#x201D;, in the sense that, for a given time series <span class="math inline">\(x_\text{ref}\)</span>, the minimizer of <span class="math inline">\(\text{soft-}DTW^{\gamma}(x, x_\text{ref})\)</span> is not <span class="math inline">\(x_\text{ref}\)</span> itself but rather a smoothed version:</p>
+<p>Another important property of soft-DTW is that is has a &#x201C;denoising effect&#x201D;, in the sense that, for a given time series <span class="math inline">\(x_\text{ref}\)</span>, the minimizer of <span class="math inline">\(\text{soft-}DTW^{\gamma}(x, x_\text{ref})\)</span> is not <span class="math inline">\(x_\text{ref}\)</span> itself but rather a smoothed version of it:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="100%">
 <source src="fig/softdtw_denoising.webm" type="video/webm" />
 <source src="fig/softdtw_denoising.mp4" type="video/mp4" />
 <img src="fig/softdtw_denoising.gif" alt="Denoising effect of soft-DTW" /> </video>
 <figcaption>
-Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class="math inline">\(x\)</span>, initialized at <span class="math inline">\(x^{(0)} = x_\text{ref}\)</span>. Note how using larger <span class="math inline">\(\gamma\)</span> values tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-denoising" class="sidenote-toggle" /> <span class="sidenote">This Figure is widely inspired from Figure 2 in <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe20</a>]</span>.</span>
+Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class="math inline">\(x\)</span>, initialized at <span class="math inline">\(x^{(0)} = x_\text{ref}\)</span>. Note how using larger <span class="math inline">\(\gamma\)</span> values (right column) tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-denoising" class="sidenote-toggle" /> <span class="sidenote">This Figure is widely inspired from Figure 2 in <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe20</a>]</span>.</span>
 </figcaption>
 </figure>
 <h2 id="related-similarity-measures">Related Similarity Measures</h2>
