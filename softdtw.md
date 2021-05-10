@@ -80,9 +80,6 @@ Note the sudden change in slope at the position marked by a vertical dashed line
 
 Soft-DTW [@cuturi2017soft] has been introduced as a way to mitigate this
 limitation.
-
-## Definition
-
 The formal definition for soft-DTW is the following:
 
 \begin{equation}
@@ -95,7 +92,7 @@ The formal definition for soft-DTW is the following:
 where $\min{}^\gamma$ is the soft-min operator parametrized by a smoothing
 factor $\gamma$.
 
-### A note on soft-min
+## A note on soft-min
 
 The soft-min operator $\min{}^\gamma$ is defined as:
 
@@ -113,7 +110,7 @@ Typically, we have:
 
 \begin{equation}
     \text{soft-}DTW^{\gamma}(x, x^\prime)
-    \xrightarrow{\gamma \to 0^+} DTW(x, x^\prime)^2 \, .
+    \xrightarrow{\gamma \to 0^+} DTW_2(x, x^\prime)^2 \, .
 \end{equation}
 
 However, contrary to DTW, soft-DTW is differentiable everywhere for strictly positive $\gamma$ even if, for small $\gamma$ values, sudden changes can still occur in the loss landscape, as seen in the Figure below:
@@ -129,9 +126,11 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
+**TODO: softDTW is $O(mn)$ to compute**
+
 ## Soft-Alignment Path
 
-**TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mencsh**
+**TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch**
 
 Let us denote by $A_\gamma$ the "soft path" matrix that informs, for each pair
 $(i, j)$, how much it will be taken into account in the matching.
@@ -173,10 +172,10 @@ grows linearly with $\gamma k^2$:
     <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/softdtw_shift.webm" type="video/webm" />
         <source src="fig/softdtw_shift.mp4" type="video/mp4" />
-        <img src="fig/softdtw_shift.gif" alt="Impact of time shifts on softDTW" />
+        <img src="fig/softdtw_shift.gif" alt="Impact of time shifts on soft-DTW" />
     </video>
     <figcaption> 
-        Impact of time shifts on softDTW.
+        Impact of time shifts on soft-DTW.
     </figcaption>
 </figure>
 
@@ -190,7 +189,20 @@ the sense that, for a given time series $x_\text{ref}$, the minimizer of
 $\text{soft-}DTW^{\gamma}(x, x_\text{ref})$ is not $x_\text{ref}$
 itself but rather a smoothed version:
 
-**TODO: figure denoising softDTW**
+<figure>
+    <video playsinline muted autoplay controls loop width="100%">
+        <source src="fig/softdtw_denoising.webm" type="video/webm" />
+        <source src="fig/softdtw_denoising.mp4" type="video/mp4" />
+        <img src="fig/softdtw_denoising.gif" alt="Denoising effect of soft-DTW" />
+    </video>
+    <figcaption> 
+        Denoising effect of soft-DTW.
+        Here, we perform a gradient descent on $x$, initialized at $x^{(0)} = x_\text{ref}$.
+        Note how using larger $\gamma$ values tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label>
+        <input type="checkbox" id="sn-denoising" class="sidenote-toggle" />
+        <span class="sidenote">This Figure is widely inspired from Figure 2 in [@blondelmensch2020].</span>
+    </figcaption>
+</figure>
 
 ## Related Similarity Measures
 
