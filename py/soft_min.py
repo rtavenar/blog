@@ -11,6 +11,8 @@ def softmin(a, gamma):
     s = np.sum(np.exp(a_gamma))
     return - gamma * (np.log(s) + max_a_gamma)
 
+
+plt.rc('text', usetex=True)
 fig, ax = plt.subplots()
 set_fig_style(fig, font_size=14)
 colors = sns.color_palette("Blues")[2:]
@@ -23,7 +25,7 @@ ax.axhline(y=0, linestyle='--', color='k', alpha=.5)
 for i, gamma in enumerate(gamma_values):
     ax.plot(a, [softmin(np.array([-xi, xi]), gamma) for xi in a], color=colors[i], label=f"$\gamma={gamma}$")
 plt.legend(loc="upper right")
-plt.ylabel("$min^\gamma(-a, a)$")
-plt.xlabel("$a$")
+plt.ylabel("$\min^\gamma(-a, a)$", fontsize=16)
+plt.xlabel("$a$", fontsize=16)
 plt.tight_layout()
 plt.savefig('fig/soft_min.svg')
