@@ -17,15 +17,15 @@ set_fig_style(fig, font_size=14)
 ax = fig.gca()
 for cur_ax in fig.axes:
     cur_ax.set_facecolor(fig.patch.get_facecolor())
-colors = sns.color_palette("Blues")[2:]
+colors = sns.color_palette("Blues")[1:]
 
 a = np.linspace(-1.5, 1.5, 100)
-gamma_values = [.01, .1, .3, 1.]
+gamma_values = [.01, .1, .3, .6, 1.]
 
 ax.axvline(x=0, linestyle='--', color='k', alpha=.5)
 ax.axhline(y=0, linestyle='--', color='k', alpha=.5)
 for i, gamma in enumerate(gamma_values):
-    ax.plot(a, [softmin(np.array([-xi, xi]), gamma) for xi in a], color=colors[i], label=f"$\gamma={gamma}$")
+    ax.plot(a, [softmin(np.array([-xi, xi]), gamma) for xi in a], color=colors[-i-1], label=f"$\gamma={gamma}$")
 plt.legend(loc="upper right")
 plt.ylabel("$\min^\gamma(-a, a)$", fontsize=16)
 plt.xlabel("$a$", fontsize=16)
