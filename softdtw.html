@@ -190,6 +190,7 @@ Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class
 <h2 id="related-similarity-measures">Related Similarity Measures</h2>
 <p>In <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe20</a>]</span>, new similarity measures are defined, that rely on soft-DTW.</p>
 <p>First, <strong>soft-DTW divergence</strong> is defined as:</p>
+<div class="scroll-wrapper">
 <p><span class="math display">\[\begin{equation}
     D^\gamma (x, x^\prime) =
         \text{soft-}DTW^{\gamma}(x, x^\prime)
@@ -198,6 +199,7 @@ Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class
                 \text{soft-}DTW^{\gamma}(x^\prime, x^\prime)
             \right)
 \end{equation}\]</span></p>
+</div>
 <p>and this divergence has the advantage of being minimized for <span class="math inline">\(x = x^\prime\)</span> (and being exactly 0 in that case).</p>
 <p>Second, another interesting similarity measure introduced in the same paper is the <strong>sharp soft-DTW</strong> which is:</p>
 <p><span class="math display">\[\begin{equation}
