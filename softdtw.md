@@ -218,6 +218,7 @@ soft-DTW.
 
 First, **soft-DTW divergence** is defined as:
 
+<div class="scroll-wrapper">
 \begin{equation}
     D^\gamma (x, x^\prime) =
         \text{soft-}DTW^{\gamma}(x, x^\prime)
@@ -226,6 +227,7 @@ First, **soft-DTW divergence** is defined as:
                 \text{soft-}DTW^{\gamma}(x^\prime, x^\prime)
             \right)
 \end{equation}
+</div>
 
 and this divergence has the advantage of being minimized for
 $x = x^\prime$ (and being exactly 0 in that case).
