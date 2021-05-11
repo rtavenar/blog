@@ -10,8 +10,9 @@ from utils import set_fig_style, export_animation
 
 
 def soft_dtw_div(x, y, gamma):
-    return soft_dtw(x, y, gamma) - .5 * (soft_dtw(x, x, gamma) 
-                                         + soft_dtw(y, y, gamma))
+    # return soft_dtw(x, y, gamma) - .5 * (soft_dtw(x, x, gamma) 
+    #                                      + soft_dtw(y, y, gamma))
+    return soft_dtw(x, y, gamma) - soft_dtw(x, x, gamma)
 
 
 def animate(i):
@@ -66,8 +67,8 @@ for gamma_idx, gamma in enumerate(gamma_values):
     list_scatter_softdtw[gamma_idx], = ax2.plot([list_shifts[0]], 
                                                 [softdtw_dists[gamma_idx][0]], 
                                                 color=colors_gradient[gamma_idx], marker='o')
-ax2.set_xlabel("Temporal shift")
-ax2.set_ylabel("softDTW divergence")
+ax2.set_xlabel("Temporal shift $k$")
+ax2.set_ylabel("$\Delta^\gamma(x, x_{+k})$")
 ax2.legend(loc="upper left", fontsize=12)
 
 plt.tight_layout()

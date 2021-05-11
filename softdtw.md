@@ -129,7 +129,8 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
         <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" />
     </video>
     <figcaption> 
-        Differentiability of softDTW.
+        Differentiability of soft-DTW.
+        For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW [discussed below](#related-similarity-measures), is reported in place of soft-DTW.
     </figcaption>
 </figure>
 
@@ -170,7 +171,7 @@ copy of $x$ in which the motif is temporally shifted by $k$ timestamps.
 Then the quantity
 
 \begin{equation*}
-\left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
+\Delta^\gamma(x, x_{+k}) = \left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
 \end{equation*}
 
 grows linearly with $\gamma k^2$:

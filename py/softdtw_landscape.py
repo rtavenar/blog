@@ -67,7 +67,7 @@ for gamma_idx, (gamma, cur_ax) in enumerate(zip(gamma_values, list_axes)):
     list_scatter_softdtw[gamma_idx], = cur_ax.plot([list_values[0]], [softdtw_dists[gamma_idx][0]], 
                                                 color=colors_gradient[gamma_idx], marker='o')
 ax2.set_xlabel("$x_{\\tau}$")
-ax2.set_ylabel("softDTW divergence")
+ax2.set_ylabel("soft-DTW divergence")
 handles, labels = [(a + b) for a, b in zip(ax2.get_legend_handles_labels(), 
                                            ax3.get_legend_handles_labels())]
 ax2.legend(handles, labels, loc="lower left", fontsize=12)

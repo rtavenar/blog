@@ -52,7 +52,7 @@ ax2.plot(list_shifts, euc_dists, color=colors[0], linestyle='-', label="Euclidea
 scatter_euc, = ax2.plot([list_shifts[0]], [euc_dists[0]], color=colors[0], marker='o')
 ax2.plot(list_shifts, dtw_dists, color=colors[1], linestyle='-', label="DTW")
 scatter_dtw, = ax2.plot([list_shifts[0]], [dtw_dists[0]], color=colors[1], marker='o')
-ax2.set_xlabel("Temporal shift")
+ax2.set_xlabel("Temporal shift $k$")
 ax2.set_ylabel("Distance")
 ax2.legend(loc="upper left", fontsize=12)
 
