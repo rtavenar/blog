@@ -144,7 +144,7 @@ The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied t
 <source src="fig/softdtw_landscape.mp4" type="video/mp4" />
 <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" /> </video>
 <figcaption>
-Differentiability of softDTW.
+Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW <a href="#related-similarity-measures">discussed below</a>, is reported in place of soft-DTW.
 </figcaption>
 </figure>
 <p><strong>TODO: softDTW is <span class="math inline">\(O(mn)\)</span> to compute</strong></p>
@@ -164,7 +164,7 @@ A_\gamma =&amp; \, \mathbb{E}_{\gamma}[A] \\
 <h2 id="properties">Properties</h2>
 <p>As discussed in <span class="citation" data-cites="janati2020spatio">[<a href="#ref-janati2020spatio" role="doc-biblioref">JaCuGr20</a>]</span>, soft-DTW is not invariant to time shifts, as is DTW. Suppose <span class="math inline">\(x\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and let us denote by <span class="math inline">\(x_{+k}\)</span> a copy of <span class="math inline">\(x\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps. Then the quantity</p>
 <p><span class="math display">\[\begin{equation*}
-\left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
+\Delta^\gamma(x, x_{+k}) = \left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
 \end{equation*}\]</span></p>
 <p>grows linearly with <span class="math inline">\(\gamma k^2\)</span>:</p>
 <figure>
