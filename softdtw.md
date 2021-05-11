@@ -102,11 +102,18 @@ The soft-min operator $\min{}^\gamma$ is defined as:
 
 Note that when gamma tends to $0^+$, the term corresponding to the lower $a_i$
 value will dominate other terms in the sum, and the soft-min then tends to the
-hard minimum.
+hard minimum, as illustrated below:
 
-**TODO: fig softmin**
+<figure>
+    <img src="fig/soft_min.svg" alt="soft-min function" width="80%" />
+    <figcaption> 
+        The soft-min function $\min^\gamma$ applied to the pair $(-a, a)$ for various values of $\gamma$.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label>
+        <input type="checkbox" id="sn-softmin" class="sidenote-toggle" />
+        <span class="sidenote">This Figure is inspired from [the dedicated wikipedia page](https://en.wikipedia.org/wiki/Smooth_maximum).</span>
+    </figcaption>
+</figure>
 
-Typically, we have:
+As a consequence, we have:
 
 \begin{equation}
     \text{soft-}DTW^{\gamma}(x, x^\prime)
