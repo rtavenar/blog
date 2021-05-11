@@ -8,8 +8,11 @@ import matplotlib
 matplotlib.rcParams['lines.markersize'] = 30
 matplotlib.rcParams['lines.linewidth'] = matplotlib.rcParams['axes.linewidth'] = 2
 
-fig, ax = plt.subplots(figsize=(8, 8))
+fig = plt.figure(figsize=(8, 8))
 set_fig_style(fig, font_size=24)
+ax = fig.gca()
+for cur_ax in fig.axes:
+    cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("tab10")
 grey = sns.color_palette("Greys")[2]
 
@@ -20,12 +23,12 @@ for pos in range(2):
     ax.axhline(y=pos + .5, linestyle='-', color='k', zorder=-1)
 ax.set_xlim([-.5, 2.5])
 ax.set_ylim([-.5, 2.5])
-ax.text(s="$i$", x=2, y=-.75, ha='center', color='k', zorder=-.25)
-ax.text(s="$i-1$", x=1, y=-.75, ha='center', color='k', zorder=-.25)
-ax.text(s="$i-2$", x=0, y=-.75, ha='center', color='k', zorder=-.25)
-ax.text(s="$j$", x=-.65, y=0, ha='right', va='center', color='k', zorder=-.25)
-ax.text(s="$j-1$", x=-.65, y=1, ha='right', va='center', color='k', zorder=-.25)
-ax.text(s="$j-2$", x=-.65, y=2, ha='right', va='center', color='k', zorder=-.25)
+ax.text(s="$i$", x=2, y=-.75, ha='center', color='k', zorder=-.25, fontsize=36)
+ax.text(s="$i-1$", x=1, y=-.75, ha='center', color='k', zorder=-.25, fontsize=36)
+ax.text(s="$i-2$", x=0, y=-.75, ha='center', color='k', zorder=-.25, fontsize=36)
+ax.text(s="$j$", x=-.65, y=0, ha='right', va='center', color='k', zorder=-.25, fontsize=36)
+ax.text(s="$j-1$", x=-.65, y=1, ha='right', va='center', color='k', zorder=-.25, fontsize=36)
+ax.text(s="$j-2$", x=-.65, y=2, ha='right', va='center', color='k', zorder=-.25, fontsize=36)
 
 ax.plot([0, 0, 0, 1, 2], [2, 1, 0, 2, 2], marker='o', color=grey, linestyle='', zorder=0)
 for i_source in range(3):

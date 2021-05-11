@@ -38,8 +38,9 @@ def animate(i):
 
     return [ax_im, ax_text]
 
-fig, ax = plt.subplots(figsize=(6, 6))
+fig = plt.figure(figsize=(6, 6))
 set_fig_style(fig, font_size=32)
+ax = fig.gca()
 bg_color = fig.patch.get_facecolor()
 grays = colors = sns.color_palette("Greys")
 

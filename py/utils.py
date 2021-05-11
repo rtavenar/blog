@@ -1,6 +1,5 @@
 import os
 from matplotlib import rc, rcParams, colors, animation
-import matplotlib.pyplot as plt
 
 
 def set_fig_style(fig, font_size=22):
@@ -15,6 +14,7 @@ def set_fig_style(fig, font_size=22):
         "font.serif": ["Times", "Palatino", "New Century Schoolbook", "Bookman", "Computer Modern Roman"],
         "font.size": font_size
     })
+    rc('text', usetex=True)
 
 
 def export_animation(anim, fname, ext=None, fps=5):

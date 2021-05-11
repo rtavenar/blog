@@ -12,9 +12,11 @@ def softmin(a, gamma):
     return - gamma * (np.log(s) + max_a_gamma)
 
 
-plt.rc('text', usetex=True)
-fig, ax = plt.subplots()
+fig = plt.figure()
 set_fig_style(fig, font_size=14)
+ax = fig.gca()
+for cur_ax in fig.axes:
+    cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("Blues")[2:]
 
 a = np.linspace(-1.5, 1.5, 100)

@@ -15,8 +15,9 @@ def animate(i):
 
     return [marker, text]
 
-fig, ax = plt.subplots(figsize=(8, 4))
+fig = plt.figure(figsize=(8, 4))
 set_fig_style(fig, font_size=14)
+ax = fig.gca()
 for cur_ax in fig.axes:
     cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("Paired")

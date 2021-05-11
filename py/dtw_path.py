@@ -39,8 +39,9 @@ f[8:] = -1.
 
 length = 20
 
-fig, ax = plt.subplots()
+fig = plt.figure()
 set_fig_style(fig, font_size=14)
+ax = fig.gca()
 for cur_ax in fig.axes:
     cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("Paired")
