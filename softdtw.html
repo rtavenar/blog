@@ -125,9 +125,14 @@
 <p><span class="math display">\[\begin{equation}
     \min{}^\gamma(a_1, \dots, a_n) = - \gamma \log \sum_i e^{-a_i / \gamma}
 \end{equation}\]</span></p>
-<p>Note that when gamma tends to <span class="math inline">\(0^+\)</span>, the term corresponding to the lower <span class="math inline">\(a_i\)</span> value will dominate other terms in the sum, and the soft-min then tends to the hard minimum.</p>
-<p><strong>TODO: fig softmin</strong></p>
-<p>Typically, we have:</p>
+<p>Note that when gamma tends to <span class="math inline">\(0^+\)</span>, the term corresponding to the lower <span class="math inline">\(a_i\)</span> value will dominate other terms in the sum, and the soft-min then tends to the hard minimum, as illustrated below:</p>
+<figure>
+<img src="fig/soft_min.svg" alt="soft-min function" width="80%" />
+<figcaption>
+The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-softmin" class="sidenote-toggle" /> <span class="sidenote">This Figure is inspired from <a href="https://en.wikipedia.org/wiki/Smooth_maximum">the dedicated wikipedia page</a>.</span>
+</figcaption>
+</figure>
+<p>As a consequence, we have:</p>
 <p><span class="math display">\[\begin{equation}
     \text{soft-}DTW^{\gamma}(x, x^\prime)
     \xrightarrow{\gamma \to 0^+} DTW_2(x, x^\prime)^2 \, .
