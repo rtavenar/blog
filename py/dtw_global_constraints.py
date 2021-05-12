@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 import matplotlib.animation as animation
 import seaborn as sns
 from tslearn.metrics import dtw, sakoe_chiba_mask, itakura_mask
@@ -32,12 +33,8 @@ def animate(i):
 
     return list_artists
 
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
-
 length = 30
+matplotlib.use('webagg')
 
 fig = plt.figure(figsize=(6, 8))
 set_fig_style(fig, font_size=14)

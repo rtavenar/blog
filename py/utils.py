@@ -17,14 +17,14 @@ def set_fig_style(fig, font_size=22):
     rc('text', usetex=True)
 
 
-def export_animation(anim, fname, ext=None, fps=5):
+def export_animation(anim, fname, ext=None, fps=5, dpi=200):
     if ext is None:
         # If ext is None, all GIF+video figures are generated
         for ext in ["gif", "mp4", "webm"]:
             export_animation(anim, fname, ext=ext)
     fname_with_ext = f"{fname}.{ext}"
     if ext == "gif":
-        anim.save(fname_with_ext, dpi=100, savefig_kwargs={'pad_inches': 'tight'})
+        anim.save(fname_with_ext, dpi=dpi, savefig_kwargs={'pad_inches': 'tight'})
     elif ext == "html":
         rcParams["animation.frame_format"] = "svg"
         html_widget = anim.to_jshtml(default_mode="loop")
@@ -35,6 +35,6 @@ def export_animation(anim, fname, ext=None, fps=5):
             writer = Writer(fps=fps, codec="libx265")
         else:
             writer = Writer(fps=fps, codec='libvpx-vp9')
-        anim.save(fname_with_ext, writer=writer)
+        anim.save(fname_with_ext, writer=writer, dpi=dpi)
     else:
         print(f"Unrecognized extension: {ext}")
