@@ -240,7 +240,7 @@ as illustrated in the Figure below:
 
 This implies that filling a matrix that would store $R_{i,j}$ terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" />
-<span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms `R[i-1, j]`, `R[i, j-1]` and `R[i-1, j-1]` are accessible when computing `R[i, j]`. When vectorizing code is of importance, an even better strategy is to compute the `R` terms one anti-diagonal at a time [@tralie2020exact].</span>
+<span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms $R_{i-1, j}$, $R_{i, j-1}$ and $R_{i-1, j-1}$ are accessible when computing $R_{i, j}$. When vectorizing code is of importance, an even better strategy is to compute the $R$ terms one anti-diagonal at a time [@tralie2020exact].</span>
  is sufficient to retrieve 
 $DTW_q({x}, {x}^\prime)$ as ${R_{n-1, m-1}}^{\frac{1}{q}}$.
 
