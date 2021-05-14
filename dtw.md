@@ -334,7 +334,8 @@ while it varies depending on the time index for Itakura parallelograms:
         <img src="fig/dtw_global_constraints.gif" alt="DTW Global constraints" />
     </video>
     <figcaption>
-        Allowed matches for several global constraint schemes.
+        Valid matches for several global constraint schemes.
+        For each position in the upper time series, all valid matches in the lower time series are represented through gray connections.
     </figcaption>
 </figure>
 
