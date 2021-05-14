@@ -234,7 +234,7 @@ as illustrated in the Figure below:
 <figure>
     <img src="fig/dtw_transitions.svg" alt="DTW transitions" width="50%" />
     <figcaption> 
-        Authorized DTW transitions.
+        Valid DTW transitions.
     </figcaption>
 </figure>
 
@@ -349,7 +349,7 @@ but is no longer invariant to longer time shifts:
         <img src="fig/sakoe_shift.gif" alt="Invariance to time shifts using Sakoe-Chiba band" />
     </video>
     <figcaption>
-        Impact of time shifts on a DTW constrained with a Sakoe-Chiba band of radius $r$.
+        Impact of time shifts on a DTW with a Sakoe-Chiba band constraint of radius $r$.
     </figcaption>
 </figure>
 
