@@ -1,5 +1,5 @@
 ---
-title: Differentiability of DTW and the case of softDTW
+title: Differentiability of DTW and the case of soft-DTW
 language: en
 author: Romain Tavenard
 date: 2021/04/29
@@ -286,9 +286,9 @@ Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operat
 </figure>
 
 As a consequence, the resulting similarity measure upper bounds DTW.
-Note also that this paper suggests that these DTW variants are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations (this paper focuses on representation learning for videos).
+Note also that [@hadji2020] suggest that the DTW variants presented in these posts are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations. 
 
 # Conclusion
 
 **TODO**
-Our next blog post shbould be dedicated to drawing links between optimal transport and dynamic time warping.
+Our next blog post should be dedicated to drawing links between optimal transport and dynamic time warping.
