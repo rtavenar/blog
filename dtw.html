@@ -206,7 +206,7 @@ R_{i,j}
 <figure>
 <img src="fig/dtw_transitions.svg" alt="DTW transitions" width="50%" />
 <figcaption>
-Authorized DTW transitions.
+Valid DTW transitions.
 </figcaption>
 </figure>
 <p>This implies that filling a matrix that would store <span class="math inline">\(R_{i,j}\)</span> terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" /> <span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms <span class="math inline">\(R_{i-1, j}\)</span>, <span class="math inline">\(R_{i, j-1}\)</span> and <span class="math inline">\(R_{i-1, j-1}\)</span> are accessible when computing <span class="math inline">\(R_{i, j}\)</span>. When vectorizing code is of importance, an even better strategy is to compute the <span class="math inline">\(R\)</span> terms one anti-diagonal at a time <span class="citation" data-cites="tralie2020exact">[<a href="#ref-tralie2020exact" role="doc-biblioref">TrDe20</a>]</span>.</span> is sufficient to retrieve <span class="math inline">\(DTW_q({x}, {x}^\prime)\)</span> as <span class="math inline">\({R_{n-1, m-1}}^{\frac{1}{q}}\)</span>.</p>
@@ -274,7 +274,7 @@ Allowed matches for several global constraint schemes.
 <source src="fig/sakoe_shift.mp4" type="video/mp4" />
 <img src="fig/sakoe_shift.gif" alt="Invariance to time shifts using Sakoe-Chiba band" /> </video>
 <figcaption>
-Impact of time shifts on a DTW constrained with a Sakoe-Chiba band of radius <span class="math inline">\(r\)</span>.
+Impact of time shifts on a DTW with a Sakoe-Chiba band constraint of radius <span class="math inline">\(r\)</span>.
 </figcaption>
 </figure>
 <h1 id="conclusion">Conclusion</h1>
