@@ -149,6 +149,12 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 </figure>
 <p>Note that the recurrence relation we had in Eq. <a href="dtw.html#eq:rec">(2)</a> of the post on DTW is still valid with this <span class="math inline">\(\min^\gamma\)</span> formulation, hence the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).</p>
 <h2 id="soft-alignment-path">Soft-Alignment Path</h2>
+<p>It is shown in <span class="citation" data-cites="mensch2018">[<a href="#ref-mensch2018" role="doc-biblioref">MeBl18</a>]</span> that soft-DTW can be re-written:</p>
+<p><span class="math display">\[\begin{equation}
+\text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \min_{p \in \Sigma} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+\end{equation}\]</span></p>
+<p>where <span class="math inline">\(\Sigma\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of <span class="math inline">\(p\)</span>.</p>
 <p><strong>TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch</strong></p>
 <p>Let us denote by <span class="math inline">\(A_\gamma\)</span> the &#x201C;soft path&#x201D; matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching. <span class="math inline">\(A_\gamma\)</span> can be interpreted as a weighted average of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>:</p>
 <p><span class="math display">\[\begin{eqnarray}
@@ -163,9 +169,11 @@ A_\gamma =&amp; \, \mathbb{E}_{\gamma}[A] \\
 \end{equation}\]</span></p>
 <h2 id="properties">Properties</h2>
 <p>As discussed in <span class="citation" data-cites="janati2020spatio">[<a href="#ref-janati2020spatio" role="doc-biblioref">JaCuGr20</a>]</span>, soft-DTW is not invariant to time shifts, as is DTW. Suppose <span class="math inline">\(x\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and let us denote by <span class="math inline">\(x_{+k}\)</span> a copy of <span class="math inline">\(x\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps. Then the quantity</p>
+<div class="scroll-wrapper">
 <p><span class="math display">\[\begin{equation*}
 \Delta^\gamma(x, x_{+k}) = \left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
 \end{equation*}\]</span></p>
+</div>
 <p>grows linearly with <span class="math inline">\(\gamma k^2\)</span>:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="80%">
@@ -249,6 +257,9 @@ The smooth-min function <span class="math inline">\(\text{smoothMin}^\gamma\)</s
 </div>
 <div id="ref-janati2020spatio" class="csl-entry" role="doc-biblioentry">
 <div class="csl-left-margin">[JaCuGr20] </div><div class="csl-right-inline"><span class="smallcaps">Janati, Hicham</span> ; <span class="smallcaps">Cuturi, Marco</span> ; <span class="smallcaps">Gramfort, Alexandre</span>: Spatio-Temporal Alignments: Optimal transport through space and time. In: <em>Proceedings of the International Conference on Artificial Intelligence and Statistics</em>&#xA0;: PMLR, 2020, S.&#xA0;1695&#x2013;1704</div>
+</div>
+<div id="ref-mensch2018" class="csl-entry" role="doc-biblioentry">
+<div class="csl-left-margin">[MeBl18] </div><div class="csl-right-inline"><span class="smallcaps">Mensch, Arthur</span> ; <span class="smallcaps">Blondel, Mathieu</span>: Differentiable Dynamic Programming for Structured Prediction and Attention. In: <em>Proceedings of the International Conference on Machine Learning</em>, <em>Proceedings of Machine Learning Research</em>. Bd. 80&#xA0;: PMLR, 2018, S.&#xA0;3462&#x2013;3471</div>
 </div>
 </div>
 </body>
