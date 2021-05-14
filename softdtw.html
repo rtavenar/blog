@@ -60,7 +60,7 @@
   <ul>
   <li><a href="#introduction">Introduction</a></li>
   <li><a href="#differentiability-of-dtw">Differentiability of DTW</a></li>
-  <li><a href="#softdtw-and-variants">softDTW and variants</a>
+  <li><a href="#soft-dtw-and-variants">Soft-DTW and variants</a>
   <ul>
   <li><a href="#a-note-on-soft-min">A note on soft-min</a></li>
   <li><a href="#soft-alignment-path">Soft-Alignment Path</a></li>
@@ -111,7 +111,7 @@
 </figcaption>
 </figure>
 <p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.</p>
-<h1 id="softdtw-and-variants">softDTW and variants</h1>
+<h1 id="soft-dtw-and-variants">Soft-DTW and variants</h1>
 <p>Soft-DTW <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span> has been introduced as a way to mitigate this limitation. The formal definition for soft-DTW is the following:</p>
 <p><span class="math display">\[\begin{equation}
 \text{soft-}DTW^{\gamma}(x, x^\prime) =
@@ -147,7 +147,7 @@ The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied t
 Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW <a href="#related-similarity-measures">discussed below</a>, is reported in place of soft-DTW.
 </figcaption>
 </figure>
-<p><strong>TODO: softDTW is <span class="math inline">\(O(mn)\)</span> to compute, update rule, etc.</strong></p>
+<p>Note that the recurrence relation we had in Eq. <a href="dtw.html#eq:rec">(2)</a> of the post on DTW is still valid with this <span class="math inline">\(\min^\gamma\)</span> formulation, hence the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).</p>
 <h2 id="soft-alignment-path">Soft-Alignment Path</h2>
 <p><strong>TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch</strong></p>
 <p>Let us denote by <span class="math inline">\(A_\gamma\)</span> the &#x201C;soft path&#x201D; matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching. <span class="math inline">\(A_\gamma\)</span> can be interpreted as a weighted average of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>:</p>
@@ -220,9 +220,16 @@ Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class
 <span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
 </figcaption>
 </figure>
-<p><strong>TODO: introduce <span class="citation" data-cites="hadji2020">[<a href="#ref-hadji2020" role="doc-biblioref">HaDeJe21</a>]</span>, show smoothMin figure, and say they change the local tranistion rules and do more stuff to effectively reach representation learning.</strong></p>
+<p>Also, in <span class="citation" data-cites="hadji2020">[<a href="#ref-hadji2020" role="doc-biblioref">HaDeJe21</a>]</span>, a variant of <span class="math inline">\(\min^\gamma\)</span>, called <span class="math inline">\(\text{smoothMin}^\gamma\)</span> is used in the recurrence formula. Contrary to <span class="math inline">\(\min^\gamma\)</span>, <span class="math inline">\(\text{smoothMin}^\gamma\)</span> upper bounds the min operator:</p>
+<figure>
+<img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
+<figcaption>
+The smooth-min function <span class="math inline">\(\text{smoothMin}^\gamma\)</span> applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>.
+</figcaption>
+</figure>
+<p>As a consequence, the resulting similarity measure upper bounds DTW. Note also that this paper suggests that these DTW variants are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations (this paper focuses on representation learning for videos).</p>
 <h1 id="conclusion">Conclusion</h1>
-<p><strong>TODO</strong></p>
+<p><strong>TODO</strong> Our next blog post shbould be dedicated to drawing links between optimal transport and dynamic time warping.</p>
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
 <div id="ref-blondelmensch2020" class="csl-entry" role="doc-biblioentry">
