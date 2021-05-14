@@ -134,7 +134,7 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
-**TODO: softDTW is $O(mn)$ to compute**
+**TODO: softDTW is $O(mn)$ to compute, update rule, etc.**
 
 ## Soft-Alignment Path
 
@@ -263,6 +263,8 @@ where $A_\infty$ tends to favor diagonal matches:
         $A_\infty$ matrix for time series of length 30.
     </figcaption>
 </figure>
+
+**TODO: introduce [@hadji2020], show smoothMin figure, and say they change the local tranistion rules and do more stuff to effectively reach representation learning.**
 
 # Conclusion
 

@@ -53,7 +53,7 @@ ax.plot([2], [1], marker='o', color=colors[3], linestyle='', zorder=0)
 # ax.text(s="$\gamma_{i,j-1}$", x=2, y=1.25, ha='center', color=colors[3], backgroundcolor=fig.patch.get_facecolor(), zorder=-.25)
 
 ax.plot([2], [0], marker='o', color=colors[1], linestyle='', zorder=2)
-ax.text(s="$\gamma_{i,j}$", x=2, y=-.25, ha='center', color=colors[1], backgroundcolor=fig.patch.get_facecolor(), zorder=-.25, fontsize=48)
+ax.text(s="$R_{i,j}$", x=2, y=-.35, ha='center', color=colors[1], backgroundcolor=fig.patch.get_facecolor(), zorder=-.25, fontsize=48)
 
 plt.tight_layout()
 plt.savefig('fig/dtw_transitions.svg')

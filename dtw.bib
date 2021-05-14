@@ -905,10 +905,25 @@ year = {2007},
   organization={PMLR}
 }
 
-@misc{blondelmensch2020,
-  title={Differentiable Divergences Between Time Series},
-  author={Blondel, Mathieu and Mensch, Arthur and Vert, Jean-Philippe},
-  eprint={2010.08354},
-  archivePrefix={arXiv},
-  year={2020}
+@InProceedings{blondelmensch2020,
+  title = 	 { Differentiable Divergences Between Time Series },
+  author =       {Blondel, Mathieu and Mensch, Arthur and Vert, Jean-Philippe},
+  booktitle = 	 aistats,
+  pages = 	 {3853--3861},
+  year = 	 {2021},
+  volume = 	 {130},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {13--15 Apr},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v130/blondel21a/blondel21a.pdf},
+  url = 	 {http://proceedings.mlr.press/v130/blondel21a.html},
+  abstract = 	 { Computing the discrepancy between time series of variable sizes is notoriously challenging. While dynamic time warping (DTW) is popularly used for this purpose, it is not differentiable everywhere and is known to lead to bad local optima when used as a “loss”. Soft-DTW addresses these issues, but it is not a positive definite divergence: due to the bias introduced by entropic regularization, it can be negative and it is not minimized when the time series are equal. We propose in this paper a new divergence, dubbed soft-DTW divergence, which aims to correct these issues. We study its properties; in particular, under conditions on the ground cost, we show that it is a valid divergence: it is non-negative and minimized if and only if the two time series are equal. We also propose a new “sharp” variant by further removing entropic bias. We showcase our divergences on time series averaging and demonstrate significant accuracy improvements compared to both DTW and soft-DTW on 84 time series classification datasets. }
+}
+
+
+@inproceedings{hadji2020,
+  title={Representation Learning via Global Temporal Alignment and Cycle-Consistency},
+  author={Hadji, Isma and Derpanis, Konstantinos G and Jepson, Allan D},
+  booktitle=cvpr,
+  year={2021}
 }
