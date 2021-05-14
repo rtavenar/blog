@@ -181,19 +181,19 @@ DTW_q({x}, {x}^\prime) =
 <p>Fortunately, an exact solution to this optimization problem can be found using dynamic programming. Dynamic programming relies on recurrence. The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).</p>
 <p>In the case of DTW, we need to rely on the following quantity:</p>
 <p><span class="math display">\[
-    r_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
+    R_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
 \]</span></p>
 <p>where the notation <span class="math inline">\({x}_{\rightarrow i}\)</span> denotes time series <span class="math inline">\({x}\)</span> observed up to timestamp <span class="math inline">\(i\)</span> (included). Then, we can observe that:</p>
 <p><span class="math display">\[
 \begin{aligned}
-r_{i,j} 
+R_{i,j} 
     &amp;= \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
         \sum_{(k, l) \in \pi} d(x_k, x^\prime_l)^q \\
     &amp;\stackrel{*}{=} d(x_i, x^\prime_j)^q +
         \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
             \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
     &amp;\stackrel{**}{=} d(x_i, x^\prime_j)^q +
-        \min ({\color{MidnightBlue}r_{i-1, j}}, {\color{Red}r_{i, j-1}}, {\color{ForestGreen}r_{i-1, j-1}})
+        \min ({\color{MidnightBlue}R_{i-1, j}}, {\color{Red}R_{i, j-1}}, {\color{ForestGreen}R_{i-1, j-1}})
 \end{aligned}
 \]</span></p>
 <p><span class="math inline">\((*)\)</span> comes from the constraints on admissible paths <span class="math inline">\(\pi\)</span>: the last element on an admissible path needs to match the last elements of the series. Also, <span class="math inline">\((**)\)</span> results from the contiguity conditions on the admissible paths. Indeed, a path that would align time series <span class="math inline">\({x}_{\rightarrow i}\)</span> and <span class="math inline">\({x}^\prime_{\rightarrow j}\)</span> necessarily encapsulates either:</p>
@@ -209,24 +209,24 @@ r_{i,j}
 Authorized DTW transitions.
 </figcaption>
 </figure>
-<p>This implies that filling a matrix that would store <span class="math inline">\(r_{i,j}\)</span> terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" /> <span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms <code>r[i-1, j]</code>, <code>r[i, j-1]</code> and <code>r[i-1, j-1]</code> are accessible when computing <code>r[i, j]</code>. When vectorizing code is of importance, an even better strategy is to compute the <code>r</code> terms one anti-diagonal at a time <span class="citation" data-cites="tralie2020exact">[<a href="#ref-tralie2020exact" role="doc-biblioref">TrDe20</a>]</span>.</span> is sufficient to retrieve <span class="math inline">\(DTW_q({x}, {x}^\prime)\)</span> as <span class="math inline">\({r_{n-1, m-1}}^{\frac{1}{q}}\)</span>.</p>
+<p>This implies that filling a matrix that would store <span class="math inline">\(R_{i,j}\)</span> terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" /> <span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms <code>R[i-1, j]</code>, <code>R[i, j-1]</code> and <code>R[i-1, j-1]</code> are accessible when computing <code>R[i, j]</code>. When vectorizing code is of importance, an even better strategy is to compute the <code>R</code> terms one anti-diagonal at a time <span class="citation" data-cites="tralie2020exact">[<a href="#ref-tralie2020exact" role="doc-biblioref">TrDe20</a>]</span>.</span> is sufficient to retrieve <span class="math inline">\(DTW_q({x}, {x}^\prime)\)</span> as <span class="math inline">\({R_{n-1, m-1}}^{\frac{1}{q}}\)</span>.</p>
 <p>These observations result in the following <span class="math inline">\(O(mn)\)</span> algorithm to compute the exact optimum for DTW (assuming computation of <span class="math inline">\(d(\cdot,\cdot)\)</span> is <span class="math inline">\(O(1)\)</span>):</p>
 <pre>
   <code class="language-python">
 def dtw(x, x_prime, q=2):
   for i in range(len(x)):
     for j in range(len(x_prime)):
-      r[i, j] = d(x[i], x_prime[j]) ** q
+      R[i, j] = d(x[i], x_prime[j]) ** q
       if i > 0 or j > 0:
-        r[i, j] += min(
-          r[i-1, j  ] if i > 0             else inf,
-          r[i  , j-1] if j > 0             else inf,
-          r[i-1, j-1] if (i > 0 and j > 0) else inf
-          # Note that these 3 terms cannot all be inf 
-          # if we have (i > 0 or j > 0)
+        R[i, j] += min(
+          R[i-1, j  ] if i > 0             else inf,
+          R[i  , j-1] if j > 0             else inf,
+          R[i-1, j-1] if (i > 0 and j > 0) else inf
+          # Note that these 3 terms cannot all be 
+          # inf if we have (i > 0 or j > 0)
         )
 
-  return r[-1, -1] ** (1. / q)
+  return R[-1, -1] ** (1. / q)
   </code>
 </pre>
 <h2 id="properties">Properties</h2>
