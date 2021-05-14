@@ -1,5 +1,5 @@
 ---
-title: Differentiability of DTW and the case of softDTW
+title: Differentiability of DTW and the case of soft-DTW
 language: en
 author: Romain Tavenard
 date: 2021/04/29
@@ -280,4 +280,4 @@ Note also that [@hadji2020] suggests that the DTW variants presented in these po
 # Conclusion
 
 **TODO**
-Our next blog post shbould be dedicated to drawing links between optimal transport and dynamic time warping.
+Our next blog post should be dedicated to drawing links between optimal transport and dynamic time warping.
