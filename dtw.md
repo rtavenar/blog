@@ -219,7 +219,7 @@ R_{i,j}
     &\stackrel{**}{=} d(x_i, x^\prime_j)^q +
         \min ({\color{MidnightBlue}R_{i-1, j}}, {\color{Red}R_{i, j-1}}, {\color{ForestGreen}R_{i-1, j-1}})
 \end{aligned}
-$$
+$$ {#eq:rec}
 
 $(*)$ comes from the constraints on admissible paths $\pi$: the last element on an admissible path needs to match the last elements of the series.
 Also, $(**)$ results from the contiguity conditions on the admissible paths.

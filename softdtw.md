@@ -76,7 +76,7 @@ and study the evolution of $DTW_2(x, x_\text{ref})$ as a function of this value:
 
 Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.
 
-# softDTW and variants
+# Soft-DTW and variants
 
 Soft-DTW [@cuturi2017soft] has been introduced as a way to mitigate this
 limitation.
@@ -134,7 +134,7 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
-**TODO: softDTW is $O(mn)$ to compute, update rule, etc.**
+Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW is still valid with this $\min^\gamma$ formulation, hence the $O(mn)$ DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).
 
 ## Soft-Alignment Path
 
@@ -264,8 +264,20 @@ where $A_\infty$ tends to favor diagonal matches:
     </figcaption>
 </figure>
 
-**TODO: introduce [@hadji2020], show smoothMin figure, and say they change the local tranistion rules and do more stuff to effectively reach representation learning.**
+Also, in [@hadji2020], a variant of $\min^\gamma$, called $\text{smoothMin}^\gamma$ is used in the recurrence formula.
+Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operator:
+
+<figure>
+    <img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
+    <figcaption> 
+        The smooth-min function $\text{smoothMin}^\gamma$ applied to the pair $(-a, a)$ for various values of $\gamma$.
+    </figcaption>
+</figure>
+
+As a consequence, the resulting similarity measure upper bounds DTW.
+Note also that this paper suggests that these DTW variants are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations (this paper focuses on representation learning for videos).
 
 # Conclusion
 
 **TODO**
+Our next blog post shbould be dedicated to drawing links between optimal transport and dynamic time warping.
