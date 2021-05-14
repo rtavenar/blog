@@ -202,7 +202,7 @@ Once this link is known, the dynamic programming approach consists in solving th
 In the case of DTW, we need to rely on the following quantity:
 
 $$
-    \gamma_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
+    r_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
 $$
 
 where the notation ${x}_{\rightarrow i}$ denotes time series ${x}$ observed up to timestamp $i$ (included).
@@ -210,14 +210,14 @@ Then, we can observe that:
 
 $$
 \begin{aligned}
-\gamma_{i,j} 
+r_{i,j} 
     &= \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
         \sum_{(k, l) \in \pi} d(x_k, x^\prime_l)^q \\
     &\stackrel{*}{=} d(x_i, x^\prime_j)^q +
         \min_{\pi \in \mathcal{A}({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})}
             \sum_{(k, l) \in \pi[:-1]} d(x_k, x^\prime_l)^q \\
     &\stackrel{**}{=} d(x_i, x^\prime_j)^q +
-        \min ({\color{MidnightBlue}\gamma_{i-1, j}}, {\color{Red}\gamma_{i, j-1}}, {\color{ForestGreen}\gamma_{i-1, j-1}})
+        \min ({\color{MidnightBlue}r_{i-1, j}}, {\color{Red}r_{i, j-1}}, {\color{ForestGreen}r_{i-1, j-1}})
 \end{aligned}
 $$
 
@@ -238,11 +238,11 @@ as illustrated in the Figure below:
     </figcaption>
 </figure>
 
-This implies that filling a matrix that would store $\gamma_{i,j}$ terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label>
+This implies that filling a matrix that would store $r_{i,j}$ terms row-by-row<label for="sn-row-wise" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-row-wise" class="sidenote-toggle" />
-<span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms `gamma[i-1, j]`, `gamma[i, j-1]` and `gamma[i-1, j-1]` are accessible when computing `gamma[i, j]`. When vectorizing code is of importance, an even better strategy is to compute the `gamma` terms one anti-diagonal at a time [@tralie2020exact].</span>
+<span class="sidenote">In practice, the matrix could be filled column-by-column too. The important part is that the terms `r[i-1, j]`, `r[i, j-1]` and `r[i-1, j-1]` are accessible when computing `r[i, j]`. When vectorizing code is of importance, an even better strategy is to compute the `r` terms one anti-diagonal at a time [@tralie2020exact].</span>
  is sufficient to retrieve 
-$DTW_q({x}, {x}^\prime)$ as ${\gamma_{n-1, m-1}}^{\frac{1}{q}}$.
+$DTW_q({x}, {x}^\prime)$ as ${r_{n-1, m-1}}^{\frac{1}{q}}$.
 
 These observations result in the following $O(mn)$ algorithm to compute the exact optimum for DTW 
 (assuming computation of $d(\cdot,\cdot)$ is $O(1)$):
@@ -252,17 +252,17 @@ These observations result in the following $O(mn)$ algorithm to compute the exac
 def dtw(x, x_prime, q=2):
   for i in range(len(x)):
     for j in range(len(x_prime)):
-      gamma[i, j] = d(x[i], x_prime[j]) ** q
+      r[i, j] = d(x[i], x_prime[j]) ** q
       if i > 0 or j > 0:
-        gamma[i, j] += min(
-          gamma[i-1, j  ] if i > 0             else inf,
-          gamma[i  , j-1] if j > 0             else inf,
-          gamma[i-1, j-1] if (i > 0 and j > 0) else inf
+        r[i, j] += min(
+          r[i-1, j  ] if i > 0             else inf,
+          r[i  , j-1] if j > 0             else inf,
+          r[i-1, j-1] if (i > 0 and j > 0) else inf
           # Note that these 3 terms cannot all be inf 
           # if we have (i > 0 or j > 0)
         )
 
-  return gamma[-1, -1] ** (1. / q)
+  return r[-1, -1] ** (1. / q)
   </code>
 </pre>
 
