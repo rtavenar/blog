@@ -927,3 +927,20 @@ year = {2007},
   booktitle=cvpr,
   year={2021}
 }
+
+
+@InProceedings{mensch2018,
+  title = 	 {Differentiable Dynamic Programming for Structured Prediction and Attention},
+  author =       {Mensch, Arthur and Blondel, Mathieu},
+  booktitle = 	 icml,
+  pages = 	 {3462--3471},
+  year = 	 {2018},
+  volume = 	 {80},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {10--15 Jul},
+  publisher =    {PMLR},
+  pdf = 	 {http://proceedings.mlr.press/v80/mensch18a/mensch18a.pdf},
+  url = 	 {http://proceedings.mlr.press/v80/mensch18a.html},
+  abstract = 	 {Dynamic programming (DP) solves a variety of structured combinatorial problems by iteratively breaking them down into smaller subproblems. In spite of their versatility, many DP algorithms are non-differentiable, which hampers their use as a layer in neural networks trained by backpropagation. To address this issue, we propose to smooth the max operator in the dynamic programming recursion, using a strongly convex regularizer. This allows to relax both the optimal value and solution of the original combinatorial problem, and turns a broad class of DP algorithms into differentiable operators. Theoretically, we provide a new probabilistic perspective on backpropagating through these DP operators, and relate them to inference in graphical models. We derive two particular instantiations of our framework, a smoothed Viterbi algorithm for sequence prediction and a smoothed DTW algorithm for time-series alignment. We showcase these instantiations on structured prediction (audio-to-score alignment, NER) and on structured and sparse attention for translation.}
+}
+

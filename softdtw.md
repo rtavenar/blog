@@ -138,6 +138,15 @@ Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the po
 
 ## Soft-Alignment Path
 
+It is shown in [@mensch2018] that soft-DTW can be re-written:
+
+\begin{equation}
+\text{soft-}DTW^{\gamma}(x, x^\prime) =
+    \min_{p \in \Sigma} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+\end{equation}
+
+where $\Sigma$ is the set of probability distributions over paths and $H(p)$ is the entropy of $p$.
+
 **TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch**
 
 Let us denote by $A_\gamma$ the "soft path" matrix that informs, for each pair
@@ -170,9 +179,11 @@ occurs at some point in the series, and let us denote by $x_{+k}$ a
 copy of $x$ in which the motif is temporally shifted by $k$ timestamps.
 Then the quantity
 
+<div class="scroll-wrapper">
 \begin{equation*}
 \Delta^\gamma(x, x_{+k}) = \left| \text{soft-}DTW^{\gamma}(x, x_{+k}) - \text{soft-}DTW^{\gamma}(x, x) \right|
 \end{equation*}
+</div>
 
 grows linearly with $\gamma k^2$:
 
