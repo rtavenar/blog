@@ -275,7 +275,7 @@ Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operat
 </figure>
 
 As a consequence, the resulting similarity measure upper bounds DTW.
-Note also that [@hadji2020] suggests that the DTW variants presented in these posts are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations (this paper focuses on representation learning for videos).
+Note also that [@hadji2020] suggest that the DTW variants presented in these posts are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations. 
 
 # Conclusion
 
