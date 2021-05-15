@@ -185,7 +185,10 @@ Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights te
     </figcaption>
 </figure>
 
-$A_\gamma$ can be computed with complexity $O(mn)$ and there is a link between
+However, the sum above is intractable due to the very large number of paths in $\mathcal{A}(x, x^\prime)$.
+Fortunately, once soft-DTW has been computed, $A_\gamma$ can be obtained through a backward dynamic programming pass 
+with complexity $O(mn)$ (see more details in [@cuturi2017soft]).
+Note also that there is a link between
 this matrix and the gradients of the soft-DTW similarity measure:
 
 \begin{equation}
