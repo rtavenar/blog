@@ -176,7 +176,8 @@ $(i, j)$, how much it will be taken into account in the matching.
         $A_\gamma$ matrix. Note how the matrix blurs out when $\gamma$ grows.
     </figcaption>
 </figure>
-Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\infty$ matrix tends to favor diagonal matches:
+Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\infty$ matrix tends to favor diagonal matches, regardless
+of the content of the series $x$ and $x^\prime$:
 
 <figure>
     <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
