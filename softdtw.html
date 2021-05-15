@@ -163,7 +163,7 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
     \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
 \end{equation}\]</span></p>
 </div>
-<p>where <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime)|}\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of a given probability distribution <span class="math inline">\(p\)</span>. For strictly positive <span class="math inline">\(\gamma\)</span>, this problem has a closed-form solution that is:</p>
+<p>where <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime)|}\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy<label for="sn-entropy" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-entropy" class="sidenote-toggle" /> <span class="sidenote">For a discrete probability distribution <span class="math inline">\(p\)</span>, entropy is defined as <span class="math inline">\(H(p) = -\sum_i p_i \log (p_i)\)</span> and is maximized by the uniform distribution.</span> of a given probability distribution <span class="math inline">\(p\)</span>. For strictly positive <span class="math inline">\(\gamma\)</span>, this problem has a closed-form solution that is:</p>
 <p><span class="math display">\[
     p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
 \]</span></p>
