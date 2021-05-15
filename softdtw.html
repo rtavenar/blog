@@ -153,10 +153,10 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <div class="scroll-wrapper">
 <p><span class="math display">\[\begin{equation}
 \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \min_{p \in \Sigma} \left\langle \underbrace{\sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi}_{A_p} , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+    \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
 \end{equation}\]</span></p>
 </div>
-<p>where <span class="math inline">\(\Sigma\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of a given probability distribution <span class="math inline">\(p\)</span>. For strictly positive <span class="math inline">\(\gamma\)</span>, this problem has a closed-form solution that is:</p>
+<p>where <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime)|}\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of a given probability distribution <span class="math inline">\(p\)</span>. For strictly positive <span class="math inline">\(\gamma\)</span>, this problem has a closed-form solution that is:</p>
 <p><span class="math display">\[
     p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
 \]</span></p>
@@ -165,7 +165,7 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <p><span class="math display">\[
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
 \]</span></p>
-<p><span class="math inline">\(A_\gamma\)</span> informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
+<p><span class="math inline">\(A_\gamma\)</span> is a matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
 <p><strong>TODO: animation <span class="math inline">\(A_\gamma\)</span> matrices</strong></p>
 <p>Note that when <span class="math inline">\(\gamma\)</span> tends toward <span class="math inline">\(+\infty\)</span>, then <span class="math inline">\(p^\star_\gamma\)</span> weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding <span class="math inline">\(A_\infty\)</span> matrix tends to favor diagonal matches:</p>
 <figure>
