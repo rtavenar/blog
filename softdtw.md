@@ -161,7 +161,7 @@ This formulation leads to the following definition for the soft-alignment matrix
 
 $$
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
-$$
+$$ {#eq:a_gamma}
 
 $A_\gamma$ is a matrix that informs, for each pair
 $(i, j)$, how much it will be taken into account in the matching.
@@ -185,15 +185,15 @@ Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights te
     </figcaption>
 </figure>
 
-However, the sum above is intractable due to the very large number of paths in $\mathcal{A}(x, x^\prime)$.
+However, the sum in {@eq:a_gamma} is intractable due to the very large number of paths in $\mathcal{A}(x, x^\prime)$.
 Fortunately, once soft-DTW has been computed, $A_\gamma$ can be obtained through a backward dynamic programming pass 
 with complexity $O(mn)$ (see more details in [@cuturi2017soft]).
-Note also that there is a link between
-this matrix and the gradients of the soft-DTW similarity measure:
+
+Computing this $A_\gamma$ matrix is especially useful since it is directly related to the gradients of the soft-DTW similarity measure:
 
 \begin{equation}
 \nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma
+    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma \, .
 \end{equation}
 
 ## Properties
