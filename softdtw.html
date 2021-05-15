@@ -45,6 +45,13 @@
         padding: .2em 1em;
     }
   </style>
+  
+  <!-- pandoc-eqnos: equation style -->
+  <style>
+    .eqnos { display: inline-block; position: relative; width: 100%; }
+    .eqnos br { display: none; }
+    .eqnos-number { position: absolute; right: 0em; top: 50%; line-height: 0; }
+  </style>
 </head>
 <body>
 <div id="header">
@@ -162,9 +169,9 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 \]</span></p>
 <p>where <span class="math inline">\(k_{\mathrm{GA}}^{\gamma}(x, x^\prime)\)</span> is the Global Alignment kernel <span class="citation" data-cites="cuturi2007kernel">[<a href="#ref-cuturi2007kernel" role="doc-biblioref">CVBM07</a>]</span> that acts as a normalization factor here.</p>
 <p>This formulation leads to the following definition for the soft-alignment matrix <span class="math inline">\(A_\gamma\)</span></p>
-<p><span class="math display">\[
+<p><span id="eq:a_gamma" class="eqnos"><span class="math display">\[
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
-\]</span></p>
+\]</span><span class="eqnos-number">(1)</span></span> </p>
 <p><span class="math inline">\(A_\gamma\)</span> is a matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
 <figure>
 <video playsinline muted autoplay controls loop width="60%">
@@ -182,10 +189,11 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
 </figcaption>
 </figure>
-<p>However, the sum above is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>). Note also that there is a link between this matrix and the gradients of the soft-DTW similarity measure:</p>
+<p>However, the sum in Eq.&#xA0;<a href="#eq:a_gamma">(1)</a> is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>).</p>
+<p>Computing this <span class="math inline">\(A_\gamma\)</span> matrix is especially useful since it is directly related to the gradients of the soft-DTW similarity measure:</p>
 <p><span class="math display">\[\begin{equation}
 \nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma
+    \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma \, .
 \end{equation}\]</span></p>
 <h2 id="properties">Properties</h2>
 <p>As discussed in <span class="citation" data-cites="janati2020spatio">[<a href="#ref-janati2020spatio" role="doc-biblioref">JaCuGr20</a>]</span>, soft-DTW is not invariant to time shifts, as is DTW. Suppose <span class="math inline">\(x\)</span> is a time series that is constant except for a motif that occurs at some point in the series, and let us denote by <span class="math inline">\(x_{+k}\)</span> a copy of <span class="math inline">\(x\)</span> in which the motif is temporally shifted by <span class="math inline">\(k\)</span> timestamps. Then the quantity</p>
