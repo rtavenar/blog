@@ -182,7 +182,7 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
 </figcaption>
 </figure>
-<p><span class="math inline">\(A_\gamma\)</span> can be computed with complexity <span class="math inline">\(O(mn)\)</span> and there is a link between this matrix and the gradients of the soft-DTW similarity measure:</p>
+<p>However, the sum above is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>). Note also that there is a link between this matrix and the gradients of the soft-DTW similarity measure:</p>
 <p><span class="math display">\[\begin{equation}
 \nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
     \left(\frac{\partial D_2(x, x^\prime)}{\partial x} \right)^T A_\gamma
