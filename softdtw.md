@@ -166,8 +166,16 @@ $$
 $A_\gamma$ is a matrix that informs, for each pair
 $(i, j)$, how much it will be taken into account in the matching.
 
-**TODO: animation $A_\gamma$ matrices**
-
+<figure>
+    <video playsinline muted autoplay controls loop width="60%">
+        <source src="fig/a_gamma.webm" type="video/webm" />
+        <source src="fig/a_gamma.mp4" type="video/mp4" />
+        <img src="fig/a_gamma.gif" alt="$A_\gamma$ matrix" />
+    </video>
+    <figcaption> 
+        $A_\gamma$ matrix. Note how the matrix blurs out when $\gamma$ grows.
+    </figcaption>
+</figure>
 Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\infty$ matrix tends to favor diagonal matches:
 
 <figure>
