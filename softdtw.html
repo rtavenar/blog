@@ -150,18 +150,30 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <p>Note that the recurrence relation we had in Eq. <a href="dtw.html#eq:rec">(2)</a> of the post on DTW is still valid with this <span class="math inline">\(\min^\gamma\)</span> formulation, hence the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).</p>
 <h2 id="soft-alignment-path">Soft-Alignment Path</h2>
 <p>It is shown in <span class="citation" data-cites="mensch2018">[<a href="#ref-mensch2018" role="doc-biblioref">MeBl18</a>]</span> that soft-DTW can be re-written:</p>
+<div class="scroll-wrapper">
 <p><span class="math display">\[\begin{equation}
 \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \min_{p \in \Sigma} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+    \min_{p \in \Sigma} \left\langle \underbrace{\sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi}_{A_p} , D_2(x, x^\prime) \right\rangle - \gamma H(p)
 \end{equation}\]</span></p>
-<p>where <span class="math inline">\(\Sigma\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of <span class="math inline">\(p\)</span>.</p>
-<p><strong>TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch</strong></p>
-<p>Let us denote by <span class="math inline">\(A_\gamma\)</span> the &#x201C;soft path&#x201D; matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching. <span class="math inline">\(A_\gamma\)</span> can be interpreted as a weighted average of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>:</p>
-<p><span class="math display">\[\begin{eqnarray}
-A_\gamma =&amp; \, \mathbb{E}_{\gamma}[A] \\
-=&amp; \, \sum_{\pi \in \mathcal{A}(x, x^\prime)} \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)} A_\pi \, ,
-\end{eqnarray}\]</span></p>
+</div>
+<p>where <span class="math inline">\(\Sigma\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of a given probability distribution <span class="math inline">\(p\)</span>. For strictly positive <span class="math inline">\(\gamma\)</span>, this problem has a closed-form solution that is:</p>
+<p><span class="math display">\[
+    p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
+\]</span></p>
 <p>where <span class="math inline">\(k_{\mathrm{GA}}^{\gamma}(x, x^\prime)\)</span> is the Global Alignment kernel <span class="citation" data-cites="cuturi2007kernel">[<a href="#ref-cuturi2007kernel" role="doc-biblioref">CVBM07</a>]</span> that acts as a normalization factor here.</p>
+<p>This formulation leads to the following definition for the soft-alignment matrix <span class="math inline">\(A_\gamma\)</span></p>
+<p><span class="math display">\[
+    A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
+\]</span></p>
+<p><span class="math inline">\(A_\gamma\)</span> informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
+<p><strong>TODO: animation <span class="math inline">\(A_\gamma\)</span> matrices</strong></p>
+<p>Note that when <span class="math inline">\(\gamma\)</span> tends toward <span class="math inline">\(+\infty\)</span>, then <span class="math inline">\(p^\star_\gamma\)</span> weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding <span class="math inline">\(A_\infty\)</span> matrix tends to favor diagonal matches:</p>
+<figure>
+<img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
+<figcaption>
+<span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
+</figcaption>
+</figure>
 <p><span class="math inline">\(A_\gamma\)</span> can be computed with complexity <span class="math inline">\(O(mn)\)</span> and there is a link between this matrix and the gradients of the soft-DTW similarity measure:</p>
 <p><span class="math display">\[\begin{equation}
 \nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
@@ -196,8 +208,7 @@ Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class
 </figcaption>
 </figure>
 <h2 id="related-similarity-measures">Related Similarity Measures</h2>
-<p>In <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe21</a>]</span>, new similarity measures are defined, that rely on soft-DTW.</p>
-<p>First, <strong>soft-DTW divergence</strong> is defined as:</p>
+<p>In <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe21</a>]</span>, new similarity measures are defined, that rely on soft-DTW. In particular, <strong>soft-DTW divergence</strong> is defined as:</p>
 <div class="scroll-wrapper">
 <p><span class="math display">\[\begin{equation}
     D^\gamma (x, x^\prime) =
@@ -209,25 +220,36 @@ Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class
 \end{equation}\]</span></p>
 </div>
 <p>and this divergence has the advantage of being minimized for <span class="math inline">\(x = x^\prime\)</span> (and being exactly 0 in that case).</p>
-<p>Second, another interesting similarity measure introduced in the same paper is the <strong>sharp soft-DTW</strong> which is:</p>
-<p><span class="math display">\[\begin{equation}
+<!-- Second, another interesting similarity measure introduced in the same paper is
+the **sharp soft-DTW** which is:
+
+\begin{equation}
     \text{sharp-soft-}DTW^{\gamma} (x, x^\prime) =
         \langle A_\gamma,  D_2(x, x^\prime) \rangle
-\end{equation}\]</span></p>
-<p>Note that a <strong>sharp soft-DTW divergence</strong> can be derived from this (with a similar approach as for <span class="math inline">\(D^\gamma\)</span>), which has the extra benefit (over the sharp soft-DTW) of being minimized at <span class="math inline">\(x = x^\prime\)</span>.</p>
-<p>Further note that, by pushing <span class="math inline">\(\gamma\)</span> to the <span class="math inline">\(+\infty\)</span> limit in this formula, one gets:</p>
-<p><span class="math display">\[\begin{equation}
+\end{equation}
+
+Note that a **sharp soft-DTW divergence** can be derived from this
+(with a similar approach as for $D^\gamma$), which has the extra benefit
+(over the sharp soft-DTW) of
+being minimized at $x = x^\prime$.
+
+Further note that, by pushing $\gamma$ to the $+\infty$ limit in this formula,
+one gets:
+
+\begin{equation}
 \text{sharp-soft-}DTW^{\gamma}(x, x^\prime)
     \xrightarrow{\gamma \to +\infty}
     \left\langle A_\infty, D_2(x, x^\prime) \right\rangle \, ,
-\end{equation}\]</span></p>
-<p>where <span class="math inline">\(A_\infty\)</span> tends to favor diagonal matches:</p>
+\end{equation}
+
+where $A_\infty$ tends to favor diagonal matches:
+
 <figure>
-<img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
-<figcaption>
-<span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
-</figcaption>
-</figure>
+    <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
+    <figcaption> 
+        $A_\infty$ matrix for time series of length 30.
+    </figcaption>
+</figure> -->
 <p>Also, in <span class="citation" data-cites="hadji2020">[<a href="#ref-hadji2020" role="doc-biblioref">HaDeJe21</a>]</span>, a variant of <span class="math inline">\(\min^\gamma\)</span>, called <span class="math inline">\(\text{smoothMin}^\gamma\)</span> is used in the recurrence formula. Contrary to <span class="math inline">\(\min^\gamma\)</span>, <span class="math inline">\(\text{smoothMin}^\gamma\)</span> upper bounds the min operator:</p>
 <figure>
 <img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
