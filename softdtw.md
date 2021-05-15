@@ -140,27 +140,42 @@ Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the po
 
 It is shown in [@mensch2018] that soft-DTW can be re-written:
 
+<div class="scroll-wrapper">
 \begin{equation}
 \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \min_{p \in \Sigma} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+    \min_{p \in \Sigma} \left\langle \underbrace{\sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi}_{A_p} , D_2(x, x^\prime) \right\rangle - \gamma H(p)
 \end{equation}
+</div>
 
-where $\Sigma$ is the set of probability distributions over paths and $H(p)$ is the entropy of $p$.
+where $\Sigma$ is the set of probability distributions over paths and $H(p)$ is the entropy of a given probability distribution $p$.
+For strictly positive $\gamma$, this problem has a closed-form solution that is:
 
-**TODO: equivalence with entropy-penalized, better justification, cf Blondel and Mensch**
-
-Let us denote by $A_\gamma$ the "soft path" matrix that informs, for each pair
-$(i, j)$, how much it will be taken into account in the matching.
-$A_\gamma$ can be interpreted as a weighted average of paths in
-$\mathcal{A}(x, x^\prime)$:
-
-\begin{eqnarray}
-A_\gamma =& \, \mathbb{E}_{\gamma}[A] \\
-=& \, \sum_{\pi \in \mathcal{A}(x, x^\prime)} \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)} A_\pi \, ,
-\end{eqnarray}
+$$
+    p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
+$$
 
 where $k_{\mathrm{GA}}^{\gamma}(x, x^\prime)$ is the Global Alignment kernel [@cuturi2007kernel] 
 that acts as a normalization factor here.
+
+This formulation leads to the following definition for the soft-alignment matrix $A_\gamma$
+
+$$
+    A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
+$$
+
+$A_\gamma$ informs, for each pair
+$(i, j)$, how much it will be taken into account in the matching.
+
+**TODO: animation $A_\gamma$ matrices**
+
+Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\infty$ matrix tends to favor diagonal matches:
+
+<figure>
+    <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
+    <figcaption> 
+        $A_\infty$ matrix for time series of length 30.
+    </figcaption>
+</figure>
 
 $A_\gamma$ can be computed with complexity $O(mn)$ and there is a link between
 this matrix and the gradients of the soft-DTW similarity measure:
@@ -227,8 +242,7 @@ itself but rather a smoothed version of it:
 
 In [@blondelmensch2020], new similarity measures are defined, that rely on
 soft-DTW.
-
-First, **soft-DTW divergence** is defined as:
+In particular, **soft-DTW divergence** is defined as:
 
 <div class="scroll-wrapper">
 \begin{equation}
@@ -244,7 +258,7 @@ First, **soft-DTW divergence** is defined as:
 and this divergence has the advantage of being minimized for
 $x = x^\prime$ (and being exactly 0 in that case).
 
-Second, another interesting similarity measure introduced in the same paper is
+<!-- Second, another interesting similarity measure introduced in the same paper is
 the **sharp soft-DTW** which is:
 
 \begin{equation}
@@ -273,7 +287,7 @@ where $A_\infty$ tends to favor diagonal matches:
     <figcaption> 
         $A_\infty$ matrix for time series of length 30.
     </figcaption>
-</figure>
+</figure> -->
 
 Also, in [@hadji2020], a variant of $\min^\gamma$, called $\text{smoothMin}^\gamma$ is used in the recurrence formula.
 Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operator:
