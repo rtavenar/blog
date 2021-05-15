@@ -166,7 +166,15 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
 \]</span></p>
 <p><span class="math inline">\(A_\gamma\)</span> is a matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
-<p><strong>TODO: animation <span class="math inline">\(A_\gamma\)</span> matrices</strong></p>
+<figure>
+<video playsinline muted autoplay controls loop width="60%">
+<source src="fig/a_gamma.webm" type="video/webm" />
+<source src="fig/a_gamma.mp4" type="video/mp4" />
+<img src="fig/a_gamma.gif" alt="$A_\gamma$ matrix" /> </video>
+<figcaption>
+<span class="math inline">\(A_\gamma\)</span> matrix. Note how the matrix blurs out when <span class="math inline">\(\gamma\)</span> grows.
+</figcaption>
+</figure>
 <p>Note that when <span class="math inline">\(\gamma\)</span> tends toward <span class="math inline">\(+\infty\)</span>, then <span class="math inline">\(p^\star_\gamma\)</span> weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding <span class="math inline">\(A_\infty\)</span> matrix tends to favor diagonal matches:</p>
 <figure>
 <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
