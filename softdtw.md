@@ -147,7 +147,10 @@ It is shown in [@mensch2018] that soft-DTW can be re-written:
 \end{equation}
 </div>
 
-where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy of a given probability distribution $p$.
+where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy<label for="sn-entropy" class="sidenote-toggle sidenote-number"></label>
+        <input type="checkbox" id="sn-entropy" class="sidenote-toggle" />
+        <span class="sidenote">For a discrete probability distribution $p$, entropy is defined as $H(p) = -\sum_i p_i \log (p_i)$ and is maximized by the uniform distribution.</span>
+of a given probability distribution $p$.
 For strictly positive $\gamma$, this problem has a closed-form solution that is:
 
 $$
