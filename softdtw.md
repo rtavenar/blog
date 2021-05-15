@@ -143,11 +143,11 @@ It is shown in [@mensch2018] that soft-DTW can be re-written:
 <div class="scroll-wrapper">
 \begin{equation}
 \text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \min_{p \in \Sigma} \left\langle \underbrace{\sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi}_{A_p} , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+    \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
 \end{equation}
 </div>
 
-where $\Sigma$ is the set of probability distributions over paths and $H(p)$ is the entropy of a given probability distribution $p$.
+where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy of a given probability distribution $p$.
 For strictly positive $\gamma$, this problem has a closed-form solution that is:
 
 $$
@@ -163,7 +163,7 @@ $$
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
 $$
 
-$A_\gamma$ informs, for each pair
+$A_\gamma$ is a matrix that informs, for each pair
 $(i, j)$, how much it will be taken into account in the matching.
 
 **TODO: animation $A_\gamma$ matrices**
