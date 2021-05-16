@@ -300,8 +300,8 @@ on the set of admissible paths.
 
 Such constraints typically translate into enforcing nonzero entries in $A_\pi$ to stay 
 close to the diagonal.
-The Sakoe-Chiba band [@sakoe1978dynamic] is a constant-width band parametrized by a radius $r$ (also called warping window size sometimes)
-Another standard global constraint is the Itakura parallelogram [@itakura1975minimum] sets a maximum slope $s$ for alignment
+The Sakoe-Chiba band [@sakoe1978dynamic] is a constant-width band parametrized by a radius $r$ (also called warping window size sometimes). 
+Another standard global constraint is the Itakura parallelogram [@itakura1975minimum] that sets a maximum slope $s$ for alignment
 paths, which leads to a parallelogram-shaped constraint.
 The impact of these parameters is illustrated in the Figure below:
 
