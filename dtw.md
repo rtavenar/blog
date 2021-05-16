@@ -322,8 +322,7 @@ The impact of these parameters is illustrated in the Figure below:
     </figcaption>
 </figure>
 
-Setting global constraints on admissible DTW paths is equivalent to 
-restricting the set of possible matches for each element in a time series.
+In practice, global constraints on admissible DTW paths restrict the set of possible matches for each element in a time series.
 The number of possible matches for an element is always $2r+1$ for Sakoe-Chiba constraints (except for border elements), 
 while it varies depending on the time index for Itakura parallelograms:
 
