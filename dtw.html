@@ -257,7 +257,7 @@ Contrary to Euclidean distance, DTW is invariant to time shifts between series.
 Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right). Here, each colored cell correspond to an index pair <span class="math inline">\((i, j)\)</span> that is valid under the considered constraint.
 </figcaption>
 </figure>
-<p>Setting global constraints on admissible DTW paths is equivalent to restricting the set of possible matches for each element in a time series. The number of possible matches for an element is always <span class="math inline">\(2r+1\)</span> for Sakoe-Chiba constraints (except for border elements), while it varies depending on the time index for Itakura parallelograms:</p>
+<p>In practice, global constraints on admissible DTW paths restrict the set of possible matches for each element in a time series. The number of possible matches for an element is always <span class="math inline">\(2r+1\)</span> for Sakoe-Chiba constraints (except for border elements), while it varies depending on the time index for Itakura parallelograms:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="80%">
 <source src="fig/dtw_global_constraints.webm" type="video/webm" />
