@@ -134,17 +134,17 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
-Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW is still valid with this $\min^\gamma$ formulation, hence the $O(mn)$ DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).
+Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW still holds with this $\min^\gamma$ formulation, hence the $O(mn)$ DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).
 
 ## Soft-Alignment Path
 
 It is shown in [@mensch2018] that soft-DTW can be re-written:
 
 <div class="scroll-wrapper">
-\begin{equation}
-\text{soft-}DTW^{\gamma}(x, x^\prime) =
-    \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
-\end{equation}
+$$
+    \text{soft-}DTW^{\gamma}(x, x^\prime) =
+        \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
+$$  {#eq:softdtw_reg}
 </div>
 
 where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy<label for="sn-entropy" class="sidenote-toggle sidenote-number"></label>
@@ -154,7 +154,7 @@ of a given probability distribution $p$.
 For strictly positive $\gamma$, this problem has a closed-form solution that is:
 
 $$
-    p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime) / \gamma\rangle}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
+    p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime)\rangle / \gamma}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
 $$
 
 where $k_{\mathrm{GA}}^{\gamma}(x, x^\prime)$ is the Global Alignment kernel [@cuturi2007kernel] 
@@ -233,7 +233,7 @@ weighted average similarity score across all alignment paths (where stronger
 weights are assigned to better paths), instead of focusing on the single best
 alignment as done in DTW.
 
-Another important property of soft-DTW is that is has a "denoising effect", in
+Another important property of soft-DTW is its "denoising effect", in
 the sense that, for a given time series $x_\text{ref}$, the minimizer of
 $\text{soft-}DTW^{\gamma}(x, x_\text{ref})$ is not $x_\text{ref}$
 itself but rather a smoothed version of it:
@@ -253,11 +253,21 @@ itself but rather a smoothed version of it:
     </figcaption>
 </figure>
 
+Finally, as seen in Fig. 2, $\min^\gamma$ lower bounds the min operator.
+As a result, soft-DTW lower bounds DTW.
+Another way to see it is by looking at {@eq:softdtw_reg} and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of $\Sigma^{|\mathcal{A}(x, x^\prime|}$ whose cost is equal to $DTW(x, x^\prime)$.
+Since soft-DTW is a minimum over all probability distributions in $\Sigma^{|\mathcal{A}(x, x^\prime|}$, it hence has to be lower or equal to $DTW(x, x^\prime)$.
+Contrary to DTW, soft-DTW is not bounded below by zero, and we even have:
+
+$$
+    \text{soft-}DTW^\gamma \xrightarrow{\gamma \to +\infty} -\infty \, .
+$$
+
 ## Related Similarity Measures
 
 In [@blondelmensch2020], new similarity measures are defined, that rely on
 soft-DTW.
-In particular, **soft-DTW divergence** is defined as:
+In particular, *soft-DTW divergence* is introduced to counteract the non-positivity of soft-DTW:
 
 <div class="scroll-wrapper">
 \begin{equation}
@@ -266,12 +276,12 @@ In particular, **soft-DTW divergence** is defined as:
         - \frac{1}{2} \left(
                 \text{soft-}DTW^{\gamma}(x, x) +
                 \text{soft-}DTW^{\gamma}(x^\prime, x^\prime)
-            \right)
+            \right) \, .
 \end{equation}
 </div>
 
-and this divergence has the advantage of being minimized for
-$x = x^\prime$ (and being exactly 0 in that case).
+This divergence has the advantage of being minimized for
+$x = x^\prime$ and being exactly 0 in that case.
 
 <!-- Second, another interesting similarity measure introduced in the same paper is
 the **sharp soft-DTW** which is:
@@ -286,23 +296,7 @@ Note that a **sharp soft-DTW divergence** can be derived from this
 (over the sharp soft-DTW) of
 being minimized at $x = x^\prime$.
 
-Further note that, by pushing $\gamma$ to the $+\infty$ limit in this formula,
-one gets:
-
-\begin{equation}
-\text{sharp-soft-}DTW^{\gamma}(x, x^\prime)
-    \xrightarrow{\gamma \to +\infty}
-    \left\langle A_\infty, D_2(x, x^\prime) \right\rangle \, ,
-\end{equation}
-
-where $A_\infty$ tends to favor diagonal matches:
-
-<figure>
-    <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
-    <figcaption> 
-        $A_\infty$ matrix for time series of length 30.
-    </figcaption>
-</figure> -->
+-->
 
 Also, in [@hadji2020], a variant of $\min^\gamma$, called $\text{smoothMin}^\gamma$ is used in the recurrence formula.
 Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operator:
