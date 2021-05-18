@@ -89,7 +89,7 @@
             <text macro="author-container"/>
           </group>
           <text variable="container-title" font-style="italic"/>
-          <text prefix=", " variable="collection-title" font-style="italic"/>
+          <!-- <text prefix=", " variable="collection-title" font-style="italic"/> -->
           <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
         </else-if>
         <else-if type="thesis" match="any">
