@@ -134,7 +134,7 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
-Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW still holds with this $\min^\gamma$ formulation:
+Note that the recurrence relation we had in Equation [(2)](dtw.html#eq:rec) of the post on DTW still holds with this $\min^\gamma$ formulation:
 
 $$
     R_{i,j} = d(x_i, x^\prime_j)^2 +
@@ -232,7 +232,7 @@ Computing this $A_\gamma$ matrix is especially useful since it is directly relat
 ## Properties
 
 As discussed in [@janati2020spatio], soft-DTW is not invariant to time
-shifts, as is DTW.
+shifts, as DTW is.
 Suppose $x$ is a time series that is constant except for a motif that
 occurs at some point in the series, and let us denote by $x_{+k}$ a
 copy of $x$ in which the motif is temporally shifted by $k$ timestamps.
@@ -282,14 +282,14 @@ itself but rather a smoothed version of it:
     </figcaption>
 </figure>
 
-Finally, as seen in Fig. 2, $\min^\gamma$ lower bounds the min operator.
+Finally, as seen in Figure 2, $\min^\gamma$ lower bounds the min operator.
 As a result, soft-DTW lower bounds DTW.
 Another way to see it is by looking at {@eq:softdtw_reg} and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of $\Sigma^{|\mathcal{A}(x, x^\prime|}$ whose cost is equal to $DTW(x, x^\prime)$.
 Since soft-DTW is a minimum over all probability distributions in $\Sigma^{|\mathcal{A}(x, x^\prime|}$, it hence has to be lower or equal to $DTW(x, x^\prime)$.
 Contrary to DTW, soft-DTW is not bounded below by zero, and we even have:
 
 $$
-    \text{soft-}DTW^\gamma \xrightarrow{\gamma \to +\infty} -\infty \, .
+    \text{soft-}DTW^\gamma (x, x^\prime) \xrightarrow{\gamma \to +\infty} -\infty \, .
 $$
 
 ## Related Similarity Measures
