@@ -115,10 +115,10 @@ hard minimum, as illustrated below:
 
 As a consequence, we have:
 
-\begin{equation}
+$$
     \text{soft-}DTW^{\gamma}(x, x^\prime)
     \xrightarrow{\gamma \to 0^+} DTW_2(x, x^\prime)^2 \, .
-\end{equation}
+$$
 
 However, contrary to DTW, soft-DTW is differentiable everywhere for strictly positive $\gamma$ even if, for small $\gamma$ values, sudden changes can still occur in the loss landscape, as seen in the Figure below:
 
@@ -134,7 +134,15 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </figcaption>
 </figure>
 
-Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW still holds with this $\min^\gamma$ formulation, hence the $O(mn)$ DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).
+Note that the recurrence relation we had in Eq. [(2)](dtw.html#eq:rec) of the post on DTW still holds with this $\min^\gamma$ formulation:
+
+$$
+    R_{i,j} = d(x_i, x^\prime_j)^2 +
+        \min{}^\gamma ({\color{MidnightBlue}R_{i-1, j}}, {\color{Red}R_{i, j-1}}, {\color{ForestGreen}R_{i-1, j-1}}) \, ,
+$$
+
+where $\text{soft-}DTW^{\gamma}(x, x^\prime) = R_{n-1, m-1}$.
+As a consequence, the $O(mn)$ DTW algorithm is still valid here.
 
 ## Soft-Alignment Path
 
