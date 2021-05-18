@@ -47,6 +47,13 @@ $endif$
     .csl-right-inline {
       margin: 0 .4em 0 5.5em;
     }
+    /* .csl-right-inline > a {
+      font-size: 0;
+    }
+    .csl-right-inline > a::before {
+      content: "Link";
+      font-size: initial;
+    } */
     .theorem, details {
         background-color: #eee;
         border-radius: .5em;
@@ -63,22 +70,22 @@ $endif$
     }
   </style>
   <script type="text/javascript">
-    function toggle_show_hide(div_elementID, a_element) {
-      var div_element = document.getElementById(div_elementID);
-      if (div_element.style.display === "none") {
-        div_element.style.display = "block";
-        a_element.textContent = "Hide additional information";
-      } else {
-        div_element.style.display = "none";
-        a_element.textContent = "Show additional information";
+    function change_bib_urls() {
+      var div_element = document.getElementById("refs");
+      var myLinks = div_element.getElementsByTagName('a');
+
+      for (var myItem = 0; myItem < myLinks.length; myItem++) {
+        var myChild = myLinks[myItem]
+        myChild.innerText = "Link";
+        myChild.target = "_blank";
       }
-    } 
+    }
   </script>
 $for(header-includes)$
   $header-includes$
 $endfor$
 </head>
-<body>
+<body onload="change_bib_urls();">
 $for(include-before)$
 $include-before$
 $endfor$

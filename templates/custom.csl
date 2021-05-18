@@ -48,9 +48,7 @@
   <macro name="access">
     <choose>
       <if variable="URL">
-        <group display="block">
-          <text variable="URL"/>
-        </group>
+        <text prefix=" " variable="URL"/>
       </if>
     </choose>
   </macro>
