@@ -43,7 +43,7 @@ X_train, y_train, X_test, y_test = CachedDatasets().load_dataset("Trace")
 x_ref = X_train[3]
 
 eta = 1e-1
-epochs = 13
+epochs = 7
 gamma = .1
 list_x = [x_ref]
 losses = []
@@ -84,13 +84,13 @@ ax2.set_yticks([])
 ax2.legend(loc='lower right')
 ax2.set_title("$\gamma=10$")
 
-ax3.plot(np.arange(epochs + 1), losses, color=colors[1], linestyle='-', linewidth=3)
+ax3.plot(np.arange(epochs), losses[:-1], color=colors[1], linestyle='-', linewidth=3)
 scatter, = ax3.plot([0], losses[0], color=colors[1], linestyle='', marker='o')
 ax3.set_xlabel("Epoch")
 ax3.set_ylabel("soft-DTW")
 ax3.set_yticks([])
 
-ax4.plot(np.arange(epochs + 1), losses2, color=colors[1], linestyle='-', linewidth=3)
+ax4.plot(np.arange(epochs), losses2[:-1], color=colors[1], linestyle='-', linewidth=3)
 scatter2, = ax4.plot([0], losses2[0], color=colors[1], linestyle='', marker='o')
 ax4.set_xlabel("Epoch")
 ax4.set_ylabel("soft-DTW")

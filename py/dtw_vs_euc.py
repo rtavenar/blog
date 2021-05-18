@@ -4,11 +4,6 @@ import seaborn as sns
 from tslearn.metrics import dtw_path
 from utils import set_fig_style
 
-f = np.zeros((12, ))
-f[:4] = -1.
-f[4:8] = 1.
-f[8:] = -1.
-
 length = 20
 
 fig = plt.figure(figsize=(12, 4))

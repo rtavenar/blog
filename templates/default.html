@@ -47,12 +47,33 @@ $endif$
     .csl-right-inline {
       margin: 0 .4em 0 5.5em;
     }
-    .theorem {
+    .theorem, details {
         background-color: #eee;
         border-radius: .5em;
         padding: .2em 1em;
     }
+    details > p {
+        margin: 0;
+    }
+    details > summary {
+      font-weight: bold;
+    }
+    details {
+      margin-top: 1rem;
+    }
   </style>
+  <script type="text/javascript">
+    function toggle_show_hide(div_elementID, a_element) {
+      var div_element = document.getElementById(div_elementID);
+      if (div_element.style.display === "none") {
+        div_element.style.display = "block";
+        a_element.textContent = "Hide additional information";
+      } else {
+        div_element.style.display = "none";
+        a_element.textContent = "Show additional information";
+      }
+    } 
+  </script>
 $for(header-includes)$
   $header-includes$
 $endfor$

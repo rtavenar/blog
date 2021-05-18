@@ -147,11 +147,32 @@ $$
 $$  {#eq:softdtw_reg}
 </div>
 
-where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy<label for="sn-entropy" class="sidenote-toggle sidenote-number"></label>
-        <input type="checkbox" id="sn-entropy" class="sidenote-toggle" />
-        <span class="sidenote">For a discrete probability distribution $p$, entropy is defined as $H(p) = -\sum_i p_i \log (p_i)$ and is maximized by the uniform distribution.</span>
+where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy
 of a given probability distribution $p$.
-For strictly positive $\gamma$, this problem has a closed-form solution that is:
+
+<div>
+<details>
+<summary>A (very short) note on entropy</summary> 
+
+For a discrete probability distribution $p$, entropy (also known as Shannon entropy) is defined as 
+$$
+    H(p) = -\sum_i p_i \log (p_i)
+$$ 
+
+and is maximized by the uniform distribution, as seen below:
+
+<figure>
+    <img src="fig/entropy.svg" alt="Entropy" width="70%" />
+    <figcaption> 
+        Entropy of probability distributions over $\Sigma^3$.
+        Each barycentric position $(p_0, p_1, p_2)$ in the triangle above maps to a probability distribution $p = (p_0, p_1, p_2)$ whose entropy is color-coded.
+        Note how higher entropy values are associated to distributions lying close to the center of the triangle (that are hence closer to the uniform distribution).
+    </figcaption>
+</figure>
+</details>
+</div>
+
+For strictly positive $\gamma$, the problem in {@eq:softdtw_reg} has a closed-form solution that is:
 
 $$
     p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime)\rangle / \gamma}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
