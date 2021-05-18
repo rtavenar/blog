@@ -39,6 +39,13 @@
     .csl-right-inline {
       margin: 0 .4em 0 5.5em;
     }
+    /* .csl-right-inline > a {
+      font-size: 0;
+    }
+    .csl-right-inline > a::before {
+      content: "Link";
+      font-size: initial;
+    } */
     .theorem, details {
         background-color: #eee;
         border-radius: .5em;
@@ -55,16 +62,16 @@
     }
   </style>
   <script type="text/javascript">
-    function toggle_show_hide(div_elementID, a_element) {
-      var div_element = document.getElementById(div_elementID);
-      if (div_element.style.display === "none") {
-        div_element.style.display = "block";
-        a_element.textContent = "Hide additional information";
-      } else {
-        div_element.style.display = "none";
-        a_element.textContent = "Show additional information";
+    function change_bib_urls() {
+      var div_element = document.getElementById("refs");
+      var myLinks = div_element.getElementsByTagName('a');
+
+      for (var myItem = 0; myItem < myLinks.length; myItem++) {
+        var myChild = myLinks[myItem]
+        myChild.innerText = "Link";
+        myChild.target = "_blank";
       }
-    } 
+    }
   </script>
   
   <!-- pandoc-eqnos: equation style -->
@@ -74,7 +81,7 @@
     .eqnos-number { position: absolute; right: 0em; top: 50%; line-height: 0; }
   </style>
 </head>
-<body>
+<body onload="change_bib_urls();">
 <div id="header">
 <h1 class="title">An introduction to Dynamic Time Warping</h1>
 <h2 class="author">Romain Tavenard</h2>
@@ -303,16 +310,16 @@ Impact of time shifts on a DTW with a Sakoe-Chiba band constraint of radius <spa
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
 <div id="ref-itakura1975minimum" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">[Itak75] </div><div class="csl-right-inline"><span class="smallcaps">Itakura, Fumitada</span>. Minimum prediction residual principle applied to speech recognition. In: <em>IEEE Transactions on Acoustics, Speech and Signal Processing</em>, 1975.<div class="csl-block"><a href="https://www.ee.columbia.edu/~dpwe/papers/Itak75-lpcasr.pdf">https://www.ee.columbia.edu/~dpwe/papers/Itak75-lpcasr.pdf</a></div></div>
+<div class="csl-left-margin">[Itak75] </div><div class="csl-right-inline"><span class="smallcaps">Itakura, Fumitada</span>. Minimum prediction residual principle applied to speech recognition. In: <em>IEEE Transactions on Acoustics, Speech and Signal Processing</em>, 1975. <a href="https://www.ee.columbia.edu/~dpwe/papers/Itak75-lpcasr.pdf">https://www.ee.columbia.edu/~dpwe/papers/Itak75-lpcasr.pdf</a></div>
 </div>
 <div id="ref-sakoe1978dynamic" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">[SaCh78] </div><div class="csl-right-inline"><span class="smallcaps">Sakoe, Hiroaki</span> ; <span class="smallcaps">Chiba, Seibi</span>. Dynamic programming algorithm optimization for spoken word recognition. In: <em>IEEE Transactions on Acoustics, Speech and Signal Processing</em>, 1978.<div class="csl-block"><a href="https://www.irit.fr/~Julien.Pinquier/Docs/TP_MABS/res/dtw-sakoe-chiba78.pdf">https://www.irit.fr/~Julien.Pinquier/Docs/TP_MABS/res/dtw-sakoe-chiba78.pdf</a></div></div>
+<div class="csl-left-margin">[SaCh78] </div><div class="csl-right-inline"><span class="smallcaps">Sakoe, Hiroaki</span> ; <span class="smallcaps">Chiba, Seibi</span>. Dynamic programming algorithm optimization for spoken word recognition. In: <em>IEEE Transactions on Acoustics, Speech and Signal Processing</em>, 1978. <a href="https://www.irit.fr/~Julien.Pinquier/Docs/TP_MABS/res/dtw-sakoe-chiba78.pdf">https://www.irit.fr/~Julien.Pinquier/Docs/TP_MABS/res/dtw-sakoe-chiba78.pdf</a></div>
 </div>
 <div id="ref-tralie2020exact" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">[TrDe20] </div><div class="csl-right-inline"><span class="smallcaps">Tralie, Christopher</span> ; <span class="smallcaps">Dempsey, Elizabeth</span>. Exact, Parallelizable Dynamic Time Warping Alignment with Linear Memory. In: <em>Proceedings of the International Society for Music Information Retrieval Conference</em>, 2020.<div class="csl-block"><a href="https://arxiv.org/abs/2008.02734">https://arxiv.org/abs/2008.02734</a></div></div>
+<div class="csl-left-margin">[TrDe20] </div><div class="csl-right-inline"><span class="smallcaps">Tralie, Christopher</span> ; <span class="smallcaps">Dempsey, Elizabeth</span>. Exact, Parallelizable Dynamic Time Warping Alignment with Linear Memory. In: <em>Proceedings of the International Society for Music Information Retrieval Conference</em>, 2020. <a href="https://arxiv.org/abs/2008.02734">https://arxiv.org/abs/2008.02734</a></div>
 </div>
 <div id="ref-vintsyuk1968speech" class="csl-entry" role="doc-biblioentry">
-<div class="csl-left-margin">[Vint68] </div><div class="csl-right-inline"><span class="smallcaps">Vintsyuk, Taras K</span>. Speech discrimination by dynamic programming. In: <em>Cybernetics</em>, 1968.<div class="csl-block"><a href="https://link.springer.com/content/pdf/10.1007/BF01074755.pdf">https://link.springer.com/content/pdf/10.1007/BF01074755.pdf</a></div></div>
+<div class="csl-left-margin">[Vint68] </div><div class="csl-right-inline"><span class="smallcaps">Vintsyuk, Taras K</span>. Speech discrimination by dynamic programming. In: <em>Cybernetics</em>, 1968. <a href="https://link.springer.com/content/pdf/10.1007/BF01074755.pdf">https://link.springer.com/content/pdf/10.1007/BF01074755.pdf</a></div>
 </div>
 </div>
 </body>
