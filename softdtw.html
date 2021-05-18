@@ -161,10 +161,10 @@ The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied t
 </figcaption>
 </figure>
 <p>As a consequence, we have:</p>
-<p><span class="math display">\[\begin{equation}
+<p><span class="math display">\[
     \text{soft-}DTW^{\gamma}(x, x^\prime)
     \xrightarrow{\gamma \to 0^+} DTW_2(x, x^\prime)^2 \, .
-\end{equation}\]</span></p>
+\]</span></p>
 <p>However, contrary to DTW, soft-DTW is differentiable everywhere for strictly positive <span class="math inline">\(\gamma\)</span> even if, for small <span class="math inline">\(\gamma\)</span> values, sudden changes can still occur in the loss landscape, as seen in the Figure below:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="80%">
@@ -175,7 +175,12 @@ The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied t
 Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW <a href="#related-similarity-measures">discussed below</a>, is reported in place of soft-DTW.
 </figcaption>
 </figure>
-<p>Note that the recurrence relation we had in Eq. <a href="dtw.html#eq:rec">(2)</a> of the post on DTW still holds with this <span class="math inline">\(\min^\gamma\)</span> formulation, hence the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here (the only difference being that soft-min should be used in the update rule in place of min).</p>
+<p>Note that the recurrence relation we had in Eq. <a href="dtw.html#eq:rec">(2)</a> of the post on DTW still holds with this <span class="math inline">\(\min^\gamma\)</span> formulation:</p>
+<p><span class="math display">\[
+    R_{i,j} = d(x_i, x^\prime_j)^2 +
+        \min{}^\gamma ({\color{MidnightBlue}R_{i-1, j}}, {\color{Red}R_{i, j-1}}, {\color{ForestGreen}R_{i-1, j-1}}) \, ,
+\]</span></p>
+<p>where <span class="math inline">\(\text{soft-}DTW^{\gamma}(x, x^\prime) = R_{n-1, m-1}\)</span>. As a consequence, the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here.</p>
 <h2 id="soft-alignment-path">Soft-Alignment Path</h2>
 <p>It is shown in <span class="citation" data-cites="mensch2018">[<a href="#ref-mensch2018" role="doc-biblioref">MeBl18</a>]</span> that soft-DTW can be re-written:</p>
 <div class="scroll-wrapper">
