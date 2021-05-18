@@ -276,7 +276,7 @@ itself but rather a smoothed version of it:
     <figcaption> 
         Denoising effect of soft-DTW.
         Here, we perform a gradient descent on $x$, initialized at $x^{(0)} = x_\text{ref}$.
-        Note how using larger $\gamma$ values (right column) tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label>
+        Note how using a larger $\gamma$ value tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label>
         <input type="checkbox" id="sn-denoising" class="sidenote-toggle" />
         <span class="sidenote">This Figure is widely inspired from Figure 2 in [@blondelmensch2020].</span>
     </figcaption>
