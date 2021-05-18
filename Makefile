@@ -21,7 +21,7 @@ html/%.html: %.md
 		--data-dir . \
 		--columns 1000 --ascii --mathjax \
 		--toc --toc-depth=2 \
-		--csl="templates/din-1505-2-alphanumeric.csl.xml" \
+		--csl="templates/custom.csl" \
 		--template=templates/default.html $^
 
 clean:
