@@ -28,12 +28,13 @@ def animate(i):
 
     return [line_x_t, line_x_t2, scatter, scatter2]
 
-fig = plt.figure(figsize=(12, 6))
+fig = plt.figure(figsize=(6, 6))
 set_fig_style(fig, font_size=14)
-ax = plt.subplot(2, 2, 1)
-ax2 = plt.subplot(2, 2, 2)
-ax3 = plt.subplot(2, 2, 3)
-ax4 = plt.subplot(2, 2, 4)
+ax = plt.subplot(2, 1, 1)
+ax2 = plt.subplot(2, 1, 2)
+
+ax3 = fig.add_axes([.1, .287, 0.2, 0.15])
+ax4 = fig.add_axes([.1, .77, 0.2, 0.15])
 for cur_ax in fig.axes:
     cur_ax.set_facecolor(fig.patch.get_facecolor())
 colors = sns.color_palette("Paired")

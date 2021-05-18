@@ -268,7 +268,7 @@ $\text{soft-}DTW^{\gamma}(x, x_\text{ref})$ is not $x_\text{ref}$
 itself but rather a smoothed version of it:
 
 <figure>
-    <video playsinline muted autoplay controls loop width="100%">
+    <video playsinline muted autoplay controls loop width="80%">
         <source src="fig/softdtw_denoising.webm" type="video/webm" />
         <source src="fig/softdtw_denoising.mp4" type="video/mp4" />
         <img src="fig/softdtw_denoising.gif" alt="Denoising effect of soft-DTW" />
@@ -333,7 +333,7 @@ Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operat
 <figure>
     <img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
     <figcaption> 
-        The smooth-min function $\text{smoothMin}^\gamma$ applied to the pair $(-a, a)$ for various values of $\gamma$.
+        The $\text{smoothMin}^\gamma$ function applied to the pair $(-a, a)$ for various values of $\gamma$.
     </figcaption>
 </figure>
 
