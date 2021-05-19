@@ -150,11 +150,11 @@ As a consequence, the $O(mn)$ DTW algorithm is still valid here.
 
 It is shown in [@mensch2018] that soft-DTW can be re-written:
 
-<div class="scroll-wrapper">
+<div class="scroll-wrapper" id="eq:entropy_softdtw">
 $$
     \text{soft-}DTW^{\gamma}(x, x^\prime) =
         \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
-$$  {#eq:softdtw_reg}
+$$
 </div>
 
 where $\Sigma^{|\mathcal{A}(x, x^\prime)|}$ is the set of probability distributions over paths and $H(p)$ is the entropy
@@ -182,7 +182,7 @@ and is maximized by the uniform distribution, as seen below:
 </details>
 </div>
 
-For strictly positive $\gamma$, the problem in {@eq:softdtw_reg} has a closed-form solution that is:
+For strictly positive $\gamma$, the [entropy-regularized problem](#eq:entropy_softdtw) above has a closed-form solution that is:
 
 $$
     p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime)\rangle / \gamma}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
@@ -286,7 +286,7 @@ itself but rather a smoothed version of it:
 
 Finally, as seen in Figure 2, $\min^\gamma$ lower bounds the min operator.
 As a result, soft-DTW lower bounds DTW.
-Another way to see it is by looking at {@eq:softdtw_reg} and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of $\Sigma^{|\mathcal{A}(x, x^\prime|}$ whose cost is equal to $DTW(x, x^\prime)$.
+Another way to see it is by taking a closer look at the [entropy-regularized formulation](#eq:entropy_softdtw) for soft-DTW and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of $\Sigma^{|\mathcal{A}(x, x^\prime|}$ whose cost is equal to $DTW(x, x^\prime)$.
 Since soft-DTW is a minimum over all probability distributions in $\Sigma^{|\mathcal{A}(x, x^\prime|}$, it hence has to be lower or equal to $DTW(x, x^\prime)$.
 Contrary to DTW, soft-DTW is not bounded below by zero, and we even have:
 
