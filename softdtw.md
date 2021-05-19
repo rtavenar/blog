@@ -2,8 +2,8 @@
 title: Differentiability of DTW and the case of soft-DTW
 language: en
 author: Romain Tavenard
-date: 2021/04/29
-draft: false
+date: 2021/06/15
+draft: true
 rights: Creative Commons CC BY-NC-SA
 bibliography: dtw.bib
 ---
@@ -12,7 +12,7 @@ bibliography: dtw.bib
 
 We have seen in a [previous blog post](dtw.html) how one can use Dynamic Time Warping (DTW) as a shift-invariant similarity measure between time series.
 In this new post, we will study some aspects related to the differentiability of DTW.
-The reason why we focus on differentiability is that this property is key in modern machine learning approaches.
+One of the reasons why we focus on differentiability is that this property is key in modern machine learning approaches.
 
 [@cuturi2017soft] provide a nice example setting in which differentiability is desirable:
 Suppose we are given a forecasting task<label for="sn-1" class="sidenote-toggle sidenote-number"></label>
@@ -71,6 +71,7 @@ and study the evolution of $DTW_2(x, x_\text{ref})$ as a function of this value:
     </video>
     <figcaption> 
         (Non-)differentiability of Dynamic Time Warping.
+        A single element $x_\tau$ is changed in $x$ (top) and $DTW(x, x^\prime)$ is reported as a function of $x_\tau$ (bottom).
     </figcaption>
 </figure>
 
@@ -107,7 +108,8 @@ hard minimum, as illustrated below:
 <figure>
     <img src="fig/soft_min.svg" alt="soft-min function" width="80%" />
     <figcaption> 
-        The soft-min function $\min^\gamma$ applied to the pair $(-a, a)$ for various values of $\gamma$.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label>
+        The soft-min function $\min^\gamma$ applied to the pair $(-a, a)$ for various values of $\gamma$.
+        The solid gray line corresponds to the hard min function.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label>
         <input type="checkbox" id="sn-softmin" class="sidenote-toggle" />
         <span class="sidenote">This Figure is inspired from [the dedicated wikipedia page](https://en.wikipedia.org/wiki/Smooth_maximum).</span>
     </figcaption>
@@ -130,7 +132,7 @@ However, contrary to DTW, soft-DTW is differentiable everywhere for strictly pos
     </video>
     <figcaption> 
         Differentiability of soft-DTW.
-        For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW [discussed below](#related-similarity-measures), is reported in place of soft-DTW.
+        For the sake of visualization, soft-DTW divergence, which is a normalized version of soft-DTW [discussed below](#related-similarity-measures), is reported in place of soft-DTW.
     </figcaption>
 </figure>
 
@@ -208,15 +210,15 @@ $(i, j)$, how much it will be taken into account in the matching.
         $A_\gamma$ matrix. Note how the matrix blurs out when $\gamma$ grows.
     </figcaption>
 </figure>
-Note that when $\gamma$ tends toward $+\infty$, then $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\infty$ matrix tends to favor diagonal matches, regardless
-of the content of the series $x$ and $x^\prime$:
+Note that when $\gamma$ tends toward $+\infty$, $p^\star_\gamma$ weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding $A_\gamma$ matrix tends to favor diagonal matches, regardless
+of the content of the series $x$ and $x^\prime$.
 
-<figure>
+<!-- <figure>
     <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
     <figcaption> 
         $A_\infty$ matrix for time series of length 30.
     </figcaption>
-</figure>
+</figure> -->
 
 However, the sum in {@eq:a_gamma} is intractable due to the very large number of paths in $\mathcal{A}(x, x^\prime)$.
 Fortunately, once soft-DTW has been computed, $A_\gamma$ can be obtained through a backward dynamic programming pass 
@@ -334,6 +336,7 @@ Contrary to $\min^\gamma$, $\text{smoothMin}^\gamma$ upper bounds the min operat
     <img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
     <figcaption> 
         The $\text{smoothMin}^\gamma$ function applied to the pair $(-a, a)$ for various values of $\gamma$.
+        The solid gray line corresponds to the hard min function.
     </figcaption>
 </figure>
 
@@ -342,5 +345,6 @@ Note also that [@hadji2020] suggest that the DTW variants presented in these pos
 
 # Conclusion
 
-**TODO**
-Our next blog post should be dedicated to drawing links between optimal transport and dynamic time warping.
+We have seen in this post that DTW is not differentiable everywhere, and that there exists alternatives that basically change the min operator into a differentiable alternative in order to get a differentiable similarity measure that can later be used as a loss in gradient-based optimization.
+
+The next post in this series will be dedicated to drawing links between optimal transport and dynamic time warping.

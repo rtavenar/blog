@@ -2,7 +2,7 @@
 title: An introduction to Dynamic Time Warping
 language: en
 author: Romain Tavenard
-date: 2021/04/21
+date: 2021/06/01
 draft: false
 rights: Creative Commons CC BY-NC-SA
 bibliography: dtw.bib
@@ -99,7 +99,7 @@ This is because time series in each group are very similar **up to a time shift*
 # Dynamic Time Warping
 
 We will now review Dynamic Time Warping (DTW) in more details.
-DTW is a similarity measure between time series which has been introduced independently in the literature by [@vintsyuk1968speech] and [@sakoe1978dynamic],
+DTW is a similarity measure between time series that has been introduced independently in the literature by [@vintsyuk1968speech] and [@sakoe1978dynamic],
 in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label>
 <input type="checkbox" id="sn-3" class="sidenote-toggle" />
 <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from [@sakoe1978dynamic], which is more standard in the literature.</span>
@@ -195,9 +195,8 @@ Assuming $m$ and $n$ are the same order, there exists $O\left(\frac{(3 + 2\sqrt{
 $\mathcal{A}(x, x^\prime)$, which makes it intractable to actually list all paths sequentially in order to compute the minimum.
 
 Fortunately, an exact solution to this optimization problem can be found using dynamic programming.
-Dynamic programming relies on recurrence.
-The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems.
-Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).
+Dynamic programming relies on recurrence, which consists in linking the solution of a given problem to solutions of (easier) sub-problems.
+Once this link is known, the dynamic programming approach solves the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).
 
 In the case of DTW, we need to rely on the following quantity:
 
@@ -294,7 +293,7 @@ then $DTW_q({x}, {x}_{+k}) = 0$, as illustrated below:
 
 ## Setting Additional Constraints
 
-As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude.
+As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their temporal span.
 In order to allow invariances to local deformations only, one can impose additional constraints 
 on the set of admissible paths.
 
@@ -318,7 +317,7 @@ The impact of these parameters is illustrated in the Figure below:
     </video>
     <figcaption>
         Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right).
-        Here, each colored cell correspond to an index pair $(i, j)$ that is valid under the considered constraint.
+        Here, each colored cell corresponds to an index pair $(i, j)$ that is valid under the considered constraint.
     </figcaption>
 </figure>
 
@@ -357,4 +356,4 @@ but is no longer invariant to longer time shifts:
 
 We have seen in this post how alignment-based metrics can prove useful when dealing with temporally shifted time series.
 We have presented in more details the most common of these metrics, which is Dynamic Time Warping (DTW).
-If you enjoyed this post, stay tuned, a new one should be published soon on the specific topic of the differentiability of DTW.
+If you enjoyed this post, stay tuned, a new one will be published soon on the specific topic of the differentiability of DTW.
