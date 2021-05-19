@@ -184,11 +184,11 @@ Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergenc
 <p>where <span class="math inline">\(\text{soft-}DTW^{\gamma}(x, x^\prime) = R_{n-1, m-1}\)</span>. As a consequence, the <span class="math inline">\(O(mn)\)</span> DTW algorithm is still valid here.</p>
 <h2 id="soft-alignment-path">Soft-Alignment Path</h2>
 <p>It is shown in <span class="citation" data-cites="mensch2018">[<a href="#ref-mensch2018" role="doc-biblioref">MeBl18</a>]</span> that soft-DTW can be re-written:</p>
-<div class="scroll-wrapper">
-<p><span id="eq:softdtw_reg" class="eqnos"><span class="math display">\[
+<div id="eq:entropy_softdtw" class="scroll-wrapper">
+<p><span class="math display">\[
     \text{soft-}DTW^{\gamma}(x, x^\prime) =
         \min_{p \in \Sigma^{|\mathcal{A}(x, x^\prime)|}} \left\langle \sum_{\pi \in \mathcal{A}(x, x^\prime)} p(\pi) A_\pi , D_2(x, x^\prime) \right\rangle - \gamma H(p)
-\]</span><span class="eqnos-number">(1)</span></span> </p>
+\]</span></p>
 </div>
 <p>where <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime)|}\)</span> is the set of probability distributions over paths and <span class="math inline">\(H(p)\)</span> is the entropy of a given probability distribution <span class="math inline">\(p\)</span>.</p>
 <div>
@@ -208,7 +208,7 @@ Entropy of probability distributions over <span class="math inline">\(\Sigma^3\)
 </figure>
 </details>
 </div>
-<p>For strictly positive <span class="math inline">\(\gamma\)</span>, the problem in Equation&#xA0;<a href="#eq:softdtw_reg">(1)</a> has a closed-form solution that is:</p>
+<p>For strictly positive <span class="math inline">\(\gamma\)</span>, the <a href="#eq:entropy_softdtw">entropy-regularized problem</a> above has a closed-form solution that is:</p>
 <p><span class="math display">\[
     p^\star_\gamma(\pi) = \frac{e^{-\langle A_\pi, D_2(x, x^\prime)\rangle / \gamma}}{k_{\mathrm{GA}}^{\gamma}(x, x^\prime)}
 \]</span></p>
@@ -216,7 +216,7 @@ Entropy of probability distributions over <span class="math inline">\(\Sigma^3\)
 <p>This formulation leads to the following definition for the soft-alignment matrix <span class="math inline">\(A_\gamma\)</span></p>
 <p><span id="eq:a_gamma" class="eqnos"><span class="math display">\[
     A_\gamma = \sum_{\pi \in \mathcal{A}(x, x^\prime)} p^\star_\gamma(\pi) A_\pi \, .
-\]</span><span class="eqnos-number">(2)</span></span> </p>
+\]</span><span class="eqnos-number">(1)</span></span> </p>
 <p><span class="math inline">\(A_\gamma\)</span> is a matrix that informs, for each pair <span class="math inline">\((i, j)\)</span>, how much it will be taken into account in the matching.</p>
 <figure>
 <video playsinline muted autoplay controls loop width="60%">
@@ -234,7 +234,7 @@ Entropy of probability distributions over <span class="math inline">\(\Sigma^3\)
         $A_\infty$ matrix for time series of length 30.
     </figcaption>
 </figure> -->
-<p>However, the sum in Equation&#xA0;<a href="#eq:a_gamma">(2)</a> is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>).</p>
+<p>However, the sum in Equation&#xA0;<a href="#eq:a_gamma">(1)</a> is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>).</p>
 <p>Computing this <span class="math inline">\(A_\gamma\)</span> matrix is especially useful since it is directly related to the gradients of the soft-DTW similarity measure:</p>
 <p><span class="math display">\[\begin{equation}
 \nabla_{x} \text{soft-}DTW^{\gamma}(x, x^\prime) =
@@ -268,7 +268,7 @@ Impact of time shifts on soft-DTW.
 Denoising effect of soft-DTW. Here, we perform a gradient descent on <span class="math inline">\(x\)</span>, initialized at <span class="math inline">\(x^{(0)} = x_\text{ref}\)</span>. Note how using a larger <span class="math inline">\(\gamma\)</span> value tends to smooth out more details.<label for="sn-denoising" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-denoising" class="sidenote-toggle" /> <span class="sidenote">This Figure is widely inspired from Figure 2 in <span class="citation" data-cites="blondelmensch2020">[<a href="#ref-blondelmensch2020" role="doc-biblioref">BlMeVe21</a>]</span>.</span>
 </figcaption>
 </figure>
-<p>Finally, as seen in Figure 2, <span class="math inline">\(\min^\gamma\)</span> lower bounds the min operator. As a result, soft-DTW lower bounds DTW. Another way to see it is by looking at Equation&#xA0;<a href="#eq:softdtw_reg">(1)</a> and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime|}\)</span> whose cost is equal to <span class="math inline">\(DTW(x, x^\prime)\)</span>. Since soft-DTW is a minimum over all probability distributions in <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime|}\)</span>, it hence has to be lower or equal to <span class="math inline">\(DTW(x, x^\prime)\)</span>. Contrary to DTW, soft-DTW is not bounded below by zero, and we even have:</p>
+<p>Finally, as seen in Figure 2, <span class="math inline">\(\min^\gamma\)</span> lower bounds the min operator. As a result, soft-DTW lower bounds DTW. Another way to see it is by taking a closer look at the <a href="#eq:entropy_softdtw">entropy-regularized formulation</a> for soft-DTW and observing that a distribution that would have a probability of 1 for the best path and 0 for all other paths is an element of <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime|}\)</span> whose cost is equal to <span class="math inline">\(DTW(x, x^\prime)\)</span>. Since soft-DTW is a minimum over all probability distributions in <span class="math inline">\(\Sigma^{|\mathcal{A}(x, x^\prime|}\)</span>, it hence has to be lower or equal to <span class="math inline">\(DTW(x, x^\prime)\)</span>. Contrary to DTW, soft-DTW is not bounded below by zero, and we even have:</p>
 <p><span class="math display">\[
     \text{soft-}DTW^\gamma (x, x^\prime) \xrightarrow{\gamma \to +\infty} -\infty \, .
 \]</span></p>
