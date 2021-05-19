@@ -17,6 +17,38 @@
       <name delimiter=", " delimiter-precedes-last="never" and="symbol" initialize="false" initialize-with=". " font-variant="small-caps"/>
     </names>
   </macro>
+  <macro name="venue">
+    <choose>
+      <if type="bill book broadcast graphic legal_case legislation manuscript map motion_picture report song" match="any">
+        <text prefix=" " macro="title"/>
+        <text prefix=", " variable="collection-title" text-case="title" font-style="italic"/>
+        <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
+      </if>
+      <else-if type="chapter paper-conference" match="any">
+        <text prefix=" " macro="title" suffix="."/>
+        <text prefix=". " term="in" text-case="capitalize-all" suffix=" "/>
+        <text variable="container-title" text-case="title" font-style="italic"/>
+        <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
+      </else-if>
+      <else-if type="thesis" match="any">
+        <text prefix=" " macro="title" font-style="italic"/>
+        <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
+      </else-if>
+      <else-if type="webpage post post-weblog" match="any">
+        <text prefix=" " macro="title" suffix=". " font-style="italic"/>
+        <text prefix=". " variable="container-title" text-case="title"/>
+      </else-if>
+      <else-if type="article article-journal article-magazine article-newspaper" match="any">
+        <text prefix=" " macro="title"/>
+        <text prefix=". " variable="container-title" text-case="title" font-style="italic"/>
+        <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
+      </else-if>
+      <else>
+        <text prefix=" " suffix="." macro="title"/>
+        <text prefix=" " suffix="." variable="container-title" text-case="title" font-style="italic"/>
+      </else>
+    </choose>
+  </macro>
   <macro name="access">
     <choose>
       <if variable="URL">
@@ -48,36 +80,7 @@
     <layout>
       <text variable="citation-label" prefix="[" suffix="] "/>
       <text macro="author"/>
-      <choose>
-        <if type="bill book broadcast graphic legal_case legislation manuscript map motion_picture report song" match="any">
-          <text prefix=" " macro="title"/>
-          <text prefix=", " variable="collection-title" font-style="italic"/>
-          <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
-        </if>
-        <else-if type="chapter paper-conference" match="any">
-          <text prefix=" " macro="title" suffix="."/>
-          <text prefix=". " term="in" text-case="capitalize-all" suffix=" "/>
-          <text variable="container-title" font-style="italic"/>
-          <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
-        </else-if>
-        <else-if type="thesis" match="any">
-          <text prefix=" " macro="title" font-style="italic"/>
-          <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
-        </else-if>
-        <else-if type="webpage post post-weblog" match="any">
-          <text prefix=" " macro="title" suffix=". " font-style="italic"/>
-          <text prefix=". " variable="container-title"/>
-        </else-if>
-        <else-if type="article article-journal article-magazine article-newspaper" match="any">
-          <text prefix=" " macro="title"/>
-          <text prefix=". " variable="container-title" font-style="italic"/>
-          <date prefix=", " suffix="." variable="issued" form="numeric" date-parts="year"/>
-        </else-if>
-        <else>
-          <text prefix=" " suffix="." macro="title"/>
-          <text prefix=" " suffix="." variable="container-title" font-style="italic"/>
-        </else>
-      </choose>
+      <text macro="venue"/>
       <text macro="access"/>
     </layout>
   </bibliography>
