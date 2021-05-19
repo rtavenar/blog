@@ -79,7 +79,7 @@
 <div id="header">
 <h1 class="title">Differentiability of DTW and the case of soft-DTW</h1>
 <h2 class="author">Romain Tavenard</h2>
-<!-- <h3 class="date">2021/04/29</h3> -->
+<!-- <h3 class="date">2021/06/15</h3> -->
 <div id="back2index">
   [<a href="index.html">Other blog posts</a>]
 </div>
@@ -101,7 +101,7 @@
   </ul>
 </div>
 <h1 id="introduction">Introduction</h1>
-<p>We have seen in a <a href="dtw.html">previous blog post</a> how one can use Dynamic Time Warping (DTW) as a shift-invariant similarity measure between time series. In this new post, we will study some aspects related to the differentiability of DTW. The reason why we focus on differentiability is that this property is key in modern machine learning approaches.</p>
+<p>We have seen in a <a href="dtw.html">previous blog post</a> how one can use Dynamic Time Warping (DTW) as a shift-invariant similarity measure between time series. In this new post, we will study some aspects related to the differentiability of DTW. One of the reasons why we focus on differentiability is that this property is key in modern machine learning approaches.</p>
 <p><span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span> provide a nice example setting in which differentiability is desirable: Suppose we are given a forecasting task<label for="sn-1" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-1" class="sidenote-toggle" /> <span class="sidenote">A forecasting task is a task in which we are given the beginning of a time series and the goal is to predict the future behavior of the series.</span>in which the exact temporal localization of the temporal motifs to be predicted are less important than their overall shapes. In such a setting, it would make sense to use a shift-invariant similarity measure in order to assess whether a prediction made by the model is close enough from the ground-truth. Hence, a rather reasonable approach could be to tune the parameters of a neural network in order to minimize such a loss. Since optimization for this family of models heavily relies on gradient descent, having access to a differentiable shift-invariant similarity measure between time series is a key ingredient of this approach.</p>
 <h1 id="differentiability-of-dtw">Differentiability of DTW</h1>
 <p>Let us start by having a look at the differentiability of Dynamic Time Warping. To do so, we will rely on the following theorem from <span class="citation" data-cites="bonnans1998optimization">[<a href="#ref-bonnans1998optimization" role="doc-biblioref">BoSh98</a>]</span>:</p>
@@ -136,7 +136,7 @@
 <source src="fig/dtw_landscape.mp4" type="video/mp4" />
 <img src="fig/dtw_landscape.gif" alt="DTW landscape" /> </video>
 <figcaption>
-(Non-)differentiability of Dynamic Time Warping.
+(Non-)differentiability of Dynamic Time Warping. A single element <span class="math inline">\(x_\tau\)</span> is changed in <span class="math inline">\(x\)</span> (top) and <span class="math inline">\(DTW(x, x^\prime)\)</span> is reported as a function of <span class="math inline">\(x_\tau\)</span> (bottom).
 </figcaption>
 </figure>
 <p>Note the sudden change in slope at the position marked by a vertical dashed line, which corresponds to a case where (at least) two distinct optimal alignment paths coexist.</p>
@@ -158,7 +158,7 @@
 <figure>
 <img src="fig/soft_min.svg" alt="soft-min function" width="80%" />
 <figcaption>
-The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-softmin" class="sidenote-toggle" /> <span class="sidenote">This Figure is inspired from <a href="https://en.wikipedia.org/wiki/Smooth_maximum">the dedicated wikipedia page</a>.</span>
+The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>. The solid gray line corresponds to the hard min function.<label for="sn-softmin" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-softmin" class="sidenote-toggle" /> <span class="sidenote">This Figure is inspired from <a href="https://en.wikipedia.org/wiki/Smooth_maximum">the dedicated wikipedia page</a>.</span>
 </figcaption>
 </figure>
 <p>As a consequence, we have:</p>
@@ -173,7 +173,7 @@ The soft-min function <span class="math inline">\(\min^\gamma\)</span> applied t
 <source src="fig/softdtw_landscape.mp4" type="video/mp4" />
 <img src="fig/softdtw_landscape.gif" alt="softDTW landscape" /> </video>
 <figcaption>
-Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergence, that is a normalized version of soft-DTW <a href="#related-similarity-measures">discussed below</a>, is reported in place of soft-DTW.
+Differentiability of soft-DTW. For the sake of visualization, soft-DTW divergence, which is a normalized version of soft-DTW <a href="#related-similarity-measures">discussed below</a>, is reported in place of soft-DTW.
 </figcaption>
 </figure>
 <p>Note that the recurrence relation we had in Equation <a href="dtw.html#eq:rec">(2)</a> of the post on DTW still holds with this <span class="math inline">\(\min^\gamma\)</span> formulation:</p>
@@ -227,13 +227,13 @@ Entropy of probability distributions over <span class="math inline">\(\Sigma^3\)
 <span class="math inline">\(A_\gamma\)</span> matrix. Note how the matrix blurs out when <span class="math inline">\(\gamma\)</span> grows.
 </figcaption>
 </figure>
-<p>Note that when <span class="math inline">\(\gamma\)</span> tends toward <span class="math inline">\(+\infty\)</span>, then <span class="math inline">\(p^\star_\gamma\)</span> weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding <span class="math inline">\(A_\infty\)</span> matrix tends to favor diagonal matches, regardless of the content of the series <span class="math inline">\(x\)</span> and <span class="math inline">\(x^\prime\)</span>:</p>
-<figure>
-<img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
-<figcaption>
-<span class="math inline">\(A_\infty\)</span> matrix for time series of length 30.
-</figcaption>
-</figure>
+<p>Note that when <span class="math inline">\(\gamma\)</span> tends toward <span class="math inline">\(+\infty\)</span>, <span class="math inline">\(p^\star_\gamma\)</span> weights tend to the uniform distribution, hence the averaging operates over all alignments with equal weights, and the corresponding <span class="math inline">\(A_\gamma\)</span> matrix tends to favor diagonal matches, regardless of the content of the series <span class="math inline">\(x\)</span> and <span class="math inline">\(x^\prime\)</span>.</p>
+<!-- <figure>
+    <img src="fig/a_inf.svg" alt="$A_\infty$ matrix" width="60%" />
+    <figcaption> 
+        $A_\infty$ matrix for time series of length 30.
+    </figcaption>
+</figure> -->
 <p>However, the sum in Equation&#xA0;<a href="#eq:a_gamma">(2)</a> is intractable due to the very large number of paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>. Fortunately, once soft-DTW has been computed, <span class="math inline">\(A_\gamma\)</span> can be obtained through a backward dynamic programming pass with complexity <span class="math inline">\(O(mn)\)</span> (see more details in <span class="citation" data-cites="cuturi2017soft">[<a href="#ref-cuturi2017soft" role="doc-biblioref">CuBl17</a>]</span>).</p>
 <p>Computing this <span class="math inline">\(A_\gamma\)</span> matrix is especially useful since it is directly related to the gradients of the soft-DTW similarity measure:</p>
 <p><span class="math display">\[\begin{equation}
@@ -303,12 +303,13 @@ being minimized at $x = x^\prime$.
 <figure>
 <img src="fig/smooth_min.svg" alt="smooth-min function" width="80%" />
 <figcaption>
-The <span class="math inline">\(\text{smoothMin}^\gamma\)</span> function applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>.
+The <span class="math inline">\(\text{smoothMin}^\gamma\)</span> function applied to the pair <span class="math inline">\((-a, a)\)</span> for various values of <span class="math inline">\(\gamma\)</span>. The solid gray line corresponds to the hard min function.
 </figcaption>
 </figure>
 <p>As a consequence, the resulting similarity measure upper bounds DTW. Note also that <span class="citation" data-cites="hadji2020">[<a href="#ref-hadji2020" role="doc-biblioref">HaDeJe21</a>]</span> suggest that the DTW variants presented in these posts are not fully suited for representation learning and additional contrastive losses should be used to help learn useful representations.</p>
 <h1 id="conclusion">Conclusion</h1>
-<p><strong>TODO</strong> Our next blog post should be dedicated to drawing links between optimal transport and dynamic time warping.</p>
+<p>We have seen in this post that DTW is not differentiable everywhere, and that there exists alternatives that basically change the min operator into a differentiable alternative in order to get a differentiable similarity measure that can later be used as a loss in gradient-based optimization.</p>
+<p>The next post in this series will be dedicated to drawing links between optimal transport and dynamic time warping.</p>
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
 <div id="ref-blondelmensch2020" class="csl-entry" role="doc-biblioentry">

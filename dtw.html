@@ -79,7 +79,7 @@
 <div id="header">
 <h1 class="title">An introduction to Dynamic Time Warping</h1>
 <h2 class="author">Romain Tavenard</h2>
-<!-- <h3 class="date">2021/04/21</h3> -->
+<!-- <h3 class="date">2021/06/01</h3> -->
 <div id="back2index">
   [<a href="index.html">Other blog posts</a>]
 </div>
@@ -146,7 +146,7 @@ DTW <span class="math inline">\(k\)</span>-means clustering of the dataset prese
 </figure>
 <p>This is because time series in each group are very similar <strong>up to a time shift</strong>, which is a known invariant of Dynamic Time Warping, as we will see.</p>
 <h1 id="dynamic-time-warping">Dynamic Time Warping</h1>
-<p>We will now review Dynamic Time Warping (DTW) in more details. DTW is a similarity measure between time series which has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
+<p>We will now review Dynamic Time Warping (DTW) in more details. DTW is a similarity measure between time series that has been introduced independently in the literature by <span class="citation" data-cites="vintsyuk1968speech">[<a href="#ref-vintsyuk1968speech" role="doc-biblioref">Vint68</a>]</span> and <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, in both cases for speech applications.<label for="sn-3" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-3" class="sidenote-toggle" /> <span class="sidenote">Note that, in this series of posts, we will stick to the formalism from <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span>, which is more standard in the literature.</span></p>
 <p>Let us consider two time series <span class="math inline">\(x\)</span> and <span class="math inline">\({x}^\prime\)</span> of respective lengths <span class="math inline">\(n\)</span> and <span class="math inline">\(m\)</span>. Here, all elements <span class="math inline">\(x_i\)</span> and <span class="math inline">\(x^\prime_j\)</span> are assumed to lie in the same <span class="math inline">\(p\)</span>-dimensional space and the exact timestamps at which observations occur are disregarded: only their ordering matters.</p>
 <p>Dynamic Time Warping seeks for the temporal alignment<label for="sn-temp-align" class="sidenote-toggle sidenote-number"></label> <input type="checkbox" id="sn-temp-align" class="sidenote-toggle" /> <span class="sidenote">A temporal alignment is a matching between time indexes of the two time series.</span> that minimizes Euclidean distance between aligned series, as illustrated in the Figure below:</p>
 <figure>
@@ -200,7 +200,7 @@ DTW_q({x}, {x}^\prime) =
 <p>where <span class="math inline">\(D_q({x}, {x}^\prime)\)</span> stores distances <span class="math inline">\(d(x_i, x^\prime_j)\)</span> at the power <span class="math inline">\(q\)</span>.</p>
 <h2 id="algorithmic-solution">Algorithmic Solution</h2>
 <p>Though the optimization problem in Equation&#xA0;<a href="#eq:dtw">(1)</a> is minimization over a finite set, the number of admissible paths (coined <a href="https://en.wikipedia.org/wiki/Delannoy_number">Delannoy number</a>) becomes very large even for moderate time series lengths. Assuming <span class="math inline">\(m\)</span> and <span class="math inline">\(n\)</span> are the same order, there exists <span class="math inline">\(O\left(\frac{(3 + 2\sqrt{2})^n}{\sqrt{n}}\right)\)</span> different paths in <span class="math inline">\(\mathcal{A}(x, x^\prime)\)</span>, which makes it intractable to actually list all paths sequentially in order to compute the minimum.</p>
-<p>Fortunately, an exact solution to this optimization problem can be found using dynamic programming. Dynamic programming relies on recurrence. The essence of recurrence is to link the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, the dynamic programming approach consists in solving the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).</p>
+<p>Fortunately, an exact solution to this optimization problem can be found using dynamic programming. Dynamic programming relies on recurrence, which consists in linking the solution of a given problem to solutions of (easier) sub-problems. Once this link is known, the dynamic programming approach solves the original problem by recursively solving required sub-problems and storing their solutions for later use (so as not to re-compute subproblems several times).</p>
 <p>In the case of DTW, we need to rely on the following quantity:</p>
 <p><span class="math display">\[
     R_{i,j} = DTW_q({x}_{\rightarrow i}, {x}^\prime_{\rightarrow j})^q
@@ -268,7 +268,7 @@ Contrary to Euclidean distance, DTW is invariant to time shifts between series.
 </figcaption>
 </figure>
 <h2 id="setting-additional-constraints">Setting Additional Constraints</h2>
-<p>As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their magnitude. In order to allow invariances to local deformations only, one can impose additional constraints on the set of admissible paths.</p>
+<p>As we have seen, Dynamic Time Warping is invariant to time shifts, whatever their temporal span. In order to allow invariances to local deformations only, one can impose additional constraints on the set of admissible paths.</p>
 <p>Such constraints typically translate into enforcing nonzero entries in <span class="math inline">\(A_\pi\)</span> to stay close to the diagonal. The Sakoe-Chiba band <span class="citation" data-cites="sakoe1978dynamic">[<a href="#ref-sakoe1978dynamic" role="doc-biblioref">SaCh78</a>]</span> is a constant-width band parametrized by a radius <span class="math inline">\(r\)</span> (also called warping window size sometimes). Another standard global constraint is the Itakura parallelogram <span class="citation" data-cites="itakura1975minimum">[<a href="#ref-itakura1975minimum" role="doc-biblioref">Itak75</a>]</span> that sets a maximum slope <span class="math inline">\(s\)</span> for alignment paths, which leads to a parallelogram-shaped constraint. The impact of these parameters is illustrated in the Figure below:</p>
 <figure>
 <video playsinline muted autoplay controls loop width="45%">
@@ -276,7 +276,7 @@ Contrary to Euclidean distance, DTW is invariant to time shifts between series.
 <source src="fig/sakoechiba_matrices.mp4" type="video/mp4" />
 <img src="fig/sakoechiba_matrices.gif" alt="Sakoe-Chiba matrices" /> </video> <video playsinline muted autoplay controls loop width="45%"> <source src="fig/itakura_matrices.webm" type="video/webm" /> <source src="fig/itakura_matrices.mp4" type="video/mp4" /> <img src="fig/itakura_matrices.gif" alt="Itakura matrices" /> </video>
 <figcaption>
-Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right). Here, each colored cell correspond to an index pair <span class="math inline">\((i, j)\)</span> that is valid under the considered constraint.
+Visualization of DTW global constraints: Sakoe-Chiba band (left) and Itakura parallelogram (right). Here, each colored cell corresponds to an index pair <span class="math inline">\((i, j)\)</span> that is valid under the considered constraint.
 </figcaption>
 </figure>
 <p>In practice, global constraints on admissible DTW paths restrict the set of possible matches for each element in a time series. The number of possible matches for an element is always <span class="math inline">\(2r+1\)</span> for Sakoe-Chiba constraints (except for border elements), while it varies depending on the time index for Itakura parallelograms:</p>
@@ -300,7 +300,7 @@ Impact of time shifts on a DTW with a Sakoe-Chiba band constraint of radius <spa
 </figcaption>
 </figure>
 <h1 id="conclusion">Conclusion</h1>
-<p>We have seen in this post how alignment-based metrics can prove useful when dealing with temporally shifted time series. We have presented in more details the most common of these metrics, which is Dynamic Time Warping (DTW). If you enjoyed this post, stay tuned, a new one should be published soon on the specific topic of the differentiability of DTW.</p>
+<p>We have seen in this post how alignment-based metrics can prove useful when dealing with temporally shifted time series. We have presented in more details the most common of these metrics, which is Dynamic Time Warping (DTW). If you enjoyed this post, stay tuned, a new one will be published soon on the specific topic of the differentiability of DTW.</p>
 <h1 class="unnumbered" id="bibliography">References</h1>
 <div id="refs" class="references csl-bib-body" role="doc-bibliography">
 <div id="ref-itakura1975minimum" class="csl-entry" role="doc-biblioentry">
