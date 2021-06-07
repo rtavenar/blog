@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from tslearn.metrics import dtw_path
 from utils import set_fig_style
 
 def softmin(a, gamma):

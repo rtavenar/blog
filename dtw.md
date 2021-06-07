@@ -162,7 +162,7 @@ This representation is related to the index sequence representation used above t
 \begin{equation}
 (A_\pi)_{i,j} = \left\{ \begin{array}{rl} 1 & \text{ if } (i, j) \in \pi \\
                                       0 & \text{ otherwise}
-                        \end{array} \right. .
+                        \end{array} \right. \,\,\,\,\,\,\, .
 \end{equation}
 
 This is illustrated in the Figure below where nonzero entries in the binary matrix are represented as dots and the equivalent sequence of matchings is produced on the right:
