@@ -90,4 +90,4 @@ len_anim = 40
 len_pause = 5
 
 ani = animation.FuncAnimation(fig, animate, interval=100, blit=True, save_count=len_anim + 2 * len_pause)
-export_animation(ani, 'fig/dtw_path', ext='gif')
+export_animation(ani, 'fig/dtw_path_tweet', ext='gif')
