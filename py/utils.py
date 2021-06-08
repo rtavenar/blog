@@ -4,10 +4,11 @@ from matplotlib import rc, rcParams, colors, animation
 
 def set_fig_style(fig, font_size=22, bg_color_html="#f9fafb"):
     os.environ['PATH'] += ':/Library/TeX/texbin/'  # Path to your latex install
-    blog_color = colors.hex2color(bg_color_html)
-    fig.patch.set_facecolor(blog_color)
-    for ax in fig.axes:
-        ax.set_facecolor(blog_color)
+    if bg_color_html is not None:
+        blog_color = colors.hex2color(bg_color_html)
+        fig.patch.set_facecolor(blog_color)
+        for ax in fig.axes:
+            ax.set_facecolor(blog_color)
     rcParams.update({
         'text.latex.preamble': r'\usepackage{newtxmath}',
         "font.family": "serif",
