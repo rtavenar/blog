@@ -2,8 +2,8 @@
 title: Differentiability of DTW and the case of soft-DTW
 language: en
 author: Romain Tavenard
-date: 2021/06/15
-draft: true
+date: 2021/06/22
+draft: false
 rights: Creative Commons CC BY-NC-SA
 bibliography: dtw.bib
 ---
@@ -347,4 +347,4 @@ Note also that [@hadji2020] suggest that the DTW variants presented in these pos
 
 We have seen in this post that DTW is not differentiable everywhere, and that there exists alternatives that basically change the min operator into a differentiable alternative in order to get a differentiable similarity measure that can later be used as a loss in gradient-based optimization.
 
-The next post in this series will be dedicated to drawing links between optimal transport and dynamic time warping.
+<!-- The next post in this series will be dedicated to drawing links between optimal transport and dynamic time warping. -->
