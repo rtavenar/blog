@@ -356,4 +356,4 @@ but is no longer invariant to longer time shifts:
 
 We have seen in this post how alignment-based metrics can prove useful when dealing with temporally shifted time series.
 We have presented in more details the most common of these metrics, which is Dynamic Time Warping (DTW).
-If you enjoyed this post, stay tuned, a new one will be published soon on the specific topic of the [differentiability of DTW](softdtw.html).
+If you enjoyed this post, stay tuned, there is another one on the specific topic of the [differentiability of DTW](softdtw.html).
