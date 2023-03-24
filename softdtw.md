@@ -3,8 +3,10 @@ title: Differentiability of DTW and the case of soft-DTW
 language: en
 author: Romain Tavenard
 date: 2021/06/22
+year: 2021
 draft: false
 rights: Creative Commons CC BY-NC-SA
+shortname: softdtw
 bibliography: dtw.bib
 ---
 

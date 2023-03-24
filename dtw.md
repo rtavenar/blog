@@ -3,7 +3,9 @@ title: An introduction to Dynamic Time Warping
 language: en
 author: Romain Tavenard
 date: 2021/06/08
+year: 2021
 draft: false
+shortname: dtw
 rights: Creative Commons CC BY-NC-SA
 bibliography: dtw.bib
 ---
